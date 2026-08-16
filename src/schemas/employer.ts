@@ -58,3 +58,60 @@ export const employerSchema = z.object({
 })
 
 export type Employer = z.infer<typeof employerSchema>;
+
+export const employerInsertSchema = employerSchema.omit({
+    id: true,
+    uuid: true,
+    createdAt: true,
+    updatedAt: true,
+    deleted: true,
+    deletedAt: true,
+    professionalFieldName: true,
+    regionName: true
+})
+
+export type EmployerInsert = z.infer<typeof employerInsertSchema>;
+
+export const employerUpdateSchema = employerSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    deleted: true,
+    deletedAt: true,
+    password: true,
+    professionalFieldName: true,
+    regionName: true
+})
+
+export type EmployerUpdate = z.infer<typeof employerUpdateSchema>;
+
+export const employerReadSchema = employerSchema.pick({
+    uuid: true,
+    brandName: true,
+    username: true
+})
+
+export type EmployerRead = z.infer<typeof employerReadSchema>;
+
+export const employerReadSummarySchema = employerSchema.pick({
+    uuid: true,
+    brandName: true,
+    website: true,
+    professionalFieldName: true,
+    regionName: true
+})
+
+export type EmployerReadSummary = z.infer<typeof employerReadSummarySchema>;
+
+export const employerReadDetailsSchema = employerSchema.pick({
+    uuid: true,
+    brandName: true,
+    website: true,
+    professionalFieldName: true,
+    email: true,
+    telephoneNumber: true,
+    address: true,
+    regionName: true
+})
+
+export type EmployerReadDetails = z.infer<typeof employerReadDetailsSchema>;
