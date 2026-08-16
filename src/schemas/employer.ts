@@ -23,7 +23,8 @@ export const employerSchema = z.object({
         .string()
         .optional(),
     email: z
-        .email(),
+        .email()
+        .min(1, {error: "Email is required"}),
     telephoneNumber: z
         .string()
         .regex(/^\d{10}$/, {error: "Must be exactly 10 digits"}),
@@ -53,6 +54,7 @@ export const employerSchema = z.object({
         .boolean(),
     deletedAt: z
         .string()
+        .optional()
 })
 
 export type Employer = z.infer<typeof employerSchema>;
