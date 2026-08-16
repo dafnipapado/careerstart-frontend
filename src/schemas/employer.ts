@@ -19,6 +19,9 @@ export const employerSchema = z.object({
     professionalFieldId: z
         .bigint()
         .min(1n, {error: "Please select an option"}),
+    professionalFieldName: z
+        .string()
+        .optional(),
     email: z
         .email(),
     telephoneNumber: z
@@ -30,6 +33,9 @@ export const employerSchema = z.object({
     regionId: z
         .bigint()
         .min(1n, {error: "Please select an option"}),
+    regionName: z
+        .string()
+        .optional(),
     username: z
         .string()
         .min(3, {error: "Must be at least 3 characters"})
