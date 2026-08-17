@@ -14,7 +14,6 @@ export const employerSchema = z
             .string()
             .regex(/^\d{9}$/, {error: "Must be exactly 9 digits"}),
         website: z
-            .string()
             .url()
             .max(255, {error: "No longer than 255 characters"})
             .optional(),
