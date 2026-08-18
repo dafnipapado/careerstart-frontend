@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {auditingSchema} from "./auditing.ts";
+import {personalInfoSchema} from "./personalInfo.ts";
 
 export const employerSchema = z
     .object({
@@ -23,21 +24,6 @@ export const employerSchema = z
         professionalFieldName: z
             .string()
             .optional(),
-        email: z
-            .email()
-            .min(1, {error: "Email is required"}),
-        telephoneNumber: z
-            .string()
-            .regex(/^\d{10}$/, {error: "Must be exactly 10 digits"}),
-        address: z
-            .string()
-            .optional(),
-        regionId: z
-            .bigint()
-            .min(1n, {error: "Please select an option"}),
-        regionName: z
-            .string()
-            .optional(),
         username: z
             .string()
             .min(3, {error: "Must be at least 3 characters"})
@@ -49,6 +35,7 @@ export const employerSchema = z
                         "one lowercase letter, one digit and one special character"}),
     })
     .extend(auditingSchema.shape)
+    .extend(personalInfoSchema.shape)
 
 export type Employer = z.infer<typeof employerSchema>;
 
