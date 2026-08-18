@@ -1,0 +1,86 @@
+import {z} from "zod";
+import {employerReadDetailsSchema, employerSchema} from "./employer.ts";
+import {auditingSchema} from "./auditing.ts";
+
+export const jobListingSchema = z
+    .object({
+        id: z
+            .bigint()
+            .min(1n),
+        uuid: z.uuid(),
+        title: z
+            .string()
+            .min(3, {error: "Must have at least 3 characters"}),
+        description: z
+            .string()
+            .min(3, {error: "Must have at least 20 characters"}),
+        employerId: employerSchema.shape.id,
+        employerBrandName: employerSchema.shape.brandName,
+        employerDetails: employerReadDetailsSchema,
+        professionalFieldId: z
+            .bigint()
+            .min(1n, {error: "Please select an option"}),
+        professionalFieldName: z
+            .string()
+            .optional(),
+        regionId: z
+            .bigint()
+            .min(1n, {error: "Please select an option"}),
+        regionName: z
+            .string()
+            .optional(),
+    })
+    .extend(auditingSchema.shape)
+
+export type JobListing = z.infer<typeof jobListingSchema>;
+
+export const jobListingInsertSchema = jobListingSchema.omit({
+    id: true,
+    uuid: true,
+    createdAt: true,
+    updatedAt: true,
+    deleted: true,
+    deletedAt: true
+})
+
+export type JobListingInsert = z.infer<typeof jobListingInsertSchema>;
+
+export const jobListingUpdateSchema = jobListingSchema.omit({
+    id: true,
+    employerId: true,
+    employerBrandName: true,
+    employerDetails: true,
+    createdAt: true,
+    updatedAt: true,
+    deleted: true,
+    deletedAt: true
+})
+
+export type JobListingUpdate = z.infer<typeof jobListingUpdateSchema>;
+
+export const jobListingReadSchema = jobListingSchema.pick({
+    uuid: true,
+    title: true,
+    employerBrandName: true
+})
+
+export type JobListingRead = z.infer<typeof jobListingReadSchema>;
+
+export const jobListingReadSummarySchema = jobListingSchema.pick({
+    uuid: true,
+    title: true,
+    employerBrandName: true,
+    professionalFieldName: true,
+    regionName: true
+})
+
+export type JobListingReadSummary = z.infer<typeof jobListingReadSummarySchema>;
+
+export const jobListingReadDetailsSchema = jobListingSchema.pick({
+    uuid: true,
+    title: true,
+    description: true,
+    employerDetails: true
+})
+
+export type JobListingReadDetails = z.infer<typeof jobListingReadDetailsSchema>;
