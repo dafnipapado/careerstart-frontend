@@ -4,8 +4,8 @@ import {personalInfoSchema} from "./personalInfo.ts";
 export const jobSeekerSchema = z
     .object({
         id: z
-            .bigint()
-            .min(1n),
+            .number()
+            .min(1),
         uuid: z.uuid(),
         firstname: z
             .string()

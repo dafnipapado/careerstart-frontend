@@ -5,8 +5,8 @@ import {auditingSchema} from "./auditing.ts";
 export const jobListingSchema = z
     .object({
         id: z
-            .bigint()
-            .min(1n),
+            .number()
+            .min(1),
         uuid: z.uuid(),
         title: z
             .string()

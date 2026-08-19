@@ -5,8 +5,8 @@ import {personalInfoSchema} from "./personalInfo.ts";
 export const employerSchema = z
     .object({
         id: z
-            .bigint()
-            .min(1n),
+            .number()
+            .min(1),
         uuid: z.uuid(),
         brandName: z
             .string()
