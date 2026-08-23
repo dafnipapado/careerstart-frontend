@@ -10,3 +10,7 @@ export const loginSchema = z.object({
 })
 
 export type LoginCredentials = z.infer<typeof loginSchema>;
+
+export type LoginResponse = {
+    token: string;
+}
