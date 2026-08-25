@@ -8,6 +8,7 @@ import {deleteCookie, getCookie, setCookie} from "../utils/cookies.ts";
 type AuthContextType = {
     isAuthenticated: boolean;
     username: string | null;
+    role: string | null;
     loading: boolean;
     loginUser: (fields: LoginCredentials) => Promise<void>;
     logoutUser: () => void;
@@ -17,14 +18,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 type JwtPayload = {
     sub: string;
+    role: string;
+}
+
+function getRoleFromToken(token: string | null) : string | null {
+    if (!token) return null;
+    try {
+        return jwtDecode<JwtPayload>(token).role ?? null
+    } catch {
+        return null;
+    }
 }
 
 function getUserFromToken(token: string | null) : string | null {
     if (!token) return null;
     try {
-        console.log(jwtDecode<JwtPayload>(token).sub)
         return jwtDecode<JwtPayload>(token).sub ?? null;
-
     } catch {
         return null;
     }
@@ -37,9 +46,15 @@ export const AuthProvider = (
     const [username, setUsername] = useState<string | null>(
         getUserFromToken(getCookie("token") ?? null)
     )
+
+    const [role, setRole] = useState<string | null>(
+        getRoleFromToken(getCookie("token") ?? null)
+    )
+
     const [token, setToken] = useState<string | null>(
         () => getCookie("token") ?? null
     );
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const loginUser = async (fields: LoginCredentials) => {
@@ -47,6 +62,7 @@ export const AuthProvider = (
             setLoading(true);
             const res = await login(fields)
             setUsername(getUserFromToken(res.token))
+            setRole(getRoleFromToken(res.token))
             setToken(res.token)
             setCookie("token", res.token, {
                 expires: 1/24,
@@ -61,6 +77,7 @@ export const AuthProvider = (
 
     const logoutUser = () => {
         setUsername(null);
+        setRole(null);
         setToken(null);
         deleteCookie("token")
     }
@@ -70,6 +87,7 @@ export const AuthProvider = (
             value={{
                 isAuthenticated: !!token,
                 username,
+                role,
                 loading,
                 loginUser,
                 logoutUser
