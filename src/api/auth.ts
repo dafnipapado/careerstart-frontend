@@ -8,6 +8,6 @@ export async function login(data: LoginCredentials) : Promise<LoginResponse> {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
     })
-    if (!res.ok) throw new Error("Failed to login")
+    if (!res.ok) throw await res.json();
     return await res.json()
 }

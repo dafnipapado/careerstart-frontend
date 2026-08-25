@@ -54,8 +54,6 @@ export const AuthProvider = (
                 secure: false,
                 sameSite: "Lax",
             })
-        } catch (error) {
-            console.log(error);
         } finally {
             setLoading(false);
         }
