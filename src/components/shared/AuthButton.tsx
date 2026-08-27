@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router";
-import {useAuth} from "src/context/AuthProvider.tsx";
 import {toast} from "sonner";
-import CustomButton from "src/components/shared/CustomButton.tsx";
+import {useAuth} from "@/context/AuthProvider.tsx";
+import CustomButton from "@/components/shared/CustomButton.tsx";
 
 export function AuthButton() {
     
