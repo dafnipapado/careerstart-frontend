@@ -40,7 +40,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-white p-5 border-2 rounded-sm">
+            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-white p-5 mt-12 border-2 rounded-sm">
                 <h1 className="font-sans font-semibold text-3xl text-font-dark-purple">Login</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}

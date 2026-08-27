@@ -11,7 +11,7 @@ const Header = () => {
                 </div>
 
             </div>
-            <header className="fixed w-full h-35 left-0 flex justify-center bg-white px-8 py-4 mt-13">
+            <header className="fixed w-full h-30 left-0 flex justify-center bg-white px-8 py-4 mt-13">
                 <div className="w-[55%] flex items-center justify-between">
                     <Link to="/">
                         <h1 className="lobster-two-regular-italic text-6xl text-font-dark-purple w-70">CareerStart</h1>
