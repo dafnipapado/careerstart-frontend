@@ -15,9 +15,9 @@ export const employerSchema = z
             .string()
             .regex(/^\d{9}$/, {error: "Must be exactly 9 digits"}),
         website: z
-            .url()
-            .max(255, {error: "No longer than 255 characters"})
-            .optional(),
+            .string()
+            .optional()
+            .refine(val => !val || z.url().safeParse(val).success),
         professionalFieldId: z
             .bigint()
             .min(1n, {error: "Please select an option"}),

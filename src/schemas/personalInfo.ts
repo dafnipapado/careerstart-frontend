@@ -1,12 +1,14 @@
 import {z} from "zod";
 
 export const personalInfoSchema = z.object({
+    telephoneNumber: z
+        .string()
+        .optional()
+        .refine(val => !val || /^\d{10}$/.test(val),
+            {error: "Must be exactly 10 digits"}),
     email: z
         .email()
         .min(1, {error: "Email is required"}),
-    telephoneNumber: z
-        .string()
-        .regex(/^\d{10}$/, {error: "Must be exactly 10 digits"}),
     address: z
         .string()
         .optional(),
