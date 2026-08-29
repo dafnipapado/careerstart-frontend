@@ -13,8 +13,8 @@ export const personalInfoSchema = z.object({
         .string()
         .optional(),
     regionId: z
-        .bigint()
-        .min(1n, {error: "Please select an option"}),
+        .number()
+        .min(1, {error: "Please select an option"}),
     regionName: z
         .string()
         .optional()
