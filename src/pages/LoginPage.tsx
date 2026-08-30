@@ -62,7 +62,7 @@ const LoginPage = () => {
                         </div>
                     </Field>
                     <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple py-5 mt-3 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">"Logging in..."</span> : "Login"}
+                        {isSubmitting ? <span className="cursor-progress">Logging in...</span> : "Login"}
                     </Button>
                 </form>
                 <div className="mt-5">
