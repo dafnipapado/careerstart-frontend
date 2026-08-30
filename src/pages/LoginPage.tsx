@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {Link, useNavigate} from "react-router";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
+import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 
 const LoginPage = () => {
 
@@ -40,28 +41,24 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-white p-5 mt-12 border-2 rounded-sm">
-                <h1 className="font-sans font-semibold text-3xl text-font-dark-purple">Login</h1>
+            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-white p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200">
+                <h1 className="font-sans font-semibold text-3xl text-font-dark-purple">Welcome back!</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
                 >
                     <Field>
                         <FieldLabel htmlFor="username" className="font-sans text-lg">Username</FieldLabel>
-                        <Input id="username" type="text" {...register("username")}></Input>
-                        <div className="h-1 text-sm/0 text-start text-error-dark-red">
-                            {errors.username && (
-                                <div>{errors.username.message}</div>
-                            )}
+                        <div>
+                            <Input id="username" type="text" {...register("username")}></Input>
+                            <FieldErrorMessage error = {errors.username}/>
                         </div>
                     </Field>
                     <Field>
                         <FieldLabel htmlFor="password" className="font-sans text-lg">Password</FieldLabel>
-                        <Input id="password" type="password" {...register("password")}></Input>
-                        <div className="h-1 text-sm/0 text-start text-error-dark-red">
-                            {errors.password && (
-                                <div>{errors.password.message}</div>
-                            )}
+                        <div>
+                            <Input id="password" type="password" {...register("password")}></Input>
+                            <FieldErrorMessage error = {errors.password} />
                         </div>
                     </Field>
                     <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple py-5 mt-3 cursor-pointer">
@@ -71,8 +68,8 @@ const LoginPage = () => {
                 <div className="mt-5">
                     <p className="text-sm">Don't have an account?</p>
                     <div className="flex justify-center gap-5 text-sm text-font-link-blue">
-                        <Link to="/" className="hover:underline">Sign up as a job seeker</Link>
-                        <Link to="/" className="hover:underline">Sign up as an employer</Link>
+                        <Link to="/register-jobseeker" className="hover:underline">Sign up as a job seeker</Link>
+                        <Link to="/register-employer" className="hover:underline">Sign up as an employer</Link>
                     </div>
                 </div>
             </div>
