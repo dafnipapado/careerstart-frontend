@@ -19,7 +19,7 @@ export const employerSchema = z
             .optional()
             .refine(val => !val || z.url().safeParse(val).success),
         professionalFieldId: z
-            .number()
+            .number({error: "Please select an option"})
             .min(1, {error: "Please select an option"}),
         professionalFieldName: z
             .string()
