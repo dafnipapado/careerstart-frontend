@@ -6,8 +6,7 @@ const CustomButton = ({label, addClasses="", disabled=false, onClick}: ButtonPro
     return (
         <>
             <Button
-                className={`bg-cf-dark-gray opacity-90 hover:opacity-100 
-                text-white px-4 py-2 rounded cursor-pointer ` + addClasses}
+                className={`text-white px-4 py-2 rounded-sm bg-font-dark-purple hover:bg-hover-dark-purple cursor-pointer` + addClasses}
                 disabled={disabled}
                 onClick={onClick}
             >

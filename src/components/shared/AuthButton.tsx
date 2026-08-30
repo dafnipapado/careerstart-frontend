@@ -20,6 +20,6 @@ export function AuthButton() {
     }
     
     return isAuthenticated 
-    ? <CustomButton label="Logout" addClasses="bg-font-dark-purple hover:bg-hover-dark-purple text-white rounded-sm p-2 w-1/12" onClick={handleLogout}></CustomButton>
-    : <CustomButton label="Login" addClasses="bg-font-dark-purple hover:bg-hover-dark-purple text-white rounded-sm p-2 w-1/12" onClick={handleLogin}></CustomButton>
+    ? <CustomButton label="Logout" onClick={handleLogout}></CustomButton>
+    : <CustomButton label="Login" onClick={handleLogin}></CustomButton>
 }
