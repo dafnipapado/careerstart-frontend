@@ -94,4 +94,19 @@ export const employerReadDetailsSchema = employerSchema.pick({
     regionName: true
 })
 
-export type EmployerReadDetails = z.infer<typeof employerReadDetailsSchema>;
+export type EmployerReadDetails = {
+    id: number,
+    uuid: string,
+    brandName: string,
+    vat: string,
+    website: string | null,
+    professionalFieldName: string,
+    professionalFieldId: number,
+    personalInfoDetailsReadOnlyDTO : {
+        email: string,
+        telephoneNumber: string | null,
+        address: string | null,
+        regionName: string,
+        regionId: number
+    }
+}
