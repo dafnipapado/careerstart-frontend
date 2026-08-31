@@ -1,7 +1,9 @@
 import type {
     EmployerInsert,
-    EmployerRead
+    EmployerRead,
+    EmployerReadDetails
 } from "../schemas/employer.ts";
+import {authFetch} from "@/api/auth.ts";
 
 const API_URL = import.meta.env.VITE_API_URL
 const EMPLOYER_URL = `${API_URL}/employers`
@@ -32,3 +34,8 @@ export async function insertEmployer(data: EmployerInsert) : Promise<EmployerRea
     return await res.json()
 }
 
+export async function getLoggedInEmployerDetails() : Promise<EmployerReadDetails> {
+    const res = await authFetch(`${EMPLOYER_URL}/dashboard`)
+    if (!res.ok) throw new Error("Employer info not found")
+    return await res.json()
+}
