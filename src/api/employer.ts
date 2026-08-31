@@ -1,7 +1,8 @@
 import type {
     EmployerInsert,
     EmployerRead,
-    EmployerReadDetails
+    EmployerReadDetails,
+    EmployerUpdate
 } from "../schemas/employer.ts";
 import {authFetch} from "@/api/auth.ts";
 
@@ -37,5 +38,32 @@ export async function insertEmployer(data: EmployerInsert) : Promise<EmployerRea
 export async function getLoggedInEmployerDetails() : Promise<EmployerReadDetails> {
     const res = await authFetch(`${EMPLOYER_URL}/dashboard`)
     if (!res.ok) throw new Error("Employer info not found")
+    return await res.json()
+}
+
+export async function updateEmployer(data: EmployerUpdate) : Promise<EmployerRead> {
+    const requestBody = {
+        uuid: data.uuid,
+        brandName: data.brandName,
+        vat: data.vat,
+        website: data.website || null,
+        professionalFieldId: data.professionalFieldId,
+        userUpdateDTO: {
+            username: data.username
+        },
+        personalInfoUpdateDTO: {
+            email: data.email,
+            telephoneNumber: data.telephoneNumber || null,
+            address: data.address || null,
+            regionId: data.regionId
+        }
+    }
+
+    const res = await authFetch(`${EMPLOYER_URL}/${data.uuid}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(requestBody)
+    })
+    if (!res.ok) throw new Error("Employer update failed")
     return await res.json()
 }
