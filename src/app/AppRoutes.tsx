@@ -8,6 +8,8 @@ import JobSeekerDashboard from "../pages/jobseeker/JobSeekerDashboard.tsx";
 import Layout from "@/components/layouts/Layout.tsx";
 import EmployerSignUpPage from "@/pages/employer/EmployerSignUpPage.tsx";
 import JobSeekerSignUpPage from "@/pages/jobseeker/JobSeekerSignUpPage.tsx";
+import JobSeekerSettingsPage from "@/pages/jobseeker/JobSeekerSettingsPage.tsx";
+import EmployerSettingsPage from "@/pages/employer/EmployerSettingsPage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -23,11 +25,13 @@ const AppRoutes = () => {
                     <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]}/>}>
                         <Route path="employer">
                             <Route path="dashboard" element={<EmployerDashboard/>}/>
+                            <Route path="settings" element={<EmployerSettingsPage/>}/>
                         </Route>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]}/>}>
                         <Route path="jobseeker">
                             <Route path="dashboard" element={<JobSeekerDashboard/>}/>
+                            <Route path="settings" element={<JobSeekerSettingsPage/>}/>
                         </Route>
                     </Route>
                 </Route>
