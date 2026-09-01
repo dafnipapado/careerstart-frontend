@@ -43,15 +43,12 @@ export const jobListingInsertSchema = jobListingSchema.pick({
 
 export type JobListingInsert = z.infer<typeof jobListingInsertSchema>;
 
-export const jobListingUpdateSchema = jobListingSchema.omit({
-    id: true,
-    employerId: true,
-    employerBrandName: true,
-    employerDetails: true,
-    dateCreated: true,
-    updatedAt: true,
-    deleted: true,
-    deletedAt: true
+export const jobListingUpdateSchema = jobListingSchema.pick({
+    uuid: true,
+    title: true,
+    description: true,
+    professionalFieldId: true,
+    regionId: true
 })
 
 export type JobListingUpdate = z.infer<typeof jobListingUpdateSchema>;
@@ -80,6 +77,10 @@ export const jobListingReadDetailsSchema = jobListingSchema.pick({
     title: true,
     description: true,
     employerDetails: true,
+    professionalFieldId: true,
+    professionalFieldName: true,
+    regionId: true,
+    regionName: true,
     dateCreated: true
 })
 
