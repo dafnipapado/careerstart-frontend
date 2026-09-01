@@ -2,16 +2,18 @@ import defaultUserPicture from "../../assets/images/default-user-picture.png";
 import {useEffect, useState} from "react";
 import {getLoggedInEmployerDetails} from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
-import {Dot, Factory, MapPin, Settings, SquareArrowOutUpRight} from "lucide-react";
+import {Dot, Factory, MapPin, Settings, SquareArrowOutUpRight, SquarePen, Trash2} from "lucide-react";
 import {Link} from "react-router";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
-import {getPaginatedFilteredJobListings} from "@/api/jobListing.ts";
+import {deleteJobListing, getPaginatedFilteredJobListings} from "@/api/jobListing.ts";
 import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@base-ui/react";
+import type {ErrorResponse} from "@/schemas/error.ts";
+import {toast} from "sonner";
 
 const EmployerDashboardPage = () => {
 
@@ -31,6 +33,17 @@ const EmployerDashboardPage = () => {
 
         void fetchEmployer()
     }, [isAuthenticated]);
+
+    const handleDelete = async (uuid: string) => {
+        if (!window.confirm("Are you sure you want to delete this job listing?")) return
+        try {
+            await deleteJobListing(uuid)
+            toast.success("Job Listing deleted successfully")
+        } catch (error) {
+            const err = error as ErrorResponse
+            toast.error(err.message)
+        }
+    }
 
 
     return (
@@ -75,14 +88,23 @@ const EmployerDashboardPage = () => {
                     </Link>
                 </div>
 
-                {jobListings.length > 0 ?
+                {jobListings.length > 0
+                ?
                 <div className="container w-full">
                     {jobListings.map((jobListing) => (
                     <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10">
                         <CardHeader className="flex items-center justify-between">
-                            <CardTitle className="text-2xl">
+                            <CardTitle className="text-2xl flex items-center gap-5">
                                 <div key={jobListing.title}>
                                     {jobListing.title}
+                                </div>
+                                <div className="flex gap-x-1.5">
+                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-font-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
+                                        <SquarePen />
+                                    </Link>
+                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
+                                        <Trash2 />
+                                    </Button>
                                 </div>
                             </CardTitle>
                             <CardDescription className="text-gray-500">
