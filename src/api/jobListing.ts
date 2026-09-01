@@ -1,4 +1,10 @@
-import type {JobListingInsert, JobListingRead, JobListingReadSummary} from "@/schemas/jobListing.ts";
+import type {
+    JobListingInsert,
+    JobListingRead,
+    JobListingReadDetails,
+    JobListingReadSummary,
+    JobListingUpdate
+} from "@/schemas/jobListing.ts";
 import {authFetch} from "@/api/auth.ts";
 import type {Page} from "@/schemas/page.ts";
 import type {JobListingFilters} from "@/schemas/jobListingFilters.ts";
@@ -19,6 +25,37 @@ export async function insertJobListing(data: JobListingInsert) : Promise<JobList
         body: JSON.stringify(requestBody)
     })
     if (!res.ok) throw new Error("Job Listing creation failed")
+    return await res.json()
+}
+
+export async function updateJobListing(uuid: string, data: JobListingUpdate) : Promise<JobListingRead> {
+    const requestBody = {
+        uuid: uuid,
+        title: data.title,
+        description: data.description,
+        professionalFieldId: data.professionalFieldId,
+        regionId: data.regionId
+    }
+    const res = await authFetch(`${JOB_LISTING_URL}/${uuid}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(requestBody)
+    })
+    if (!res.ok) throw new Error("Job Listing update failed")
+    return await res.json()
+}
+
+export async function deleteJobListing(uuid: string) : Promise<JobListingRead> {
+    const res = await authFetch(`${JOB_LISTING_URL}/${uuid}`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Job Listing deletion failed")
+    return await res.json()
+}
+
+export async function getSingleJobListing(uuid: string) : Promise<JobListingReadDetails> {
+    const res = await authFetch(`${JOB_LISTING_URL}/${uuid}/view`)
+    if  (!res.ok) throw new Error("Job listing retrieval failed")
     return await res.json()
 }
 
