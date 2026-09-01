@@ -2,7 +2,7 @@ import {Route, Routes} from "react-router";
 import HomePage from "@/pages/HomePage.tsx";
 import LoginPage from "@/pages/LoginPage.tsx";
 import ProtectedRoute from "@/app/ProtectedRoute.tsx";
-import EmployerDashboard from "../pages/employer/EmployerDashboard.tsx";
+import EmployerDashboardPage from "../pages/employer/EmployerDashboardPage.tsx";
 import PublicRoute from "@/app/PublicRoute.tsx";
 import JobSeekerDashboard from "../pages/jobseeker/JobSeekerDashboard.tsx";
 import Layout from "@/components/layouts/Layout.tsx";
@@ -10,6 +10,7 @@ import EmployerSignUpPage from "@/pages/employer/EmployerSignUpPage.tsx";
 import JobSeekerSignUpPage from "@/pages/jobseeker/JobSeekerSignUpPage.tsx";
 import JobSeekerSettingsPage from "@/pages/jobseeker/JobSeekerSettingsPage.tsx";
 import EmployerSettingsPage from "@/pages/employer/EmployerSettingsPage.tsx";
+import JobListingCreatePage from "@/pages/joblisting/JobListingCreatePage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -24,8 +25,9 @@ const AppRoutes = () => {
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]}/>}>
                         <Route path="employer">
-                            <Route path="dashboard" element={<EmployerDashboard/>}/>
+                            <Route path="dashboard" element={<EmployerDashboardPage/>}/>
                             <Route path="settings" element={<EmployerSettingsPage/>}/>
+                            <Route path="create-joblisting" element={<JobListingCreatePage/>}/>
                         </Route>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]}/>}>
