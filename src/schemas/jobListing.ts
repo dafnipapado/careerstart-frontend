@@ -48,7 +48,7 @@ export const jobListingUpdateSchema = jobListingSchema.omit({
     employerId: true,
     employerBrandName: true,
     employerDetails: true,
-    createdAt: true,
+    dateCreated: true,
     updatedAt: true,
     deleted: true,
     deletedAt: true
@@ -69,7 +69,8 @@ export const jobListingReadSummarySchema = jobListingSchema.pick({
     title: true,
     employerBrandName: true,
     professionalFieldName: true,
-    regionName: true
+    regionName: true,
+    dateCreated: true
 })
 
 export type JobListingReadSummary = z.infer<typeof jobListingReadSummarySchema>;
@@ -78,7 +79,8 @@ export const jobListingReadDetailsSchema = jobListingSchema.pick({
     uuid: true,
     title: true,
     description: true,
-    employerDetails: true
+    employerDetails: true,
+    dateCreated: true
 })
 
 export type JobListingReadDetails = z.infer<typeof jobListingReadDetailsSchema>;

@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const auditingSchema = z.object({
-    createdAt: z
+    dateCreated: z
         .string(),
     updatedAt: z
         .string(),
