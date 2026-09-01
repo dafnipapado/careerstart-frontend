@@ -18,14 +18,14 @@ export const jobListingSchema = z
         employerBrandName: employerSchema.shape.brandName,
         employerDetails: employerReadDetailsSchema,
         professionalFieldId: z
-            .bigint()
-            .min(1n, {error: "Please select an option"}),
+            .number({error: "Please select an option"})
+            .min(1, {error: "Please select an option"}),
         professionalFieldName: z
             .string()
             .optional(),
         regionId: z
-            .bigint()
-            .min(1n, {error: "Please select an option"}),
+            .number({error: "Please select an option"})
+            .min(1, {error: "Please select an option"}),
         regionName: z
             .string()
             .optional(),
@@ -34,13 +34,11 @@ export const jobListingSchema = z
 
 export type JobListing = z.infer<typeof jobListingSchema>;
 
-export const jobListingInsertSchema = jobListingSchema.omit({
-    id: true,
-    uuid: true,
-    createdAt: true,
-    updatedAt: true,
-    deleted: true,
-    deletedAt: true
+export const jobListingInsertSchema = jobListingSchema.pick({
+    title: true,
+    description: true,
+    professionalFieldId: true,
+    regionId: true
 })
 
 export type JobListingInsert = z.infer<typeof jobListingInsertSchema>;
