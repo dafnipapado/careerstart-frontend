@@ -4,6 +4,7 @@ export type JobListingFilters = {
     professionalField?: string;
     region?: string;
     createdAt?: Date;
+    deleted?: boolean;
     employerUuid?: string;
     employerBrandName?: string;
     page: number;
@@ -15,6 +16,6 @@ export type JobListingFilters = {
 export const defaultJobListingFilters: JobListingFilters = {
     page: 0,
     pageSize: 10,
-    sortBy: "id",
-    sortDirection: "ASC"
+    sortBy: "createdAt",
+    sortDirection: "DESC"
 }
