@@ -80,4 +80,15 @@ export const jobSeekerReadDetailsSchema = jobSeekerSchema.pick({
     regionName: true
 })
 
-export type JobSeekerReadDetails = z.infer<typeof jobSeekerReadDetailsSchema>;
+export type JobSeekerReadDetails = {
+    uuid: string,
+    firstname: string,
+    lastname: string,
+    personalInfoDetailsReadOnlyDTO : {
+        email: string,
+        telephoneNumber: string | null,
+        address: string | null,
+        regionName: string,
+        regionId: number
+    }
+}
