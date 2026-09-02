@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {personalInfoSchema} from "./personalInfo.ts";
+import {auditingSchema} from "@/schemas/auditing.ts";
 
 export const jobSeekerSchema = z
     .object({
@@ -21,17 +22,9 @@ export const jobSeekerSchema = z
             .string()
             .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&+=]).{8,}$/,
                 {error: "Must be at least 8 characters, consisting of one capital letter, " +
-                        "one lowercase letter, one digit and one special character"}),
-        createdAt: z
-            .string(),
-        updatedAt: z
-            .string(),
-        deleted: z
-            .boolean(),
-        deletedAt: z
-            .string()
-            .optional()
+                        "one lowercase letter, one digit and one special character"})
     })
+    .extend(auditingSchema.shape)
     .extend(personalInfoSchema.shape)
 
 export type JobSeeker = z.infer<typeof jobSeekerSchema>;
@@ -39,7 +32,7 @@ export type JobSeeker = z.infer<typeof jobSeekerSchema>;
 export const jobSeekerInsertSchema = jobSeekerSchema.omit({
     id: true,
     uuid: true,
-    createdAt: true,
+    dateCreated: true,
     updatedAt: true,
     deleted: true,
     deletedAt: true,
@@ -50,7 +43,7 @@ export type JobSeekerInsert = z.infer<typeof jobSeekerInsertSchema>;
 
 export const jobSeekerUpdateSchema = jobSeekerSchema.omit({
     id: true,
-    createdAt: true,
+    dateCreated: true,
     updatedAt: true,
     deleted: true,
     deletedAt: true,
