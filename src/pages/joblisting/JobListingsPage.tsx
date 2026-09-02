@@ -1,35 +1,168 @@
 import {Link} from "react-router";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {ChevronLeft, ChevronRight, Dot, Factory, MapPin} from "lucide-react";
+import {ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {useEffect, useState} from "react";
 import type {Pagination} from "@/schemas/pagination.ts";
-import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
+import {type JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {getPaginatedFilteredJobListings} from "@/api/jobListing.ts";
-import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
+import {
+    defaultJobListingFilters,
+    type JobListingFilters,
+    type JobListingFiltersForm, JobListingFiltersFormSchema
+} from "@/schemas/jobListingFilters.ts";
+import {Controller, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Field} from "@/components/ui/field.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {getAllFields} from "@/api/professionalField.ts";
+import {getAllRegions} from "@/api/region.ts";
+import type {ProfessionalField} from "@/schemas/professionalField.ts";
+import type {Region} from "@/schemas/region.ts";
+import {Separator} from "@/components/ui/separator.tsx";
 
 const JobListingsPage = () => {
 
     const [jobListingsPage, setJobListingsPage] = useState<Pagination<JobListingReadSummary> | null>(null)
     const [currentPage, setCurrentPage] = useState(0)
+    const [filters, setFilters] = useState<JobListingFilters>(defaultJobListingFilters)
+    const [professionalFields, setProfessionalFields] = useState<ProfessionalField[]>([])
+    const [regions, setRegions] = useState<Region[]>([])
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: {isSubmitting},
+        reset
+    } = useForm<JobListingFiltersForm>({
+        resolver: zodResolver(JobListingFiltersFormSchema)
+    })
 
     useEffect(() => {
         const fetchJobListings = async () => {
             const data = await getPaginatedFilteredJobListings({
-                ...defaultJobListingFilters, page: currentPage
+                ...filters, page: currentPage
             })
             setJobListingsPage(data)
         }
+        const fetchRegions = async () => {
+            setRegions(await getAllRegions())
+        }
+        const fetchProfessionalFields = async () => {
+            setProfessionalFields(await getAllFields())
+        }
 
         void fetchJobListings()
-    }, [currentPage]);
+        void fetchRegions()
+        void fetchProfessionalFields()
+    }, [filters, currentPage]);
+
+    const onSubmit = (data: JobListingFiltersForm) => {
+        setCurrentPage(0)
+        setFilters({
+            ...defaultJobListingFilters,
+            ...data
+        })
+    }
+
+    const onClear = () => {
+        setFilters(defaultJobListingFilters)
+        reset()
+    }
 
     return (
         <>
-            <div>
-                <div className="text-left left-5 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold">Job Listings</h1>
+            <div className="w-full">
+                <h1 className="text-left text-3xl pl-7 font-semibold">Job Listings</h1>
+                <div className="w-full h-20 flex items-center bg-white border border-gray-200 rounded-md my-10">
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <div className="grid grid-cols-[auto_1fr] items-center gap-30 px-2">
+                            <div className="pl-10 text-lg font-semibold">Filter</div>
+                            <div className="grid grid-cols-5 gap-3 px-2">
+                                <Field>
+                                    <div>
+                                        <Input id="title" type="text" {...register("title")} placeholder="Job Title..."
+                                               className="rounded-md"></Input>
+                                    </div>
+                                </Field>
+                                <Field>
+                                    <div>
+                                        <Input id="employerBrandName" type="text" {...register("employerBrandName")}
+                                               placeholder="Company..."
+                                               className="rounded-md"></Input>
+                                    </div>
+                                </Field>
+                                <Field>
+                                    <div>
+                                        <Controller name="professionalFieldId" control={control} render={({field}) => (
+                                            <Select onValueChange={(val) => field.onChange(Number(val))}
+                                                    value={field.value ?? null}>
+                                                <SelectTrigger className="w-full rounded-md">
+                                                    <SelectValue placeholder="Industry">
+                                                        {professionalFields.find(professionalField => professionalField.id === field.value)?.name ?? "Industry"}
+                                                    </SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectItem disabled>Industry</SelectItem>
+                                                        {professionalFields.map((professionalField) => (
+                                                            <SelectItem key={professionalField.id}
+                                                                        value={professionalField.id}>
+                                                                {professionalField.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        )}>
+                                        </Controller>
+                                    </div>
+                                </Field>
+                                <Field>
+                                    <div>
+                                        <Controller name="regionId" control={control} render={({field}) => (
+                                            <Select onValueChange={(val) => field.onChange(Number(val))}
+                                                    value={field.value ?? null}>
+                                                <SelectTrigger className="w-full rounded-md">
+                                                    <SelectValue placeholder="Region">
+                                                        {regions.find(region => region.id === field.value)?.name ?? "Region"}
+                                                    </SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectItem disabled>Region</SelectItem>
+                                                        {regions.map((region) => (
+                                                            <SelectItem key={region.id} value={region.id}>
+                                                                {region.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        )}>
+                                        </Controller>
+                                    </div>
+                                </Field>
+                                <div className="flex gap-2 mx-auto">
+                                    <Button type="submit"
+                                            className=" bg-font-dark-purple hover:bg-hover-dark-purple text-white rounded-md p-2 cursor-pointer">
+                                        {isSubmitting
+                                            ? <span className="cursor-progress"><Funnel/></span>
+                                            : <Funnel/>}
+                                    </Button>
+                                    <Button onClick={onClear}
+                                            className="bg-gray-200 border border-gray-300 text-red-800 rounded-md  p-2 cursor-pointer"><X/></Button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+
+                <Separator className="w-4/5! mx-auto bg-gray-300 my-15"/>
 
                 {(jobListingsPage?.content?.length ?? 0) > 0
                     ?
@@ -43,25 +176,26 @@ const JobListingsPage = () => {
                                         </div>
                                     </CardTitle>
                                     <CardDescription className="text-gray-500">
-                                        <div key={jobListing.dateCreated.slice(0,10)}>
-                                            {jobListing.dateCreated.slice(0,10)}
+                                        <div key={jobListing.dateCreated.slice(0, 10)}>
+                                            {jobListing.dateCreated.slice(0, 10)}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
                                 <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-red-800" key={jobListing.professionalFieldName}>
+                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-red-800"
+                                         key={jobListing.professionalFieldName}>
                                         {jobListing.professionalFieldName}
                                     </div>
                                     <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
                                 <span className="flex gap-1">
-                                    <MapPin strokeWidth={1.25} size={20}  />
+                                    <MapPin strokeWidth={1.25} size={20}/>
                                     <div key={jobListing.regionName}>
                                         {jobListing.regionName}
                                     </div>
                                 </span>
-                                        <Dot  />
+                                        <Dot/>
                                         <span className="flex gap-1">
-                                    <Factory strokeWidth={1.25} size={20}  />
+                                    <Factory strokeWidth={1.25} size={20}/>
                                     <div key={jobListing.employerBrandName}>
                                         {jobListing.employerBrandName}
                                     </div>
@@ -70,19 +204,21 @@ const JobListingsPage = () => {
                                 </div>
                                 <CardFooter className="w-full mt-auto text-font-dark-purple">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <Button className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Listing ⟶</Button>
+                                        <Button
+                                            className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View
+                                            Listing ⟶</Button>
                                     </Link>
                                 </CardFooter>
                             </Card>
                         ))}
                     </div>
                     :
-                    <div className="container w-full h-50 border border-gray-400 rounded-md">
+                    <div className="container w-full h-50">
                         <div className="h-full content-center">
                             <p>There are currently no active job listings.</p>
                         </div>
                     </div>}
-                
+
                 {(jobListingsPage?.totalPages ?? 0) > 0 &&
                     <div className="flex justify-center gap-5">
                         <button
@@ -90,7 +226,7 @@ const JobListingsPage = () => {
                             disabled={jobListingsPage?.first}
                             className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
                         >
-                            <ChevronLeft />
+                            <ChevronLeft/>
                         </button>
                         <span className="font-semibold">
                             {currentPage + 1}/{jobListingsPage?.totalPages}
@@ -100,7 +236,7 @@ const JobListingsPage = () => {
                             disabled={jobListingsPage?.last}
                             className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
                         >
-                            <ChevronRight />
+                            <ChevronRight/>
                         </button>
                     </div>
                 }
