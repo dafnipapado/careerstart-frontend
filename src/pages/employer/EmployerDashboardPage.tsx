@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import {getLoggedInEmployerDetails} from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
+    ChevronLeft,
+    ChevronRight,
     Dot,
     Factory,
     MapPin,
@@ -22,31 +24,36 @@ import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/compon
 import {Button} from "@base-ui/react";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
+import type {Pagination} from "@/schemas/pagination.ts";
 
 const EmployerDashboardPage = () => {
 
     const { isAuthenticated } = useAuth()
     const [employerInfo, setEmployerInfo] = useState<EmployerReadDetails | null>(null)
-    const [jobListings, setJobListings] = useState<JobListingReadSummary[]>([])
+    const [jobListingsPage, setJobListingsPage] = useState<Pagination<JobListingReadSummary> | null>(null)
     const [refresh, setRefresh] = useState(false)
+    const [currentPage, setCurrentPage] = useState(0)
 
     useEffect(() => {
         const fetchEmployer = async () => {
             const employerData = await getLoggedInEmployerDetails()
             setEmployerInfo(employerData)
             const data = await getPaginatedFilteredJobListings({
-                ...defaultJobListingFilters, employerUuid: employerData.uuid
+                ...defaultJobListingFilters, employerUuid: employerData.uuid, page: currentPage
             })
-            setJobListings(data.content)
+            setJobListingsPage(data)
         }
 
         void fetchEmployer()
-    }, [isAuthenticated, refresh]);
+    }, [isAuthenticated, refresh, currentPage]);
 
     const handleDelete = async (uuid: string) => {
         if (!window.confirm("Are you sure you want to delete this job listing?")) return
         try {
             await deleteJobListing(uuid)
+            if (jobListingsPage?.content.length === 1 && !jobListingsPage.first) {
+                setCurrentPage(prev => prev - 1)
+            }
             setRefresh((prev) => !prev)
             toast.success("Job Listing deleted successfully")
         } catch (error) {
@@ -97,10 +104,10 @@ const EmployerDashboardPage = () => {
                     </Link>
                 </div>
 
-                {jobListings.length > 0
+                {(jobListingsPage?.content?.length ?? 0) > 0
                 ?
                 <div className="container w-full">
-                    {jobListings.map((jobListing) => (
+                    {jobListingsPage?.content.map((jobListing) => (
                     <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10">
                         <CardHeader className="flex items-center justify-between">
                             <CardTitle className="text-2xl flex items-center gap-5">
@@ -157,6 +164,29 @@ const EmployerDashboardPage = () => {
                         <Link to="/employer/create-joblisting" className="text-font-link-blue hover:underline">Post your first job listing</Link>
                     </div>
                 </div>}
+
+                {/*pagination control*/}
+                {(jobListingsPage?.totalPages ?? 0) > 0 &&
+                    <div className="flex justify-center gap-5">
+                        <button
+                            onClick={() => setCurrentPage(prev => prev - 1)}
+                            disabled={jobListingsPage?.first}
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
+                        >
+                            <ChevronLeft />
+                        </button>
+                        <span className="font-semibold">
+                            {currentPage + 1}/{jobListingsPage?.totalPages}
+                        </span>
+                        <button
+                            onClick={() => setCurrentPage(prev => prev + 1)}
+                            disabled={jobListingsPage?.last}
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
+                        >
+                            <ChevronRight />
+                        </button>
+                    </div>
+                }
             </div>
         </>
     )
