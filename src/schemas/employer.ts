@@ -42,7 +42,7 @@ export type Employer = z.infer<typeof employerSchema>;
 export const employerInsertSchema = employerSchema.omit({
     id: true,
     uuid: true,
-    createdAt: true,
+    dateCreated: true,
     updatedAt: true,
     deleted: true,
     deletedAt: true,
@@ -54,7 +54,7 @@ export type EmployerInsert = z.infer<typeof employerInsertSchema>;
 
 export const employerUpdateSchema = employerSchema.omit({
     id: true,
-    createdAt: true,
+    dateCreated: true,
     updatedAt: true,
     deleted: true,
     deletedAt: true,
