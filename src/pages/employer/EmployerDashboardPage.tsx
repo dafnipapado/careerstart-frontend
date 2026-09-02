@@ -2,7 +2,15 @@ import defaultUserPicture from "../../assets/images/default-user-picture.png";
 import {useEffect, useState} from "react";
 import {getLoggedInEmployerDetails} from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
-import {Dot, Factory, MapPin, Settings, SquareArrowOutUpRight, SquarePen, Trash2} from "lucide-react";
+import {
+    Dot,
+    Factory,
+    MapPin,
+    Settings,
+    SquareArrowOutUpRight,
+    SquarePen,
+    Trash2
+} from "lucide-react";
 import {Link} from "react-router";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
@@ -20,6 +28,7 @@ const EmployerDashboardPage = () => {
     const { isAuthenticated } = useAuth()
     const [employerInfo, setEmployerInfo] = useState<EmployerReadDetails | null>(null)
     const [jobListings, setJobListings] = useState<JobListingReadSummary[]>([])
+    const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
         const fetchEmployer = async () => {
@@ -32,19 +41,19 @@ const EmployerDashboardPage = () => {
         }
 
         void fetchEmployer()
-    }, [isAuthenticated]);
+    }, [isAuthenticated, refresh]);
 
     const handleDelete = async (uuid: string) => {
         if (!window.confirm("Are you sure you want to delete this job listing?")) return
         try {
             await deleteJobListing(uuid)
+            setRefresh((prev) => !prev)
             toast.success("Job Listing deleted successfully")
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(err.message)
         }
     }
-
 
     return (
         <>
@@ -134,7 +143,7 @@ const EmployerDashboardPage = () => {
                             </div>
                         </div>
                         <CardFooter className="w-full mt-auto text-font-dark-purple">
-                            <Link to="" className="w-full">
+                            <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
                                 <Button className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Listing ⟶</Button>
                             </Link>
                         </CardFooter>
