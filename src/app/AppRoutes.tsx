@@ -12,6 +12,8 @@ import JobSeekerSettingsPage from "@/pages/jobseeker/JobSeekerSettingsPage.tsx";
 import EmployerSettingsPage from "@/pages/employer/EmployerSettingsPage.tsx";
 import JobListingCreatePage from "@/pages/joblisting/JobListingCreatePage.tsx";
 import JobListingUpdatePage from "@/pages/joblisting/JobListingUpdatePage.tsx";
+import JobListingViewPage from "@/pages/joblisting/JobListingViewPage.tsx";
+import JobListingsPage from "@/pages/joblisting/JobListingsPage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -36,6 +38,12 @@ const AppRoutes = () => {
                         <Route path="jobseeker">
                             <Route path="dashboard" element={<JobSeekerDashboard/>}/>
                             <Route path="settings" element={<JobSeekerSettingsPage/>}/>
+                        </Route>
+                    </Route>
+                    <Route element={<ProtectedRoute allowedRoles={["EMPLOYER", "JOB_SEEKER"]}/> }>
+                        <Route path="job-listings">
+                            <Route index element={<JobListingsPage/>}></Route>
+                            <Route path=":uuid" element={<JobListingViewPage/>}></Route>
                         </Route>
                     </Route>
                 </Route>
