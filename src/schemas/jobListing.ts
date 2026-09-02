@@ -13,10 +13,10 @@ export const jobListingSchema = z
             .min(3, {error: "Must have at least 3 characters"}),
         description: z
             .string()
-            .min(3, {error: "Must have at least 20 characters"}),
+            .min(20, {error: "Must have at least 20 characters"}),
         employerId: employerSchema.shape.id,
         employerBrandName: employerSchema.shape.brandName,
-        employerDetails: employerReadDetailsSchema,
+        employerSummaryReadOnlyDTO: employerReadDetailsSchema,
         professionalFieldId: z
             .number({error: "Please select an option"})
             .min(1, {error: "Please select an option"}),
@@ -76,7 +76,7 @@ export const jobListingReadDetailsSchema = jobListingSchema.pick({
     uuid: true,
     title: true,
     description: true,
-    employerDetails: true,
+    employerSummaryReadOnlyDTO: true,
     professionalFieldId: true,
     professionalFieldName: true,
     regionId: true,
