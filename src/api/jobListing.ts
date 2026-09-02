@@ -6,7 +6,7 @@ import type {
     JobListingUpdate
 } from "@/schemas/jobListing.ts";
 import {authFetch} from "@/api/auth.ts";
-import type {Page} from "@/schemas/page.ts";
+import type {Pagination} from "../schemas/pagination.ts";
 import type {JobListingFilters} from "@/schemas/jobListingFilters.ts";
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -59,7 +59,7 @@ export async function getSingleJobListing(uuid: string) : Promise<JobListingRead
     return await res.json()
 }
 
-export async function getPaginatedFilteredJobListings(filters: JobListingFilters) : Promise<Page<JobListingReadSummary>> {
+export async function getPaginatedFilteredJobListings(filters: JobListingFilters) : Promise<Pagination<JobListingReadSummary>> {
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
         if (value !== undefined && value !== null && value!=="") {
