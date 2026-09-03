@@ -4,7 +4,7 @@ import LoginPage from "@/pages/LoginPage.tsx";
 import ProtectedRoute from "@/app/ProtectedRoute.tsx";
 import EmployerDashboardPage from "../pages/employer/EmployerDashboardPage.tsx";
 import PublicRoute from "@/app/PublicRoute.tsx";
-import JobSeekerDashboard from "../pages/jobseeker/JobSeekerDashboard.tsx";
+import JobSeekerDashboardPage from "../pages/jobseeker/JobSeekerDashboardPage.tsx";
 import Layout from "@/components/layouts/Layout.tsx";
 import EmployerSignUpPage from "@/pages/employer/EmployerSignUpPage.tsx";
 import JobSeekerSignUpPage from "@/pages/jobseeker/JobSeekerSignUpPage.tsx";
@@ -35,8 +35,8 @@ const AppRoutes = () => {
                         </Route>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["JOB_SEEKER"]}/>}>
-                        <Route path="jobseeker">
-                            <Route path="dashboard" element={<JobSeekerDashboard/>}/>
+                        <Route path="job_seeker">
+                            <Route path="dashboard" element={<JobSeekerDashboardPage/>}/>
                             <Route path="settings" element={<JobSeekerSettingsPage/>}/>
                         </Route>
                     </Route>
