@@ -9,16 +9,18 @@ import {Link, useNavigate} from "react-router";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
+import {useEffect} from "react";
 
 const LoginPage = () => {
 
-    const { loginUser } = useAuth();
-    const role = useAuth().role?.toLowerCase().replace("_", "");
+    const { isAuthenticated, loginUser, role } = useAuth();
     const navigate = useNavigate();
 
-    if (useAuth().isAuthenticated) {
-        navigate(`/${role}/dashboard`)
-    }
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(`/${role?.toLowerCase()}/dashboard`)
+        }
+    }, [isAuthenticated, role, navigate]);
 
     const {
         register,
@@ -32,7 +34,6 @@ const LoginPage = () => {
         try {
             await loginUser(data);
             toast.success("Logged in successfully")
-            navigate(`/${role}/dashboard`)
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(err.message)
