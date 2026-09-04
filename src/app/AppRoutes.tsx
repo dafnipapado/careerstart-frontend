@@ -15,6 +15,7 @@ import JobListingUpdatePage from "@/pages/joblisting/JobListingUpdatePage.tsx";
 import JobListingViewPage from "@/pages/joblisting/JobListingViewPage.tsx";
 import JobListingsPage from "@/pages/joblisting/JobListingsPage.tsx";
 import CvCreatePage from "@/pages/cv/CvCreatePage.tsx";
+import CvUpdatePage from "@/pages/cv/CvUpdatePage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -40,6 +41,7 @@ const AppRoutes = () => {
                             <Route path="dashboard" element={<JobSeekerDashboardPage/>}/>
                             <Route path="settings" element={<JobSeekerSettingsPage/>}/>
                             <Route path="create-cv" element={<CvCreatePage/>} />
+                            <Route path=":jobSeekerUuid/cv/edit" element={<CvUpdatePage/>}/>
                         </Route>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["EMPLOYER", "JOB_SEEKER"]}/> }>
