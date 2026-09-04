@@ -58,3 +58,23 @@ export async function updateJobSeeker(data: JobSeekerUpdate) : Promise<JobSeeker
     if (!res.ok) throw new Error("Job seeker update failed")
     return await res.json()
 }
+
+export async function apply(jobListingUuid: string) {
+    const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/apply`, {
+        method: "POST"
+    })
+    if  (!res.ok) throw new Error("Failed to apply to job listing")
+}
+
+export async function withdraw(jobListingUuid: string) {
+    const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/withdraw`, {
+        method: "DELETE"
+    })
+    if  (!res.ok) throw new Error("Failed to withdraw from job listing")
+}
+
+export async function hasJobSeekerApplied(jobListingUuid: string) : Promise<boolean> {
+    const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/has-applied`)
+    if  (!res.ok) throw new Error("Failed to verify application to job listing")
+    return await res.json()
+}
