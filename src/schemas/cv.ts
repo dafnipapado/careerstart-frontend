@@ -40,17 +40,17 @@ export const cvInsertSchema = cvSchema.omit({
     jobSeekerId: true
 })
 
-export type cvInsert = z.infer<typeof cvInsertSchema>
+export type CvInsert = z.infer<typeof cvInsertSchema>
 
 export const cvUpdateSchema = cvSchema.omit({
     id: true,
     jobSeekerId: true
 })
 
-export type cvUpdate = z.infer<typeof cvUpdateSchema>
+export type CvUpdate = z.infer<typeof cvUpdateSchema>
 
 export const cvReadSchema = cvSchema.omit({
     id: true
 })
 
-export type cvRead = z.infer<typeof cvReadSchema>
+export type CvRead = z.infer<typeof cvReadSchema>

@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {type cvInsert, cvInsertSchema} from "@/schemas/cv.ts";
+import {type CvInsert, cvInsertSchema} from "@/schemas/cv.ts";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router";
@@ -20,11 +20,11 @@ const CvCreatePage = () => {
         register,
         handleSubmit,
         formState: {errors, isSubmitting}
-    } = useForm<cvInsert>({
+    } = useForm<CvInsert>({
         resolver: zodResolver(cvInsertSchema)
     })
 
-    const onSubmit = async (data: cvInsert): Promise<void | ErrorResponse> => {
+    const onSubmit = async (data: CvInsert): Promise<void | ErrorResponse> => {
         try {
             await insertCv(data);
             toast.success("Your CV was created successfully!")
