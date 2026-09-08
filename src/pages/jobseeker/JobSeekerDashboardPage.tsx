@@ -1,14 +1,18 @@
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {useEffect, useState} from "react";
-import defaultUserPicture from "../../assets/images/default-user-picture.png";
 import type {JobSeekerReadDetails} from "@/schemas/jobSeeker.ts";
-import {getLoggedInJobSeekerDetails} from "@/api/jobSeeker.ts";
+import {
+    getJobSeekerProfilePicture,
+    getLoggedInJobSeekerDetails,
+    uploadJobSeekerProfilePicture
+} from "@/api/jobSeeker.ts";
 import {Link} from "react-router";
 import {Dot, Mail, Phone, Settings} from "lucide-react";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import type {CvRead} from "@/schemas/cv.ts";
 import {getJobSeekerCv} from "@/api/cv.ts";
 import {Separator} from "@/components/ui/separator.tsx";
+import PictureUpload from "@/components/shared/PictureUpload.tsx";
 
 const JobSeekerDashboardPage = () => {
 
@@ -33,8 +37,7 @@ const JobSeekerDashboardPage = () => {
                     <Settings strokeWidth={1.25}
                               className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                 </Link>
-                <img className="absolute w-40 h-40 border border-black rounded-3xl left-15 -bottom-20"
-                     src={defaultUserPicture} alt="user picture"/>
+                {jobSeekerInfo && (<PictureUpload uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} />)}
                 <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1>{jobSeekerInfo?.firstname} {jobSeekerInfo?.lastname}</h1>
                 </div>
