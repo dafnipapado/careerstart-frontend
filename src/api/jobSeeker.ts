@@ -2,6 +2,7 @@ import type {
     JobSeekerInsert,
     JobSeekerRead,
     JobSeekerReadDetails,
+    JobSeekerReadSummary,
     JobSeekerUpdate
 } from "@/schemas/jobSeeker.ts";
 import {authFetch} from "@/api/auth.ts";
@@ -35,6 +36,12 @@ export async function insertJobSeeker(data: JobSeekerInsert) : Promise<JobSeeker
 
 export async function getLoggedInJobSeekerDetails() : Promise<JobSeekerReadDetails> {
     const res = await authFetch(`${JOBSEEKER_URL}/dashboard`)
+    if (!res.ok) throw new Error("Job Seeker info not found")
+    return await res.json()
+}
+
+export async function getJobSeekerPage(uuid: string) : Promise<JobSeekerReadDetails> {
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}`)
     if (!res.ok) throw new Error("Job Seeker info not found")
     return await res.json()
 }
@@ -117,4 +124,10 @@ export async function getJobSeekerCvFile(uuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/cv`, {})
     if (!res.ok) throw new Error("CV retrieval failed")
     return await res.blob()
+}
+
+export async function getJobSeekersByJobListing(jobListingUuid: string) : Promise<JobSeekerReadSummary[]> {
+    const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/job-seekers`)
+    if  (!res.ok) throw new Error("Failed to fetch job seekers for this listing")
+    return await res.json()
 }
