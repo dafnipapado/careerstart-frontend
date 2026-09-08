@@ -1,5 +1,10 @@
 import {useEffect, useState} from "react";
-import {getLoggedInEmployerDetails, getEmployerProfilePicture, uploadEmployerProfilePicture} from "@/api/employer.ts";
+import {
+    getLoggedInEmployerDetails,
+    getEmployerProfilePicture,
+    uploadEmployerProfilePicture,
+    getEmployerPage, getEmployerJobListingsCount
+} from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
     ChevronLeft,
@@ -12,7 +17,7 @@ import {
     SquarePen,
     Trash2
 } from "lucide-react";
-import {Link} from "react-router";
+import {Link, useParams} from "react-router";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import {deleteJobListing, getPaginatedFilteredJobListings} from "@/api/jobListing.ts";
@@ -28,22 +33,29 @@ import PictureUpload from "@/components/shared/PictureUpload.tsx";
 
 const EmployerDashboardPage = () => {
 
+    const { uuid } = useParams()
     const { isAuthenticated, role } = useAuth()
     const [employerInfo, setEmployerInfo] = useState<EmployerReadDetails | null>(null)
     const [jobListingsPage, setJobListingsPage] = useState<Pagination<JobListingReadSummary> | null>(null)
     const [refresh, setRefresh] = useState(false)
     const [currentPage, setCurrentPage] = useState(0)
+    const [jobListingsNumber, setJobListingsNumber] = useState<number>(0)
 
     useEffect(() => {
         const fetchEmployer = async () => {
-            const employerData = await getLoggedInEmployerDetails()
+            const employerData = role === "EMPLOYER"
+            ? await getLoggedInEmployerDetails()
+            : await getEmployerPage(uuid!)
             setEmployerInfo(employerData)
+
             const data = await getPaginatedFilteredJobListings({
                 ...defaultJobListingFilters, employerUuid: employerData.uuid, page: currentPage
             })
             setJobListingsPage(data)
-        }
 
+            const jobListingsCount = await getEmployerJobListingsCount(employerData.uuid)
+            setJobListingsNumber(jobListingsCount)
+        }
         void fetchEmployer()
     }, [isAuthenticated, refresh, currentPage]);
 
@@ -66,9 +78,11 @@ const EmployerDashboardPage = () => {
         <>
             {/*banner*/}
             <div className="relative bg-font-dark-purple w-full h-50 top-0">
-                <Link to="/employer/settings" className="flex p-2 m-2">
-                    <Settings strokeWidth={1.25} className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
-                </Link>
+                {role !== "JOB_SEEKER" && (
+                    <Link to="/employer/settings" className="flex p-2 m-2">
+                        <Settings strokeWidth={1.25} className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
+                    </Link>
+                )}
                 {employerInfo && (<PictureUpload uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} canUpload={role === "EMPLOYER"} />)}
                 <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1 className="">{employerInfo?.brandName}</h1>
@@ -98,10 +112,16 @@ const EmployerDashboardPage = () => {
             {/*job listings*/}
             <div>
                 <div className="text-left left-5 flex justify-between items-center">
-                    <h1 className="text-2xl font-semibold">My Job Listings</h1>
-                    <Link to="/employer/create-joblisting">
-                        <CustomButton label="+ New job listing"></CustomButton>
-                    </Link>
+                    <div className="text-2xl text-font-dark-purple font-semibold p-3 mb-5">
+                        {role !== "JOB_SEEKER"
+                            ? <span>My Job Listings ({jobListingsNumber})</span>
+                            : <span>{jobListingsNumber} Job Listings</span>}
+                    </div>
+                    {role !== "JOB_SEEKER" && (
+                        <Link to="/employer/create-joblisting">
+                            <CustomButton label="+ New job listing"></CustomButton>
+                        </Link>
+                    )}
                 </div>
 
                 {(jobListingsPage?.content?.length ?? 0) > 0
@@ -114,14 +134,16 @@ const EmployerDashboardPage = () => {
                                 <div key={jobListing.title}>
                                     {jobListing.title}
                                 </div>
-                                <div className="flex items-center gap-x-0.5">
-                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-font-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
-                                        <SquarePen className="w-5 h-5"/>
-                                    </Link>
-                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
-                                        <Trash2 className="w-5! h-5!"/>
-                                    </Button>
-                                </div>
+                                {role !== "JOB_SEEKER" && (
+                                    <div className="flex items-center gap-x-0.5">
+                                        <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-font-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
+                                            <SquarePen className="w-5 h-5"/>
+                                        </Link>
+                                        <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
+                                            <Trash2 className="w-5! h-5!"/>
+                                        </Button>
+                                    </div>
+                                )}
                             </CardTitle>
                             <CardDescription className="text-gray-500">
                                 <div key={jobListing.dateCreated.slice(0,10)}>
