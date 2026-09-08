@@ -10,7 +10,17 @@ import {useAuth} from "@/context/AuthProvider.tsx";
 import {getLoggedInEmployerDetails} from "@/api/employer.ts";
 import {toast} from "sonner";
 import type {ErrorResponse} from "@/schemas/error.ts";
-import {apply, hasJobSeekerApplied, withdraw} from "@/api/jobSeeker.ts";
+import {
+    apply,
+    getJobSeekerProfilePicture,
+    getJobSeekersByJobListing,
+    hasJobSeekerApplied,
+    withdraw
+} from "@/api/jobSeeker.ts";
+import type {JobSeekerReadSummary} from "@/schemas/jobSeeker.ts";
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Button} from "@base-ui/react";
+import defaultUserPicture from "@/assets/images/default-user-picture.png";
 
 const JobListingViewPage = () => {
 
@@ -19,6 +29,8 @@ const JobListingViewPage = () => {
     const [jobListing, setJobListing] = useState<JobListingReadDetails | null>(null)
     const [hasApplied, setHasApplied] = useState<boolean>(false);
     const [isOwnEmployer, setIsOwnEmployer] = useState<boolean>(false)
+    const [applicants, setApplicants] = useState<JobSeekerReadSummary[]>([])
+    const [avatarUrls, setAvatarUrls] = useState<Record<string, string>>({})
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -36,11 +48,30 @@ const JobListingViewPage = () => {
             }
 
             const verifyHasApplied = async () => {
+                if (role !== "JOB_SEEKER") return
                 const result = await hasJobSeekerApplied(data.uuid)
                 setHasApplied(result)
             }
-
             void verifyHasApplied()
+
+            const getApplicants = async () => {
+                const jobseekers = await getJobSeekersByJobListing(data.uuid)
+                setApplicants(jobseekers)
+
+                jobseekers.forEach(applicant => {
+                    console.log(applicant.firstname)
+                    getJobSeekerProfilePicture(applicant.uuid)
+                        .then(blob => {
+                            setAvatarUrls(prev => ({
+                                ...prev,
+                                [applicant.uuid] : URL.createObjectURL(blob)
+                            }))
+                            console.log("HI")
+                        })
+                        .catch(() => {})
+                })
+            }
+            void getApplicants()
         }
 
         void fetchJobListing()
@@ -156,10 +187,60 @@ const JobListingViewPage = () => {
                         </CustomButton>
                     </div>
                 }
-        </div>
-    </div>
-</>
-)
+
+
+                    {isOwnEmployer && (
+                        <div>
+                            <Separator className="bg-gray-400 my-10"/>
+                            <div className="text-2xl font-semibold">APPLICANTS</div>
+                            {applicants.length > 0
+
+                            ?
+                            <div className="w-full grid grid-cols-4 gap-2 mt-10">
+                                {applicants.map((applicant) => (
+                                    <Card key={applicant.uuid} className="flex flex-col mb-10">
+                                        <CardHeader className="flex flex-col items-center">
+                                            <CardTitle className="text-xl flex flex-col">
+                                                <div>
+                                                    <img src={avatarUrls[applicant.uuid] ?? defaultUserPicture} className="w-37.5 h-37.5 rounded-3xl" />
+                                                </div>
+                                                <div className="flex justify-center gap-1 mt-2">
+                                                    <div key={applicant.firstname}>
+                                                        {applicant.firstname}
+                                                    </div>
+                                                    <div key={applicant.lastname}>
+                                                        {applicant.lastname}
+                                                    </div>
+                                                </div>
+                                            </CardTitle>
+                                            <CardDescription className="text-gray-500">
+                                                <div key={applicant.email}>
+                                                    {applicant.email}
+                                                </div>
+                                            </CardDescription>
+                                        </CardHeader>
+
+                                        <CardFooter className="w-full mt-auto text-font-dark-purple">
+                                            <Link to={`/employer/jobseeker/${applicant.uuid}`} className="w-full">
+                                                <Button
+                                                    className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Profile</Button>
+                                            </Link>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                            :
+                            <div>
+                                This job listing has no applicants yet.
+                            </div>
+                            }
+                        </div>
+                    )}
+
+                </div>
+            </div>
+        </>
+    )
 }
 
 export default JobListingViewPage
