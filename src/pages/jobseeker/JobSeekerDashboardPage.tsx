@@ -2,11 +2,12 @@ import {useAuth} from "@/context/AuthProvider.tsx";
 import {useEffect, useState} from "react";
 import type {JobSeekerReadDetails} from "@/schemas/jobSeeker.ts";
 import {
+    getJobSeekerPage,
     getJobSeekerProfilePicture,
     getLoggedInJobSeekerDetails,
     uploadJobSeekerProfilePicture
 } from "@/api/jobSeeker.ts";
-import {Link} from "react-router";
+import {Link, useParams} from "react-router";
 import {Dot, Mail, Phone, Settings} from "lucide-react";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import type {CvRead} from "@/schemas/cv.ts";
@@ -16,14 +17,18 @@ import PictureUpload from "@/components/shared/PictureUpload.tsx";
 
 const JobSeekerDashboardPage = () => {
 
+    const {uuid} = useParams()
     const {isAuthenticated, role} = useAuth()
     const [jobSeekerInfo, setJobSeekerInfo] = useState<JobSeekerReadDetails | null>(null)
     const [cvInfo, setCvInfo] = useState<CvRead | null>(null)
 
     useEffect(() => {
         const fetchJobSeeker = async () => {
-            const jobSeekerData = await getLoggedInJobSeekerDetails()
+            const jobSeekerData = role === "JOB_SEEKER"
+            ? await getLoggedInJobSeekerDetails()
+            : await getJobSeekerPage(uuid!)
             setJobSeekerInfo(jobSeekerData)
+
             const cvData = await getJobSeekerCv(jobSeekerData.uuid)
             setCvInfo(cvData)
         }
@@ -33,12 +38,13 @@ const JobSeekerDashboardPage = () => {
     return (
         <>
             <div className="relative bg-font-dark-purple w-full h-50 top-0">
+                {role !== "EMPLOYER" && (
                 <Link to="/job_seeker/settings" className="flex p-2 m-2">
                     <Settings strokeWidth={1.25}
                               className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
-                </Link>
+                </Link>)}
                 {jobSeekerInfo && (<PictureUpload uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} />)}
-                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
+            <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1>{jobSeekerInfo?.firstname} {jobSeekerInfo?.lastname}</h1>
                 </div>
                 <div className={`absolute left-60 ${cvInfo?.profession ? "-bottom-18" : "-bottom-10"} font-medium`}>
@@ -65,6 +71,7 @@ const JobSeekerDashboardPage = () => {
             {!cvInfo?.profession
                 ?
                 <div className="mt-35">
+                    {role !== "EMPLOYER" && (
                     <div className="container w-full h-50 border border-gray-300 rounded-md mt-35">
                         <div className="h-full content-center">
                             <p className="pb-3">You haven't posted your CV yet.</p>
@@ -73,18 +80,19 @@ const JobSeekerDashboardPage = () => {
                             </Link>
                         </div>
                     </div>
+                    )}
                 </div>
                 :
-                <div>
+                <div className="mt-40">
                     {role !== "EMPLOYER" && (
-                        <div className="flex justify-end m-3 mt-35">
+                        <div className="flex justify-end m-5">
                             <Link to={`/job_seeker/${jobSeekerInfo?.uuid}/cv/edit`}>
                                 <CustomButton label="Edit CV"></CustomButton>
                             </Link>
                         </div>
                     )}
                     <div
-                        className="w-full grid grid-cols-[1fr_20fr] mx-auto my-auto bg-white  mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200 text-start font-sans">
+                        className="w-full grid grid-cols-[1fr_20fr] mx-auto bg-white border border-gray-200 rounded-sm shadow-xl shadow-gray-200 text-start font-sans">
                         <div className="bg-font-dark-purple"></div>
                         <div className="p-15">
                             {cvInfo?.bio && (<div>
