@@ -85,6 +85,14 @@ export async function getEmployerProfilePicture(uuid: string) {
     return await res.blob()
 }
 
+export async function deleteEmployer(uuid: string) : Promise<EmployerRead> {
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Employer deletion failed")
+    return await res.json()
+}
+
 export async function getEmployerPage(uuid: string) : Promise<EmployerReadDetails> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}`)
     if (!res.ok) throw new Error("Active employer retrieval failed")

@@ -2,14 +2,13 @@ import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {type JobSeekerReadDetails, type JobSeekerUpdate, jobSeekerUpdateSchema} from "@/schemas/jobSeeker.ts";
 import type {ErrorResponse} from "@/schemas/error.ts";
-import {deleteEmployer} from "@/api/employer.ts";
 import {toast} from "sonner";
 import {useEffect, useState} from "react";
 import type {Region} from "@/schemas/region.ts";
 import {useNavigate} from "react-router";
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {getAllRegions} from "@/api/region.ts";
-import {getLoggedInJobSeekerDetails, updateJobSeeker} from "@/api/jobSeeker.ts";
+import {deleteJobSeeker, getLoggedInJobSeekerDetails, updateJobSeeker} from "@/api/jobSeeker.ts";
 import {Asterisk, SquarePen, Trash2} from "lucide-react";
 import {Field, FieldLabel} from "@/components/ui/field.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -53,7 +52,7 @@ const JobSeekerSettingsPage = () => {
         if (!window.confirm("Are you sure you want to delete your account?")) return
         try {
             if (!jobSeekerInfo?.uuid) return;
-            await deleteEmployer(jobSeekerInfo?.uuid);
+            await deleteJobSeeker(jobSeekerInfo?.uuid);
             toast.success("Your account was deleted")
             logoutUser()
             navigate("/login")
@@ -184,7 +183,7 @@ const JobSeekerSettingsPage = () => {
 
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
                     <span className="flex items-center text-red-800 gap-2">
-                        <Trash2 /><h1 className="font-sans font-semibold text-2xl ">Delete your Account</h1>
+                        <Trash2 /><h1 className="font-sans font-semibold text-2xl">Delete your Account</h1>
                     </span>
                     <span className="text-sm font-sans -mt-2 mb-8">This action will deactivate your account permanently.</span>
                     <CustomButton label="Delete Account" onClick={handleDelete} addClasses="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg"></CustomButton>

@@ -71,6 +71,14 @@ export async function updateJobSeeker(data: JobSeekerUpdate) : Promise<JobSeeker
     return await res.json()
 }
 
+export async function deleteJobSeeker(uuid: string) : Promise<JobSeekerRead> {
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Job Seeker deletion failed")
+    return await res.json()
+}
+
 export async function apply(jobListingUuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/apply`, {
         method: "POST"
