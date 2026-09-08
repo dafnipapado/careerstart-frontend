@@ -193,12 +193,14 @@ const JobListingsPage = () => {
                                         {jobListing.regionName}
                                     </div>
                                 </span>
-                                        <Dot/>
-                                        <span className="flex gap-1">
+                                <Dot/>
+                                <span className="flex gap-1">
                                     <Factory strokeWidth={1.25} size={20}/>
-                                    <div key={jobListing.employerBrandName}>
+                                    <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
+                                        <div key={jobListing.employerBrandName}>
                                         {jobListing.employerBrandName}
                                     </div>
+                                    </Link>
                                 </span>
                                     </div>
                                 </div>

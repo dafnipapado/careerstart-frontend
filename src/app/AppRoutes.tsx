@@ -43,6 +43,7 @@ const AppRoutes = () => {
                             <Route path="settings" element={<JobSeekerSettingsPage/>}/>
                             <Route path="create-cv" element={<CvCreatePage/>} />
                             <Route path=":jobSeekerUuid/cv/edit" element={<CvUpdatePage/>}/>
+                            <Route path="employer/:uuid" element={<EmployerDashboardPage/>}/>
                         </Route>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["EMPLOYER", "JOB_SEEKER"]}/> }>
