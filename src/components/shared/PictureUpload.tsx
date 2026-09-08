@@ -24,6 +24,7 @@ const PictureUpload = ({
     const [open, setOpen] = React.useState(false)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const [selectedFilename, setSelectedFilename] = useState<string>("")
+    const [refresh, setRefresh] = useState(false)
 
     useEffect(() => {
         onGetPicture(uuid)
@@ -32,7 +33,7 @@ const PictureUpload = ({
                 setHasAvatar(true)
             })
             .catch(() => setHasAvatar(false))
-    }, [])
+    }, [refresh, onGetPicture, uuid])
 
     const picture = hasAvatar
     ? <img className="w-40 h-40 rounded-3xl group-hover:opacity-95 "
@@ -49,7 +50,7 @@ const PictureUpload = ({
     const handleUpload = async (uuid: string, file: File) => {
         try {
             await onUpload(uuid, file)
-            toast.success("Avatar was uploaded successfully!")
+            setRefresh(prev => !prev)
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(err.message)
