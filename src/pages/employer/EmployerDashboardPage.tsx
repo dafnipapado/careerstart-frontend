@@ -56,12 +56,14 @@ const EmployerDashboardPage = () => {
             })
             setJobListingsPage(jobListings)
 
-            for (const listing of jobListings.content) {
-                const hasApplied = await hasJobSeekerApplied(listing.uuid)
-                setAppliedJobListings(prev => ({
-                    ...prev,
-                    [listing.uuid]: hasApplied
-                }))
+            if (role === "JOB_SEEKER") {
+                for (const listing of jobListings.content) {
+                    const hasApplied = await hasJobSeekerApplied(listing.uuid)
+                    setAppliedJobListings(prev => ({
+                        ...prev,
+                        [listing.uuid]: hasApplied
+                    }))
+                }
             }
 
             const jobListingsCount = await getEmployerJobListingsCount(employerData.uuid)
