@@ -67,3 +67,20 @@ export async function updateEmployer(data: EmployerUpdate) : Promise<EmployerRea
     if (!res.ok) throw new Error("Employer update failed")
     return await res.json()
 }
+
+export async function uploadEmployerProfilePicture(uuid: string, file: File) : Promise<void> {
+    const formData = new FormData()
+    formData.append("picture", file)
+
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}/avatar-upload`, {
+        method: "POST",
+        body: formData
+    })
+    if (!res.ok) throw new Error("Employer profile picture upload failed")
+}
+
+export async function getEmployerProfilePicture(uuid: string) {
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}/avatar`, {})
+    if (!res.ok) throw new Error("Profile picture retrieval failed")
+    return await res.blob()
+}
