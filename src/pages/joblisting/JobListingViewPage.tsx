@@ -59,14 +59,12 @@ const JobListingViewPage = () => {
                 setApplicants(jobseekers)
 
                 jobseekers.forEach(applicant => {
-                    console.log(applicant.firstname)
                     getJobSeekerProfilePicture(applicant.uuid)
                         .then(blob => {
                             setAvatarUrls(prev => ({
                                 ...prev,
                                 [applicant.uuid] : URL.createObjectURL(blob)
                             }))
-                            console.log("HI")
                         })
                         .catch(() => {})
                 })
@@ -136,9 +134,11 @@ const JobListingViewPage = () => {
                                 </span>
                             <Dot/>
                             <span className="flex gap-1">
-                                    <Factory strokeWidth={1.25} size={20}/>
-                                {jobListing?.employerSummaryReadOnlyDTO.brandName}
-                                </span>
+                                <Factory strokeWidth={1.25} size={20}/>
+                                <Link to={`/job_seeker/employer/${jobListing?.employerSummaryReadOnlyDTO.uuid}`}>
+                                    {jobListing?.employerSummaryReadOnlyDTO.brandName}
+                                </Link>
+                            </span>
                             {jobListing?.employerSummaryReadOnlyDTO.website && (
                                 <div className="flex items-baseline gap-1">
                                     <Dot/>
