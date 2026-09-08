@@ -84,3 +84,15 @@ export async function getEmployerProfilePicture(uuid: string) {
     if (!res.ok) throw new Error("Profile picture retrieval failed")
     return await res.blob()
 }
+
+export async function getEmployerPage(uuid: string) : Promise<EmployerReadDetails> {
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}`)
+    if (!res.ok) throw new Error("Active employer retrieval failed")
+    return await res.json()
+}
+
+export async function getEmployerJobListingsCount(uuid: string) : Promise<number> {
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}/jobListingsNumber`)
+    if (!res.ok) throw new Error("Can't find number of employer's active job listings")
+    return await res.json()
+}
