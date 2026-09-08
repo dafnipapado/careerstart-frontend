@@ -1,4 +1,9 @@
-import type {JobSeekerInsert, JobSeekerRead, JobSeekerReadDetails, JobSeekerUpdate} from "@/schemas/jobSeeker.ts";
+import type {
+    JobSeekerInsert,
+    JobSeekerRead,
+    JobSeekerReadDetails,
+    JobSeekerUpdate
+} from "@/schemas/jobSeeker.ts";
 import {authFetch} from "@/api/auth.ts";
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -77,4 +82,39 @@ export async function hasJobSeekerApplied(jobListingUuid: string) : Promise<bool
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/has-applied`)
     if  (!res.ok) throw new Error("Failed to verify application to job listing")
     return await res.json()
+}
+
+export async function uploadJobSeekerProfilePicture(uuid: string, file: File) : Promise<void> {
+    const formData = new FormData()
+    formData.append("picture", file)
+
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/avatar-upload`, {
+        method: "POST",
+        body: formData
+    })
+    if (!res.ok) throw new Error("Jobseeker profile picture upload failed")
+}
+
+export async function getJobSeekerProfilePicture(uuid: string) {
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/avatar`, {})
+    if (!res.ok) throw new Error("Profile picture retrieval failed")
+    return await res.blob()
+}
+
+export async function uploadJobSeekerCv(uuid: string, file: File) {
+    const formData = new FormData()
+    formData.append("cv", file)
+
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/cv-upload`, {
+        method: "POST",
+        body: formData
+    })
+    if (!res.ok) throw new Error("Jobseeker CV upload failed")
+    return await res.bytes()
+}
+
+export async function getJobSeekerCvFile(uuid: string) {
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/cv`, {})
+    if (!res.ok) throw new Error("CV retrieval failed")
+    return await res.blob()
 }
