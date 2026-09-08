@@ -14,7 +14,7 @@ export const jobListingSchema = z
         description: z
             .string()
             .min(20, {error: "Must have at least 20 characters"}),
-        employerId: employerSchema.shape.id,
+        employerUuid: employerSchema.shape.uuid,
         employerBrandName: employerSchema.shape.brandName,
         employerSummaryReadOnlyDTO: employerReadDetailsSchema,
         professionalFieldId: z
@@ -64,6 +64,7 @@ export type JobListingRead = z.infer<typeof jobListingReadSchema>;
 export const jobListingReadSummarySchema = jobListingSchema.pick({
     uuid: true,
     title: true,
+    employerUuid: true,
     employerBrandName: true,
     professionalFieldName: true,
     regionName: true,
