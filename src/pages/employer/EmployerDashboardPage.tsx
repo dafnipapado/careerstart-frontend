@@ -1,6 +1,5 @@
-import defaultUserPicture from "../../assets/images/default-user-picture.png";
 import {useEffect, useState} from "react";
-import {getLoggedInEmployerDetails} from "@/api/employer.ts";
+import {getLoggedInEmployerDetails, getEmployerProfilePicture, uploadEmployerProfilePicture} from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
     ChevronLeft,
@@ -21,10 +20,11 @@ import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Button} from "@base-ui/react";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import type {Pagination} from "@/schemas/pagination.ts";
+import {Button} from "@/components/ui/button.tsx";
+import PictureUpload from "@/components/shared/PictureUpload.tsx";
 
 const EmployerDashboardPage = () => {
 
@@ -69,7 +69,7 @@ const EmployerDashboardPage = () => {
                 <Link to="/employer/settings" className="flex p-2 m-2">
                     <Settings strokeWidth={1.25} className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                 </Link>
-                <img className="absolute w-40 h-40 border border-black rounded-3xl left-15 -bottom-20" src={defaultUserPicture} alt="user picture" />
+                {employerInfo && (<PictureUpload uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} />)}
                 <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1 className="">{employerInfo?.brandName}</h1>
                 </div>
