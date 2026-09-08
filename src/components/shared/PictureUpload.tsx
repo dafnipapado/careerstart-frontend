@@ -10,11 +10,13 @@ import defaultUserPicture from "@/assets/images/default-user-picture.png";
 const PictureUpload = ({
     uuid,
     onUpload,
-    onGetPicture
+    onGetPicture,
+    canUpload
    } : {
     uuid: string,
     onUpload: (uuid: string, file: File) => Promise<void>,
-    onGetPicture: (uuid: string) => Promise<Blob>
+    onGetPicture: (uuid: string) => Promise<Blob>,
+    canUpload: boolean
     }) => {
 
     const [hasAvatar, setHasAvatar] = useState<boolean>(false)
@@ -31,6 +33,12 @@ const PictureUpload = ({
             })
             .catch(() => setHasAvatar(false))
     }, [])
+
+    const picture = hasAvatar
+    ? <img className="w-40 h-40 rounded-3xl group-hover:opacity-95 "
+           src={avatarUrl} alt="user picture"/>
+    : <img className="w-40 h-40 rounded-3xl group-hover:opacity-95"
+           src={defaultUserPicture} alt="user picture"/>
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -50,25 +58,17 @@ const PictureUpload = ({
 
     return (
         <>
+            {canUpload
+            ?
             <div>
                 <Dialog open={open} onOpenChange={(isOpen) => {setOpen(isOpen)
                     if (!isOpen) setSelectedFilename("")}}>
                     <DialogTrigger>
-                        <Button variant="outline" className="absolute w-40 h-40 border border-black rounded-3xl left-15 -bottom-20 cursor-pointer">
-                            {hasAvatar
-                                ?
-                                <div className="group absolute w-40 h-40 border rounded-3xl">
-                                    <img className=" w-40 h-40  border border-black rounded-3xl group-hover:opacity-95 "
-                                         src={avatarUrl} alt="user picture"/>
-                                    <SquarePen className="relative w-10! h-10! text-gray-900 opacity-0 group-hover:opacity-100 left-15 bottom-25 z-50 duration-300 ease-in-out zoom-[0.98]" />
-                                </div>
-                                :
-                                <div className="group absolute w-40 h-40 border rounded-3xl">
-                                    <img className=" w-40 h-40 border border-black rounded-3xl group-hover:opacity-95"
-                                         src={defaultUserPicture} alt="user picture"/>
-                                    <SquarePen className="relative w-10! h-10! opacity-0 group-hover:opacity-100 left-15 bottom-25 z-50 duration-300 ease-in-out zoom-[0.98]" />
-                                </div>
-                            }
+                        <Button variant="outline" className="absolute w-40 h-40 rounded-3xl left-15 -bottom-20 cursor-pointer">
+                            <div className="group absolute w-40 h-40 rounded-3xl">
+                                {picture}
+                                <SquarePen className="relative w-10! h-10! text-gray-900 opacity-0 group-hover:opacity-100 left-15 bottom-25 z-50 duration-300 ease-in-out zoom-[0.98]" />
+                            </div>
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
@@ -83,6 +83,11 @@ const PictureUpload = ({
                     </DialogContent>
                 </Dialog>
             </div>
+            :
+            <div className="absolute w-40 h-40 left-15 -bottom-20 rounded-3xl hover:opacity-100!">
+                {picture}
+            </div>
+            }
         </>
     )
 }
