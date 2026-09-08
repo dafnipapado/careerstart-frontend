@@ -1,6 +1,6 @@
 import {Link} from "react-router";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
+import {BadgeCheck, ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {useEffect, useState} from "react";
 import type {Pagination} from "@/schemas/pagination.ts";
@@ -21,6 +21,7 @@ import {getAllRegions} from "@/api/region.ts";
 import type {ProfessionalField} from "@/schemas/professionalField.ts";
 import type {Region} from "@/schemas/region.ts";
 import {Separator} from "@/components/ui/separator.tsx";
+import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 
 const JobListingsPage = () => {
 
@@ -29,6 +30,7 @@ const JobListingsPage = () => {
     const [filters, setFilters] = useState<JobListingFilters>(defaultJobListingFilters)
     const [professionalFields, setProfessionalFields] = useState<ProfessionalField[]>([])
     const [regions, setRegions] = useState<Region[]>([])
+    const [appliedJobListings, setAppliedJobListings] = useState<Record<string, boolean>>({})
 
     const {
         register,
@@ -42,10 +44,18 @@ const JobListingsPage = () => {
 
     useEffect(() => {
         const fetchJobListings = async () => {
-            const data = await getPaginatedFilteredJobListings({
+            const jobListings = await getPaginatedFilteredJobListings({
                 ...filters, page: currentPage
             })
-            setJobListingsPage(data)
+            setJobListingsPage(jobListings)
+
+            for (const listing of jobListings.content) {
+                const hasApplied = await hasJobSeekerApplied(listing.uuid)
+                setAppliedJobListings(prev => ({
+                    ...prev,
+                    [listing.uuid]: hasApplied
+                }))
+            }
         }
         const fetchRegions = async () => {
             setRegions(await getAllRegions())
@@ -75,6 +85,7 @@ const JobListingsPage = () => {
     return (
         <>
             <div className="w-full">
+                {/*filters*/}
                 <h1 className="text-left text-3xl pl-7 font-semibold">Job Listings</h1>
                 <div className="w-full h-20 flex items-center bg-white border border-gray-200 rounded-md my-10">
                     <form
@@ -164,6 +175,7 @@ const JobListingsPage = () => {
 
                 <Separator className="w-4/5! mx-auto bg-gray-300 my-15"/>
 
+                {/*job listings*/}
                 {(jobListingsPage?.content?.length ?? 0) > 0
                     ?
                     <div className="container w-full">
@@ -174,6 +186,12 @@ const JobListingsPage = () => {
                                         <div key={jobListing.title}>
                                             {jobListing.title}
                                         </div>
+                                        {appliedJobListings[jobListing.uuid] && (
+                                            <div className="flex text-xs text-white figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
+                                                <BadgeCheck size={16}/>
+                                                <p>applied</p>
+                                            </div>
+                                        )}
                                     </CardTitle>
                                     <CardDescription className="text-gray-500">
                                         <div key={jobListing.dateCreated.slice(0, 10)}>
@@ -198,8 +216,8 @@ const JobListingsPage = () => {
                                     <Factory strokeWidth={1.25} size={20}/>
                                     <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
                                         <div key={jobListing.employerBrandName}>
-                                        {jobListing.employerBrandName}
-                                    </div>
+                                            {jobListing.employerBrandName}
+                                        </div>
                                     </Link>
                                 </span>
                                     </div>

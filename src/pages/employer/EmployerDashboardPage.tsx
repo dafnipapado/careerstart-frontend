@@ -7,6 +7,7 @@ import {
 } from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
+    BadgeCheck,
     ChevronLeft,
     ChevronRight,
     Dot,
@@ -30,6 +31,7 @@ import {toast} from "sonner";
 import type {Pagination} from "@/schemas/pagination.ts";
 import {Button} from "@/components/ui/button.tsx";
 import PictureUpload from "@/components/shared/PictureUpload.tsx";
+import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 
 const EmployerDashboardPage = () => {
 
@@ -40,6 +42,7 @@ const EmployerDashboardPage = () => {
     const [refresh, setRefresh] = useState(false)
     const [currentPage, setCurrentPage] = useState(0)
     const [jobListingsNumber, setJobListingsNumber] = useState<number>(0)
+    const [appliedJobListings, setAppliedJobListings] = useState<Record<string, boolean>>({})
 
     useEffect(() => {
         const fetchEmployer = async () => {
@@ -48,10 +51,18 @@ const EmployerDashboardPage = () => {
             : await getEmployerPage(uuid!)
             setEmployerInfo(employerData)
 
-            const data = await getPaginatedFilteredJobListings({
+            const jobListings = await getPaginatedFilteredJobListings({
                 ...defaultJobListingFilters, employerUuid: employerData.uuid, page: currentPage
             })
-            setJobListingsPage(data)
+            setJobListingsPage(jobListings)
+
+            for (const listing of jobListings.content) {
+                const hasApplied = await hasJobSeekerApplied(listing.uuid)
+                setAppliedJobListings(prev => ({
+                    ...prev,
+                    [listing.uuid]: hasApplied
+                }))
+            }
 
             const jobListingsCount = await getEmployerJobListingsCount(employerData.uuid)
             setJobListingsNumber(jobListingsCount)
@@ -134,16 +145,26 @@ const EmployerDashboardPage = () => {
                                 <div key={jobListing.title}>
                                     {jobListing.title}
                                 </div>
-                                {role !== "JOB_SEEKER" && (
-                                    <div className="flex items-center gap-x-0.5">
-                                        <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-font-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
-                                            <SquarePen className="w-5 h-5"/>
-                                        </Link>
-                                        <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
-                                            <Trash2 className="w-5! h-5!"/>
-                                        </Button>
-                                    </div>
-                                )}
+                                {role !== "JOB_SEEKER"
+                                ?
+                                <div className="flex items-center gap-x-0.5">
+                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-font-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
+                                        <SquarePen className="w-5 h-5"/>
+                                    </Link>
+                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
+                                        <Trash2 className="w-5! h-5!"/>
+                                    </Button>
+                                </div>
+                                :
+                                <div>
+                                    {appliedJobListings[jobListing.uuid] && (
+                                        <div className="flex text-xs text-white figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
+                                            <BadgeCheck size={16}/>
+                                            <p>applied</p>
+                                        </div>
+                                    )}
+                                </div>
+                                }
                             </CardTitle>
                             <CardDescription className="text-gray-500">
                                 <div key={jobListing.dateCreated.slice(0,10)}>
