@@ -2,9 +2,10 @@ import {useAuth} from "@/context/AuthProvider.tsx";
 import {useEffect, useState} from "react";
 import type {JobSeekerReadDetails} from "@/schemas/jobSeeker.ts";
 import {
+    getJobSeekerCvFile,
     getJobSeekerPage,
     getJobSeekerProfilePicture,
-    getLoggedInJobSeekerDetails,
+    getLoggedInJobSeekerDetails, uploadJobSeekerCv,
     uploadJobSeekerProfilePicture
 } from "@/api/jobSeeker.ts";
 import {Link, useParams} from "react-router";
@@ -14,6 +15,8 @@ import type {CvRead} from "@/schemas/cv.ts";
 import {getJobSeekerCv} from "@/api/cv.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import PictureUpload from "@/components/shared/PictureUpload.tsx";
+import CvFileHandler from "../../components/shared/CvFileHandler.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 const JobSeekerDashboardPage = () => {
 
@@ -44,7 +47,7 @@ const JobSeekerDashboardPage = () => {
                               className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                 </Link>)}
                 {jobSeekerInfo && (<PictureUpload uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} canUpload={role === "JOB_SEEKER"} />)}
-            <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
+                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1>{jobSeekerInfo?.firstname} {jobSeekerInfo?.lastname}</h1>
                 </div>
                 <div className={`absolute left-60 ${cvInfo?.profession ? "-bottom-18" : "-bottom-10"} font-medium`}>
@@ -52,7 +55,7 @@ const JobSeekerDashboardPage = () => {
                         <div className="text-start font-semibold text-2xl mb-2">{cvInfo?.profession}</div>)}
                     <div className="flex gap-1">
                         <a href={`mailto:${jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}`}
-                           className="flex items-center gap-1"><Mail
+                           className="flex items-center gap-1 hover:text-font-dark-purple"><Mail
                             strokeWidth={1.25}/>{jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}
                         </a>
                         {jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.telephoneNumber && (
@@ -68,26 +71,32 @@ const JobSeekerDashboardPage = () => {
                 </div>
             </div>
 
+            {jobSeekerInfo && (
+                <div>
+                    <CvFileHandler uuid={jobSeekerInfo!.uuid} onUpload={uploadJobSeekerCv} onGetCv={getJobSeekerCvFile} canUpload={role === "JOB_SEEKER"} />
+                </div>
+            )}
             {!cvInfo?.profession
                 ?
-                <div className="mt-35">
-                    {role !== "EMPLOYER" && (
+                <div className="mt-55">
                     <div className="container w-full h-50 border border-gray-300 rounded-md mt-35">
+                        {role !== "EMPLOYER" && (
                         <div className="h-full content-center">
                             <p className="pb-3">You haven't posted your CV yet.</p>
                             <Link to="/job_seeker/create-cv">
-                                <CustomButton label="Create your CV"></CustomButton>
+                                <CustomButton label="Create CV"></CustomButton>
                             </Link>
-                        </div>
+                        </div>)}
                     </div>
-                    )}
                 </div>
                 :
-                <div className="mt-40">
+                <div className={`${role!=="EMPLOYER" ? "mt-40" : "mt-63"}`}>
                     {role !== "EMPLOYER" && (
-                        <div className="flex justify-end m-5">
+                        <div className="grid text-end m-5">
                             <Link to={`/job_seeker/${jobSeekerInfo?.uuid}/cv/edit`}>
-                                <CustomButton label="Edit CV"></CustomButton>
+                                <Button className="px-5 py-2 rounded-sm border border-font-dark-purple text-font-dark-purple cursor-pointer hover:bg-gray-200 mt-3">
+                                    Edit CV
+                                </Button>
                             </Link>
                         </div>
                     )}
