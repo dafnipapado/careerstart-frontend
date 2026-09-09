@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {SquarePen} from "lucide-react";
 import defaultUserPicture from "@/assets/images/default-user-picture.png";
 
-const PictureUpload = ({
+const PictureHandler = ({
     uuid,
     onUpload,
     onGetPicture,
@@ -93,4 +93,4 @@ const PictureUpload = ({
     )
 }
 
-export default PictureUpload
+export default PictureHandler

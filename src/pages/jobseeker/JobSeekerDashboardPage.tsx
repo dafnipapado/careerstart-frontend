@@ -14,7 +14,7 @@ import CustomButton from "@/components/shared/CustomButton.tsx";
 import type {CvRead} from "@/schemas/cv.ts";
 import {getJobSeekerCv} from "@/api/cv.ts";
 import {Separator} from "@/components/ui/separator.tsx";
-import PictureUpload from "@/components/shared/PictureUpload.tsx";
+import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import CvFileHandler from "../../components/shared/CvFileHandler.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
@@ -46,7 +46,7 @@ const JobSeekerDashboardPage = () => {
                     <Settings strokeWidth={1.25}
                               className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                 </Link>)}
-                {jobSeekerInfo && (<PictureUpload uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} canUpload={role === "JOB_SEEKER"} />)}
+                {jobSeekerInfo && (<PictureHandler uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} canUpload={role === "JOB_SEEKER"} />)}
                 <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1>{jobSeekerInfo?.firstname} {jobSeekerInfo?.lastname}</h1>
                 </div>

@@ -30,7 +30,7 @@ import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import type {Pagination} from "@/schemas/pagination.ts";
 import {Button} from "@/components/ui/button.tsx";
-import PictureUpload from "@/components/shared/PictureUpload.tsx";
+import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 
 const EmployerDashboardPage = () => {
@@ -96,7 +96,7 @@ const EmployerDashboardPage = () => {
                         <Settings strokeWidth={1.25} className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                     </Link>
                 )}
-                {employerInfo && (<PictureUpload uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} canUpload={role === "EMPLOYER"} />)}
+                {employerInfo && (<PictureHandler uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} canUpload={role === "EMPLOYER"} />)}
                 <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
                     <h1 className="">{employerInfo?.brandName}</h1>
                 </div>
