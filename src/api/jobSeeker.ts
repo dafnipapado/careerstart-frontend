@@ -116,7 +116,7 @@ export async function getJobSeekerProfilePicture(uuid: string) {
     return await res.blob()
 }
 
-export async function uploadJobSeekerCv(uuid: string, file: File) {
+export async function uploadJobSeekerCv(uuid: string, file: File) : Promise<void> {
     const formData = new FormData()
     formData.append("cv", file)
 
@@ -125,13 +125,14 @@ export async function uploadJobSeekerCv(uuid: string, file: File) {
         body: formData
     })
     if (!res.ok) throw new Error("Jobseeker CV upload failed")
-    return await res.bytes()
 }
 
 export async function getJobSeekerCvFile(uuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/cv`, {})
     if (!res.ok) throw new Error("CV retrieval failed")
-    return await res.blob()
+    const filename = res.headers.get("Content-Disposition")?.slice(17) ?? null
+    const blob = await res.blob()
+    return {filename, blob}
 }
 
 export async function getJobSeekersByJobListing(jobListingUuid: string) : Promise<JobSeekerReadSummary[]> {
