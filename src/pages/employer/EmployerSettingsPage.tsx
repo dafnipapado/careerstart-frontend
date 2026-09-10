@@ -10,7 +10,7 @@ import {
 import {zodResolver} from "@hookform/resolvers/zod";
 import {getAllFields} from "@/api/professionalField.ts";
 import {getAllRegions} from "@/api/region.ts";
-import {Asterisk, SquarePen, Trash2} from "lucide-react";
+import {Asterisk, Lock, SquarePen, Trash2} from "lucide-react";
 import {Field, FieldLabel} from "@/components/ui/field.tsx";
 import CustomAsterisk from "@/components/shared/CustomAsterisk.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -25,6 +25,8 @@ import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import {useNavigate} from "react-router";
 import {useAuth} from "@/context/AuthProvider.tsx";
+import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
+import {updateEmployerPassword} from "@/api/user.ts";
 
 const EmployerSettingsPage = () => {
 
@@ -35,19 +37,38 @@ const EmployerSettingsPage = () => {
     const [regions, setRegions] = useState<Region[]>([])
 
     const {
-        register,
-        handleSubmit,
+        register: registerEmployer,
+        handleSubmit: handleEmployerUpdateSubmit,
         control,
-        formState: {errors, isSubmitting},
+        formState: {errors: employerErrors, isSubmitting: isEmployerSubmitting},
         reset
     } = useForm<EmployerUpdate>({
         resolver: zodResolver(employerUpdateSchema)
     })
 
-    const onSubmit = async (data: EmployerUpdate): Promise<void | ErrorResponse> => {
+    const {
+        register: registerPassword,
+        handleSubmit: handlePasswordUpdateSubmit,
+        formState: {errors: passwordErrors, isSubmitting: isPasswordSubmitting}
+    } = useForm<PasswordUpdate>({
+        resolver: zodResolver(passwordUpdateSchema)
+    })
+
+    const onEmployerSubmit = async (data: EmployerUpdate): Promise<void | ErrorResponse> => {
         try {
             await updateEmployer(data);
             toast.success("Your info was updated successfully!")
+        } catch (error) {
+            const err = error as ErrorResponse
+            toast.error(err.message)
+        }
+    }
+
+    const onPasswordSubmit = async (data: PasswordUpdate): Promise<void | ErrorResponse> => {
+        try {
+            console.log(data.oldPassword);
+            await updateEmployerPassword(data);
+            toast.success("Password was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(err.message)
@@ -110,32 +131,32 @@ const EmployerSettingsPage = () => {
                     </div>
                 </div>
                 <form
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleEmployerUpdateSubmit(onEmployerSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
                 >
                     <div className="flex flex-col gap-12">
                         <Field>
-                            <Input type="hidden" {...register("uuid")}></Input>
+                            <Input type="hidden" {...registerEmployer("uuid")}></Input>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="brandName" className="font-sans text-lg">Brand Name<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="brandName" type="text" {...register("brandName")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.brandName}/>
+                                <Input id="brandName" type="text" {...registerEmployer("brandName")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.brandName}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="vat" className="font-sans text-lg">VAT<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="vat" type="text" {...register("vat")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.vat}/>
+                                <Input id="vat" type="text" {...registerEmployer("vat")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.vat}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="website" className="font-sans text-lg">Website<Optional/></FieldLabel>
                             <div>
-                                <Input id="website" type="text" {...register("website")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.website}/>
+                                <Input id="website" type="text" {...registerEmployer("website")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.website}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
@@ -161,21 +182,21 @@ const EmployerSettingsPage = () => {
                                     </Select>
                                 )} >
                                 </Controller>
-                                <FieldErrorMessage error = {errors.professionalFieldId}/>
+                                <FieldErrorMessage error = {employerErrors.professionalFieldId}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="email" className="font-sans text-lg">Email<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="email" type="email" {...register("email")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.email}/>
+                                <Input id="email" type="email" {...registerEmployer("email")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.email}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="telephone" className="font-sans text-lg">Phone Number<Optional/></FieldLabel>
                             <div>
-                                <Input id="telephone" type="text" {...register("telephoneNumber")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.telephoneNumber}/>
+                                <Input id="telephone" type="text" {...registerEmployer("telephoneNumber")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.telephoneNumber}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
@@ -201,26 +222,67 @@ const EmployerSettingsPage = () => {
                                     </Select>
                                 )}>
                                 </Controller>
-                                <FieldErrorMessage error = {errors.regionId}/>
+                                <FieldErrorMessage error = {employerErrors.regionId}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="address" className="font-sans text-lg">Address<Optional/></FieldLabel>
                             <div>
-                                <Input id="address" type="text" {...register("address")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.address}/>
+                                <Input id="address" type="text" {...registerEmployer("address")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.address}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="username" className="font-sans text-lg">Username<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="username" type="text" {...register("username")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.username}/>
+                                <Input id="username" type="text" {...registerEmployer("username")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {employerErrors.username}/>
                             </div>
                         </Field>
                     </div>
                     <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
+                        {isEmployerSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
+                    </Button>
+                </form>
+
+                <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
+
+                <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
+                    <span className="flex items-center gap-2 text-font-dark-purple">
+                        <Lock size={24}/><h1 className="font-sans font-semibold text-2xl">Change your password</h1>
+                    </span>
+                </div>
+                <form
+                    onSubmit={handlePasswordUpdateSubmit(onPasswordSubmit)}
+                    className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
+                >
+                    <div className="flex flex-col gap-12">
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                            <FieldLabel htmlFor="oldPassword" className="font-sans text-lg">Current Password<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Input id="oldPassword" type="password" {...registerPassword("oldPassword")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {passwordErrors.oldPassword}/>
+                            </div>
+                        </Field>
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                            <FieldLabel htmlFor="newPassword" className="font-sans text-lg">New Password<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Input id="newPassword" type="password" {...registerPassword("newPassword")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {passwordErrors.newPassword}/>
+                            </div>
+                        </Field>
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                        <FieldLabel htmlFor="confirmPassword" className="font-sans text-lg">Confirm New Password<CustomAsterisk/></FieldLabel>
+                        <div>
+                            <Input id="confirmPassword" type="password" {...registerPassword("confirmPassword")} className="rounded-md"></Input>
+                            <div className="h-1 text-sm mt-1 text-start text-error-dark-red">
+                                <span>{passwordErrors.confirmPassword?.message}</span>
+                            </div>
+                        </div>
+                    </Field>
+                    </div>
+                    <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
+                        {isPasswordSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
                     </Button>
                 </form>
 

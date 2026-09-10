@@ -9,7 +9,7 @@ import {useNavigate} from "react-router";
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {getAllRegions} from "@/api/region.ts";
 import {deleteJobSeeker, getLoggedInJobSeekerDetails, updateJobSeeker} from "@/api/jobSeeker.ts";
-import {Asterisk, SquarePen, Trash2} from "lucide-react";
+import {Asterisk, Lock, SquarePen, Trash2} from "lucide-react";
 import {Field, FieldLabel} from "@/components/ui/field.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import CustomAsterisk from "@/components/shared/CustomAsterisk.tsx";
@@ -19,29 +19,50 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVal
 import {Button} from "@/components/ui/button.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
+import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
+import {updateEmployerPassword} from "@/api/user.ts";
 
 const JobSeekerSettingsPage = () => {
 
     const navigate = useNavigate();
     const { logoutUser, username } = useAuth();
-    const [jobSeekerInfo, setjobSeekerInfo] = useState<JobSeekerReadDetails | null>(null)
+    const [jobSeekerInfo, setJobSeekerInfo] = useState<JobSeekerReadDetails | null>(null)
     const [regions, setRegions] = useState<Region[]>([])
 
 
     const {
-        register,
-        handleSubmit,
+        register: registerJobSeeker,
+        handleSubmit: handleJobSeekerUpdateSubmit,
         control,
-        formState: {errors, isSubmitting},
+        formState: {errors: jobSeekerErrors, isSubmitting: isJobSeekerSubmitting},
         reset
     } = useForm<JobSeekerUpdate>({
         resolver: zodResolver(jobSeekerUpdateSchema)
     })
 
-    const onSubmit = async (data: JobSeekerUpdate): Promise<void | ErrorResponse> => {
+    const {
+        register: registerPassword,
+        handleSubmit: handlePasswordUpdateSubmit,
+        formState: {errors: passwordErrors, isSubmitting: isPasswordSubmitting}
+    } = useForm<PasswordUpdate>({
+        resolver: zodResolver(passwordUpdateSchema)
+    })
+
+    const onJobSeekerSubmit = async (data: JobSeekerUpdate): Promise<void | ErrorResponse> => {
         try {
             await updateJobSeeker(data);
             toast.success("Your info was updated successfully!")
+        } catch (error) {
+            const err = error as ErrorResponse
+            toast.error(err.message)
+        }
+    }
+
+    const onPasswordSubmit = async (data: PasswordUpdate): Promise<void | ErrorResponse> => {
+        try {
+            console.log(data.oldPassword);
+            await updateEmployerPassword(data);
+            toast.success("Password was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(err.message)
@@ -68,7 +89,7 @@ const JobSeekerSettingsPage = () => {
         }
         const fetchJobSeeker = async () => {
             const data = await getLoggedInJobSeekerDetails()
-            setjobSeekerInfo(data)
+            setJobSeekerInfo(data)
             reset({
                 uuid: data.uuid,
                 firstname: data.firstname,
@@ -98,39 +119,39 @@ const JobSeekerSettingsPage = () => {
                     </div>
                 </div>
                 <form
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleJobSeekerUpdateSubmit(onJobSeekerSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
                 >
                     <div className="flex flex-col gap-12">
                         <Field>
-                            <Input type="hidden" {...register("uuid")}></Input>
+                            <Input type="hidden" {...registerJobSeeker("uuid")}></Input>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="firstname" className="font-sans text-lg">First Name<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="firstname" type="text" {...register("firstname")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.firstname}/>
+                                <Input id="firstname" type="text" {...registerJobSeeker("firstname")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.firstname}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="lastname" className="font-sans text-lg">Last name<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="lastname" type="text" {...register("lastname")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.lastname}/>
+                                <Input id="lastname" type="text" {...registerJobSeeker("lastname")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.lastname}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="email" className="font-sans text-lg">Email<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="email" type="email" {...register("email")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.email}/>
+                                <Input id="email" type="email" {...registerJobSeeker("email")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.email}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="telephone" className="font-sans text-lg">Phone Number<Optional/></FieldLabel>
                             <div>
-                                <Input id="telephone" type="text" {...register("telephoneNumber")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.telephoneNumber}/>
+                                <Input id="telephone" type="text" {...registerJobSeeker("telephoneNumber")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.telephoneNumber}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
@@ -156,35 +177,76 @@ const JobSeekerSettingsPage = () => {
                                     </Select>
                                 )}>
                                 </Controller>
-                                <FieldErrorMessage error = {errors.regionId}/>
+                                <FieldErrorMessage error = {jobSeekerErrors.regionId}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="address" className="font-sans text-lg">Address<Optional/></FieldLabel>
                             <div>
-                                <Input id="address" type="text" {...register("address")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.address}/>
+                                <Input id="address" type="text" {...registerJobSeeker("address")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.address}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
                             <FieldLabel htmlFor="username" className="font-sans text-lg">Username<CustomAsterisk/></FieldLabel>
                             <div>
-                                <Input id="username" type="text" {...register("username")} className="rounded-md"></Input>
-                                <FieldErrorMessage error = {errors.username}/>
+                                <Input id="username" type="text" {...registerJobSeeker("username")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {jobSeekerErrors.username}/>
                             </div>
                         </Field>
                     </div>
                     <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
+                        {isJobSeekerSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
                     </Button>
                 </form>
 
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
 
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
-                    <span className="flex items-center text-red-800 gap-2">
-                        <Trash2 /><h1 className="font-sans font-semibold text-2xl">Delete your Account</h1>
+                    <span className="flex items-center gap-2 text-font-dark-purple">
+                        <Lock size={24}/><h1 className="font-sans font-semibold text-2xl">Change your password</h1>
                     </span>
+                </div>
+                <form
+                    onSubmit={handlePasswordUpdateSubmit(onPasswordSubmit)}
+                    className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
+                >
+                    <div className="flex flex-col gap-12">
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                            <FieldLabel htmlFor="oldPassword" className="font-sans text-lg">Current Password<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Input id="oldPassword" type="password" {...registerPassword("oldPassword")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {passwordErrors.oldPassword}/>
+                            </div>
+                        </Field>
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                            <FieldLabel htmlFor="newPassword" className="font-sans text-lg">New Password<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Input id="newPassword" type="password" {...registerPassword("newPassword")} className="rounded-md"></Input>
+                                <FieldErrorMessage error = {passwordErrors.newPassword}/>
+                            </div>
+                        </Field>
+                        <Field className="grid grid-cols-[1fr_2fr]">
+                            <FieldLabel htmlFor="confirmPassword" className="font-sans text-lg">Confirm New Password<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Input id="confirmPassword" type="password" {...registerPassword("confirmPassword")} className="rounded-md"></Input>
+                                <div className="h-1 text-sm mt-1 text-start text-error-dark-red">
+                                    <span>{passwordErrors.confirmPassword?.message}</span>
+                                </div>
+                            </div>
+                        </Field>
+                    </div>
+                    <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
+                        {isPasswordSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
+                    </Button>
+                </form>
+
+                <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
+
+                <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
+                    <div className="flex items-center text-red-800 gap-2">
+                        <Trash2 /><h1 className="font-sans font-semibold text-2xl">Delete your Account</h1>
+                    </div>
                     <span className="text-sm font-sans -mt-2 mb-8">This action will deactivate your account permanently.</span>
                     <CustomButton label="Delete Account" onClick={handleDelete} addClasses="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg"></CustomButton>
                 </div>
