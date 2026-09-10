@@ -3,4 +3,5 @@ export type ButtonProps = {
     addClasses?: string;
     disabled?: boolean;
     onClick?: () => void;
+    type?: "button" | "submit" | "reset"
 }

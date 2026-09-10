@@ -4,12 +4,12 @@ import {type LoginCredentials, loginSchema} from "../schemas/auth.ts";
 import {Field, FieldLabel} from "@/components/ui/field.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useAuth} from "@/context/AuthProvider.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {Link, useNavigate} from "react-router";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import {useEffect} from "react";
+import CustomButton from "@/components/shared/CustomButton.tsx";
 
 const LoginPage = () => {
 
@@ -62,9 +62,11 @@ const LoginPage = () => {
                             <FieldErrorMessage error = {errors.password} />
                         </div>
                     </Field>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple py-5 mt-3 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">Logging in...</span> : "Login"}
-                    </Button>
+                    <CustomButton
+                        type="submit"
+                        label={isSubmitting ? "Logging in..." : "Login"}
+                        addClasses={`w-1/2 mx-auto! ml-0 font-sans font-semibold text-lg mt-3 ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                    </CustomButton>
                 </form>
                 <div className="mt-5">
                     <p className="text-sm">Don't have an account?</p>

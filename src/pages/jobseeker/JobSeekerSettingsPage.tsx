@@ -16,7 +16,6 @@ import CustomAsterisk from "@/components/shared/CustomAsterisk.tsx";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import Optional from "@/components/shared/Optional.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
@@ -195,9 +194,11 @@ const JobSeekerSettingsPage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
-                        {isJobSeekerSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
-                    </Button>
+                    <CustomButton
+                        type="submit"
+                        label={isJobSeekerSubmitting ? "Saving..." : "Save"}
+                        addClasses={`w-1/3 mx-auto ml-0 font-sans font-semibold text-lg mt-10 ${isJobSeekerSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                    </CustomButton>
                 </form>
 
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
@@ -236,9 +237,11 @@ const JobSeekerSettingsPage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-6 mt-10 cursor-pointer">
-                        {isPasswordSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
-                    </Button>
+                    <CustomButton
+                        type="submit"
+                        label={isPasswordSubmitting ? "Saving..." : "Save"}
+                        addClasses={`w-1/3 mx-auto ml-0 font-sans font-semibold text-lg mt-10 ${isPasswordSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                    </CustomButton>
                 </form>
 
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
@@ -248,7 +251,11 @@ const JobSeekerSettingsPage = () => {
                         <Trash2 /><h1 className="font-sans font-semibold text-2xl">Delete your Account</h1>
                     </div>
                     <span className="text-sm font-sans -mt-2 mb-8">This action will deactivate your account permanently.</span>
-                    <CustomButton label="Delete Account" onClick={handleDelete} addClasses="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg"></CustomButton>
+                    <CustomButton
+                        label="Delete Account"
+                        onClick={handleDelete}
+                        addClasses="w-1/3 mx-auto ml-0 font-sans font-semibold text-lg">
+                    </CustomButton>
                 </div>
             </div>
 
