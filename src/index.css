@@ -7,11 +7,11 @@
 
 @theme {
   --color-background-grey: #f6f8f8;
-  --color-font-dark-purple: #4f0341;
-  --color-font-link-blue: #2154bd;
+  --color-primary-dark-purple: #4f0341;
+  --color-secondary-light-purple: #977190;
   --color-hover-dark-purple: #7d0567;
+  --color-font-link-blue: #2154bd;
   --color-error-dark-red: #a02200;
-  --color-theme-light-purple: #fff6fd;
 }
 
 .lobster-two-regular-italic {
@@ -65,10 +65,6 @@
   --popover: oklch(1 0 0);
 
   --popover-foreground: oklch(0.145 0 0);
-
-  --primary: oklch(0.205 0 0);
-
-  --primary-foreground: oklch(0.985 0 0);
 
   --secondary: oklch(0.97 0 0);
 

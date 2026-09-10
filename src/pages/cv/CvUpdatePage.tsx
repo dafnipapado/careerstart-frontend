@@ -59,7 +59,7 @@ const CvUpdatePage = () => {
     return (
         <>
             <div className="w-full mx-auto my-auto bg-white p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200">
-                <h1 className="font-sans font-semibold text-3xl text-font-dark-purple">Edit your CV</h1>
+                <h1 className="font-sans font-semibold text-3xl text-primary-dark-purple">Edit your CV</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-15"
@@ -115,7 +115,7 @@ const CvUpdatePage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
+                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-primary-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
                         {isSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
                     </Button>
                 </form>

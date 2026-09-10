@@ -109,7 +109,7 @@ const JobSeekerSettingsPage = () => {
         <>
             <div className="w-full mx-auto my-auto bg-white p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200">
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
-                        <span className="flex items-center gap-2 text-font-dark-purple">
+                        <span className="flex items-center gap-2 text-primary-dark-purple">
                             <SquarePen size={30}/><h1 className="font-sans font-semibold text-3xl">Update your info</h1>
                         </span>
                     <div className="text-sm">Required fields are marked with an asterisk (
@@ -204,7 +204,7 @@ const JobSeekerSettingsPage = () => {
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
 
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
-                    <span className="flex items-center gap-2 text-font-dark-purple">
+                    <span className="flex items-center gap-2 text-primary-dark-purple">
                         <Lock size={24}/><h1 className="font-sans font-semibold text-2xl">Change your password</h1>
                     </span>
                 </div>

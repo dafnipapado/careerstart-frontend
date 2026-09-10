@@ -220,10 +220,10 @@ const JobListingViewPage = () => {
                                             </CardDescription>
                                         </CardHeader>
 
-                                        <CardFooter className="w-full mt-auto text-font-dark-purple">
+                                        <CardFooter className="w-full mt-auto text-primary-dark-purple">
                                             <Link to={`/employer/jobseeker/${applicant.uuid}`} className="w-full">
                                                 <Button
-                                                    className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Profile</Button>
+                                                    className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Profile</Button>
                                             </Link>
                                         </CardFooter>
                                     </Card>

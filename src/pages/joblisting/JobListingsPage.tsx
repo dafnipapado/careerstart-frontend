@@ -160,7 +160,7 @@ const JobListingsPage = () => {
                                 </Field>
                                 <div className="flex gap-2 mx-auto">
                                     <Button type="submit"
-                                            className=" bg-font-dark-purple hover:bg-hover-dark-purple text-white rounded-md p-2 cursor-pointer">
+                                            className=" bg-primary-dark-purple hover:bg-hover-dark-purple text-white rounded-md p-2 cursor-pointer">
                                         {isSubmitting
                                             ? <span className="cursor-progress"><Funnel/></span>
                                             : <Funnel/>}
@@ -222,10 +222,10 @@ const JobListingsPage = () => {
                                 </span>
                                     </div>
                                 </div>
-                                <CardFooter className="w-full mt-auto text-font-dark-purple">
+                                <CardFooter className="w-full mt-auto text-primary-dark-purple">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
                                         <Button
-                                            className="w-full border border-font-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View
+                                            className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View
                                             Listing ⟶</Button>
                                     </Link>
                                 </CardFooter>
@@ -244,7 +244,7 @@ const JobListingsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
                         >
                             <ChevronLeft/>
                         </button>
@@ -254,7 +254,7 @@ const JobListingsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-font-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
                         >
                             <ChevronRight/>
                         </button>
