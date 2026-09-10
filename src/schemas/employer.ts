@@ -33,6 +33,7 @@ export const employerSchema = z
             .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&+=]).{8,}$/,
                 {error: "Must be at least 8 characters, consisting of one capital letter, " +
                         "one lowercase letter, one digit and one special character"}),
+        confirmPassword: z.string()
     })
     .extend(auditingSchema.shape)
     .extend(personalInfoSchema.shape)
@@ -49,6 +50,10 @@ export const employerInsertSchema = employerSchema.omit({
     professionalFieldName: true,
     regionName: true
 })
+.refine(data => data.password === data.confirmPassword, {
+    error: "Passwords don't match",
+    path: ["confirmPassword"]
+})
 
 export type EmployerInsert = z.infer<typeof employerInsertSchema>;
 
@@ -59,6 +64,7 @@ export const employerUpdateSchema = employerSchema.omit({
     deleted: true,
     deletedAt: true,
     password: true,
+    confirmPassword: true,
     professionalFieldName: true,
     regionName: true
 })

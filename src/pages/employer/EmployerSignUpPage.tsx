@@ -179,6 +179,13 @@ const EmployerSignUpPage = () => {
                                     <FieldErrorMessage error = {errors.password}/>
                                 </div>
                             </Field>
+                            <Field className="grid grid-cols-[1fr_2fr]">
+                                <FieldLabel htmlFor="confirmPassword" className="font-sans text-lg">Confirm Password<CustomAsterisk/></FieldLabel>
+                                <div>
+                                    <Input id="confirmPassword" type="password" {...register("confirmPassword")} className="rounded-md"></Input>
+                                    <FieldErrorMessage error = {errors.confirmPassword}/>
+                                </div>
+                            </Field>
                         </div>
                     <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-font-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
                         {isSubmitting ? <span className="cursor-progress">Signing you up...</span> : "Sign Up"}
