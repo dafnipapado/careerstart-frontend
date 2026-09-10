@@ -18,6 +18,7 @@ import CustomAsterisk from "@/components/shared/CustomAsterisk.tsx";
 import Optional from "@/components/shared/Optional.tsx";
 import {Asterisk} from "lucide-react";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
+import {Textarea} from "@/components/ui/textarea.tsx";
 
 const EmployerSignUpPage = () => {
 
@@ -76,6 +77,13 @@ const EmployerSignUpPage = () => {
                                 <div>
                                     <Input id="brandName" type="text" {...register("brandName")} className="rounded-md"></Input>
                                     <FieldErrorMessage error = {errors.brandName}/>
+                                </div>
+                            </Field>
+                            <Field className="grid grid-cols-[1fr_2fr] h-40">
+                                <FieldLabel htmlFor="profile" className="font-sans text-lg">Company profile<CustomAsterisk/></FieldLabel>
+                                <div>
+                                    <Textarea id="profile" {...register("profile")} className="rounded-md h-40"></Textarea>
+                                    <FieldErrorMessage error = {errors.profile}/>
                                 </div>
                             </Field>
                             <Field className="grid grid-cols-[1fr_2fr]">

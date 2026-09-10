@@ -15,6 +15,7 @@ export async function insertEmployer(data: EmployerInsert) : Promise<EmployerRea
         vat: data.vat,
         website: data.website || null,
         professionalFieldId: data.professionalFieldId,
+        profile: data.profile,
         userInsertDTO: {
             username: data.username,
             password: data.password
@@ -48,6 +49,7 @@ export async function updateEmployer(data: EmployerUpdate) : Promise<EmployerRea
         vat: data.vat,
         website: data.website || null,
         professionalFieldId: data.professionalFieldId,
+        profile: data.profile,
         userUpdateDTO: {
             username: data.username
         },

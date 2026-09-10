@@ -18,6 +18,9 @@ export const employerSchema = z
             .string()
             .optional()
             .refine(val => !val || z.url().safeParse(val).success),
+        profile: z
+            .string()
+            .min(20, {error: "Must have at least 20 characters"}),
         professionalFieldId: z
             .number({error: "Please select an option"})
             .min(1, {error: "Please select an option"}),
@@ -108,6 +111,7 @@ export type EmployerReadDetails = {
     website: string | null,
     professionalFieldName: string,
     professionalFieldId: number,
+    profile: string,
     personalInfoDetailsReadOnlyDTO : {
         email: string,
         telephoneNumber: string | null,

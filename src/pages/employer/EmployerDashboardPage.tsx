@@ -117,7 +117,7 @@ const EmployerDashboardPage = () => {
                 {/*profile*/}
                 <div className="text-left">
                     <h1 className="text-2xl font-semibold">Profile</h1>
-                    <p>Text Placeholder</p>
+                    <p>{employerInfo?.profile}</p>
                 </div>
                 <Separator className="bg-gray-400 mt-15 mb-10" />
             </div>

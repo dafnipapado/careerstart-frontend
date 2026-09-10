@@ -26,6 +26,7 @@ import {useNavigate} from "react-router";
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
 import {updateEmployerPassword} from "@/api/user.ts";
+import {Textarea} from "@/components/ui/textarea.tsx";
 
 const EmployerSettingsPage = () => {
 
@@ -142,6 +143,13 @@ const EmployerSettingsPage = () => {
                             <div>
                                 <Input id="brandName" type="text" {...registerEmployer("brandName")} className="rounded-md"></Input>
                                 <FieldErrorMessage error = {employerErrors.brandName}/>
+                            </div>
+                        </Field>
+                        <Field className="grid grid-cols-[1fr_2fr] h-40">
+                            <FieldLabel htmlFor="profile" className="font-sans text-lg">Company profile<CustomAsterisk/></FieldLabel>
+                            <div>
+                                <Textarea id="profile" {...registerEmployer("profile")} className="rounded-md h-40"></Textarea>
+                                <FieldErrorMessage error = {employerErrors.profile}/>
                             </div>
                         </Field>
                         <Field className="grid grid-cols-[1fr_2fr]">
