@@ -101,8 +101,14 @@ export async function getEmployerPage(uuid: string) : Promise<EmployerReadDetail
     return await res.json()
 }
 
+export async function getLoggedInEmployerJobListingsCount() : Promise<number> {
+    const res = await authFetch(`${EMPLOYER_URL}/count-job-listings`)
+    if (!res.ok) throw new Error("Cannot find number of your active job listings")
+    return await res.json()
+}
+
 export async function getEmployerJobListingsCount(uuid: string) : Promise<number> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}/count-job-listings`)
-    if (!res.ok) throw new Error("Can't find number of employer's active job listings")
+    if (!res.ok) throw new Error("Cannot find number of employer's active job listings")
     return await res.json()
 }
