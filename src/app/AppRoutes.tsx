@@ -17,6 +17,7 @@ import JobListingsPage from "@/pages/joblisting/JobListingsPage.tsx";
 import CvCreatePage from "@/pages/cv/CvCreatePage.tsx";
 import CvUpdatePage from "@/pages/cv/CvUpdatePage.tsx";
 import JobSeekerApplicationsPage from "@/pages/jobseeker/JobSeekerApplicationsPage.tsx";
+import EmployerManagementPage from "../pages/admin/EmployerManagementPage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -53,6 +54,12 @@ const AppRoutes = () => {
                         <Route path="job-listings">
                             <Route index element={<JobListingsPage/>}></Route>
                             <Route path=":uuid" element={<JobListingViewPage/>}></Route>
+                        </Route>
+                    </Route>
+                    <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+                        <Route path="admin/dashboard">
+                            <Route index element={<EmployerManagementPage/>} />
+                            <Route path="employers" element={<EmployerManagementPage/>} />
                         </Route>
                     </Route>
                 </Route>
