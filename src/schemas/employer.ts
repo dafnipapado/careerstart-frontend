@@ -118,5 +118,6 @@ export type EmployerReadDetails = {
         address: string | null,
         regionName: string,
         regionId: number
-    }
+    },
+    deleted: boolean
 }
