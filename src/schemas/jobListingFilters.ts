@@ -9,6 +9,7 @@ export const jobListingFiltersSchema = z.object({
     deleted: z.boolean().optional(),
     employerUuid: z.string().optional(),
     employerBrandName: z.string().optional(),
+    jobSeekerUuid : z.string().optional(),
     page: z.number(),
     pageSize: z.number(),
     sortBy: z.string(),
