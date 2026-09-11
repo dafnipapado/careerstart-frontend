@@ -1,5 +1,5 @@
 import {Route, Routes} from "react-router";
-import HomePage from "@/pages/HomePage.tsx";
+import SignUpPage from "../pages/SignUpPage.tsx";
 import LoginPage from "@/pages/LoginPage.tsx";
 import ProtectedRoute from "@/app/ProtectedRoute.tsx";
 import EmployerDashboardPage from "../pages/employer/EmployerDashboardPage.tsx";
@@ -24,8 +24,9 @@ const AppRoutes = () => {
             <Routes>
                 <Route element={<Layout/>}>
                     <Route element={<PublicRoute/>}>
-                        <Route index element={<HomePage/>}/>
+                        <Route index element={<LoginPage/>}/>
                         <Route path="login" element={<LoginPage/>}/>
+                        <Route path="register" element={<SignUpPage/>}/>
                         <Route path="register-employer" element={<EmployerSignUpPage/>}/>
                         <Route path="register-jobseeker" element={<JobSeekerSignUpPage/>}/>
                     </Route>

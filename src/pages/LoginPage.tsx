@@ -43,7 +43,7 @@ const LoginPage = () => {
     return (
         <>
             <div className="w-1/2 h-[67vh] mx-auto my-auto bg-white p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200">
-                <h1 className="font-sans font-semibold text-3xl text-font-dark-purple">Welcome back!</h1>
+                <h1 className="font-sans font-semibold text-3xl text-primary-dark-purple">Welcome back!</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
@@ -70,9 +70,8 @@ const LoginPage = () => {
                 </form>
                 <div className="mt-5">
                     <p className="text-sm">Don't have an account?</p>
-                    <div className="flex justify-center gap-5 text-sm text-font-link-blue">
-                        <Link to="/register-jobseeker" className="hover:underline">Sign up as a job seeker</Link>
-                        <Link to="/register-employer" className="hover:underline">Sign up as an employer</Link>
+                    <div className="flex justify-center text-sm text-font-link-blue">
+                        <Link to="/register" className="hover:underline">Sign up here</Link>
                     </div>
                 </div>
             </div>
