@@ -5,6 +5,8 @@ import type {
     EmployerUpdate
 } from "../schemas/employer.ts";
 import {authFetch} from "@/api/auth.ts";
+import type {EmployerFilters} from "@/schemas/employerFilters.ts";
+import type {Pagination} from "@/schemas/pagination.ts";
 
 const API_URL = import.meta.env.VITE_API_URL
 const EMPLOYER_URL = `${API_URL}/employers`
@@ -95,6 +97,13 @@ export async function deleteEmployer(uuid: string) : Promise<EmployerRead> {
     return await res.json()
 }
 
+export async function activateEmployer(uuid: string) {
+    const res = await authFetch(`${EMPLOYER_URL}/${uuid}/activate`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Employer activation failed")
+}
+
 export async function getEmployerPage(uuid: string) : Promise<EmployerReadDetails> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}`)
     if (!res.ok) throw new Error("Active employer retrieval failed")
@@ -110,5 +119,17 @@ export async function getLoggedInEmployerJobListingsCount() : Promise<number> {
 export async function getEmployerJobListingsCount(uuid: string) : Promise<number> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}/count-job-listings`)
     if (!res.ok) throw new Error("Cannot find number of employer's active job listings")
+    return await res.json()
+}
+
+export async function getPaginatedFilteredEmployers(filters: EmployerFilters) : Promise<Pagination<EmployerReadDetails>> {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value!=="") {
+            params.append(key, String(value))
+        }
+    })
+    const res = await authFetch(`${EMPLOYER_URL}?${params}`)
+    if (!res.ok) throw new Error("Failed to apply filters")
     return await res.json()
 }
