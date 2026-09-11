@@ -40,7 +40,7 @@ const JobSeekerDashboardPage = () => {
 
     return (
         <>
-            <div className="relative bg-font-dark-purple w-full h-50 top-0">
+            <div className="relative bg-linear-to-bl from-primary-dark-purple from-50% to-secondary-light-purple w-full h-50 top-0">
                 {role !== "EMPLOYER" && (
                 <Link to="/job_seeker/settings" className="flex p-2 m-2">
                     <Settings strokeWidth={1.25}
@@ -55,7 +55,7 @@ const JobSeekerDashboardPage = () => {
                         <div className="text-start font-semibold text-2xl mb-2">{cvInfo?.profession}</div>)}
                     <div className="flex gap-1">
                         <a href={`mailto:${jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}`}
-                           className="flex items-center gap-1 hover:text-font-dark-purple"><Mail
+                           className="flex items-center gap-1 hover:text-primary-dark-purple"><Mail
                             strokeWidth={1.25}/>{jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}
                         </a>
                         {jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.telephoneNumber && (
@@ -94,7 +94,7 @@ const JobSeekerDashboardPage = () => {
                     {role !== "EMPLOYER" && (
                         <div className="grid text-end m-5">
                             <Link to={`/job_seeker/${jobSeekerInfo?.uuid}/cv/edit`}>
-                                <Button className="px-5 py-2 rounded-sm border border-font-dark-purple text-font-dark-purple cursor-pointer hover:bg-gray-200 mt-3">
+                                <Button className="px-5 py-2 rounded-sm border border-primary-dark-purple text-primary-dark-purple cursor-pointer hover:bg-gray-200 mt-3">
                                     Edit CV
                                 </Button>
                             </Link>
@@ -102,7 +102,7 @@ const JobSeekerDashboardPage = () => {
                     )}
                     <div
                         className="w-full grid grid-cols-[1fr_20fr] mx-auto bg-white border border-gray-200 rounded-sm shadow-xl shadow-gray-200 text-start font-sans">
-                        <div className="bg-font-dark-purple"></div>
+                        <div className="bg-primary-dark-purple"></div>
                         <div className="p-15">
                             {cvInfo?.bio && (<div>
                                 <div className="font-bold text-xl">PROFILE</div>
