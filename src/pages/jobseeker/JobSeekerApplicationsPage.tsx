@@ -12,16 +12,13 @@ import {Button} from "@/components/ui/button.tsx";
 
 const JobSeekerApplicationsPage = () => {
 
-    // const { uuid } = useParams()
     const { isAuthenticated } = useAuth()
-    // const [jobSeekerInfo, setJobSeekerInfo] = useState<JobSeekerReadDetails | null>(null)
     const [jobListingsPage, setJobListingsPage] = useState<Pagination<JobListingReadSummary> | null>(null)
     const [currentPage, setCurrentPage] = useState(0)
 
     useEffect(() => {
         const fetchJobSeeker = async () => {
             const jobSeekerData = await getLoggedInJobSeekerDetails()
-            // setJobSeekerInfo(jobSeekerData)
 
             const jobListings = await getPaginatedFilteredJobListings({
                 ...defaultJobListingFilters, jobSeekerUuid: jobSeekerData.uuid, page: currentPage
