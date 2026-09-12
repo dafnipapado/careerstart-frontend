@@ -6,6 +6,8 @@ import type {
     JobSeekerUpdate
 } from "@/schemas/jobSeeker.ts";
 import {authFetch} from "@/api/auth.ts";
+import type {Pagination} from "@/schemas/pagination.ts";
+import type {JobSeekerFilters} from "@/schemas/jobSeekerFilters.ts";
 
 const API_URL = import.meta.env.VITE_API_URL
 const JOBSEEKER_URL = `${API_URL}/jobseekers`
@@ -79,6 +81,13 @@ export async function deleteJobSeeker(uuid: string) : Promise<JobSeekerRead> {
     return await res.json()
 }
 
+export async function activateJobSeeker(uuid: string) {
+    const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/activate`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Job seeker activation failed")
+}
+
 export async function apply(jobListingUuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/apply`, {
         method: "POST"
@@ -138,5 +147,17 @@ export async function getJobSeekerCvFile(uuid: string) {
 export async function getJobSeekersByJobListing(jobListingUuid: string) : Promise<JobSeekerReadSummary[]> {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/job-seekers`)
     if  (!res.ok) throw new Error("Failed to fetch job seekers for this listing")
+    return await res.json()
+}
+
+export async function getPaginatedFilteredJobSeekers(filters: JobSeekerFilters) : Promise<Pagination<JobSeekerReadDetails>> {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value!=="") {
+            params.append(key, String(value))
+        }
+    })
+    const res = await authFetch(`${JOBSEEKER_URL}?${params}`)
+    if (!res.ok) throw new Error("Failed to apply filters")
     return await res.json()
 }

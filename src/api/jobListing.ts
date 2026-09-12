@@ -53,6 +53,13 @@ export async function deleteJobListing(uuid: string) : Promise<JobListingRead> {
     return await res.json()
 }
 
+export async function restoreJobListing(uuid: string) {
+    const res = await authFetch(`${JOB_LISTING_URL}/${uuid}/restore`, {
+        method: "PATCH"
+    })
+    if (!res.ok) throw new Error("Job listing restoration failed")
+}
+
 export async function getSingleJobListing(uuid: string) : Promise<JobListingReadDetails> {
     const res = await authFetch(`${JOB_LISTING_URL}/${uuid}`)
     if  (!res.ok) throw new Error("Job listing retrieval failed")
