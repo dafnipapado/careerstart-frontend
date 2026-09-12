@@ -6,6 +6,7 @@ import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Upload} from "lucide-react";
 import CustomButton from "@/components/shared/CustomButton.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const CvFileHandler = ({
     uuid,
@@ -60,7 +61,7 @@ const CvFileHandler = ({
             setRefresh(prev => !prev)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -78,8 +79,11 @@ const CvFileHandler = ({
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-106.25 h-50">
-                        <form onSubmit={() => {if (selectedFile) handleUpload(uuid, selectedFile)}}
-                              className="h-30 p-7 flex flex-col gap-10">
+                        <form onSubmit={(e) => {
+                            e.preventDefault()
+                            if (selectedFile) handleUpload(uuid, selectedFile)}
+                        }
+                              className="h-30 p-7 flex flex-col gap-3">
                             <div className="flex justify-between gap-4">
                                 <input type="file" id="avatar" className="hidden" onChange={handleFileChange} />
                                 <label htmlFor="avatar" className="w-1/4 text-primary-dark-purple px-4 py-2 rounded-sm border border-primary-dark-purple hover:bg-gray-300 cursor-pointer">
@@ -87,6 +91,7 @@ const CvFileHandler = ({
                                 </label>
                                 <span className="w-5/6 border border-gray-300 rounded-sm text-center content-center">{selectedFilename}</span>
                             </div>
+                            <div className="figtree-custom-italics text-xs text-end -mt-2 mb-2">(.pdf, .doc)</div>
                             <CustomButton label="Save" type="submit" addClasses={`block mx-auto ${!selectedFilename ? "bg-gray-400! border-gray-400!" : ""}`} disabled={!selectedFilename}></CustomButton>
                         </form>
                     </DialogContent>
