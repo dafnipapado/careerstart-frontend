@@ -11,6 +11,7 @@ import {Input} from "@/components/ui/input.tsx";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const CvCreatePage = () => {
 
@@ -31,7 +32,7 @@ const CvCreatePage = () => {
             navigate(`/job_seeker/dashboard`)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

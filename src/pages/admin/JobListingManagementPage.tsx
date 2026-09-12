@@ -15,6 +15,7 @@ import {toast} from "sonner";
 import {deleteJobListing, getPaginatedFilteredJobListings, restoreJobListing} from "@/api/jobListing.ts";
 import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobListingManagementPage = () => {
 
@@ -38,7 +39,7 @@ const JobListingManagementPage = () => {
             toast.success("Job listing deleted successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -49,7 +50,7 @@ const JobListingManagementPage = () => {
             toast.success("Job listing restored successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

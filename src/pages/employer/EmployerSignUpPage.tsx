@@ -19,6 +19,7 @@ import Optional from "@/components/shared/Optional.tsx";
 import {Asterisk} from "lucide-react";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const EmployerSignUpPage = () => {
 
@@ -43,7 +44,7 @@ const EmployerSignUpPage = () => {
             navigate(`/login`)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

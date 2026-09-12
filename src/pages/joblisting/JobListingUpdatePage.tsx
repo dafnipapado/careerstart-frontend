@@ -21,6 +21,7 @@ import {Button} from "@/components/ui/button.tsx";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {getSingleJobListing, updateJobListing} from "@/api/jobListing.ts";
 import {toast} from "sonner";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobListingUpdatePage = () => {
 
@@ -69,7 +70,7 @@ const JobListingUpdatePage = () => {
             navigate(`/employer/dashboard`)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

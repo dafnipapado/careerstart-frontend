@@ -10,6 +10,7 @@ import {toast} from "sonner";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import {useEffect} from "react";
 import CustomButton from "@/components/shared/CustomButton.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const LoginPage = () => {
 
@@ -36,7 +37,7 @@ const LoginPage = () => {
             toast.success("Logged in successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

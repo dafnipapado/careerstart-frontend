@@ -18,6 +18,7 @@ import type {Region} from "@/schemas/region.ts";
 import {getAllRegions} from "@/api/region.ts";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {useNavigate} from "react-router";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobListingCreatePage = () => {
 
@@ -53,7 +54,7 @@ const JobListingCreatePage = () => {
             navigate(`/employer/dashboard`)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

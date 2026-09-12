@@ -20,6 +20,7 @@ import {CircleCheck, CircleX} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const EmployerManagementPage = () => {
 
@@ -52,7 +53,7 @@ const EmployerManagementPage = () => {
             toast.success("Employer deactivated successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -63,7 +64,7 @@ const EmployerManagementPage = () => {
             toast.success("Employer activated successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

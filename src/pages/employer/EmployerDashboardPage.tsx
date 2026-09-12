@@ -32,6 +32,7 @@ import type {Pagination} from "@/schemas/pagination.ts";
 import {Button} from "@/components/ui/button.tsx";
 import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const EmployerDashboardPage = () => {
 
@@ -85,7 +86,7 @@ const EmployerDashboardPage = () => {
             toast.success("Job Listing deleted successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

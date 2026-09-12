@@ -15,6 +15,7 @@ import {toast} from "sonner";
 import type {JobSeekerReadDetails} from "@/schemas/jobSeeker.ts";
 import {activateJobSeeker, deleteJobSeeker, getPaginatedFilteredJobSeekers} from "@/api/jobSeeker.ts";
 import {defaultJobSeekerFilters} from "@/schemas/jobSeekerFilters.ts";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobSeekerManagementPage = () => {
 
@@ -38,7 +39,7 @@ const JobSeekerManagementPage = () => {
             toast.success("Job seeker deactivated successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -49,7 +50,7 @@ const JobSeekerManagementPage = () => {
             toast.success("Job seeker activated successfully")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

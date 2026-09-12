@@ -27,6 +27,7 @@ import {useAuth} from "@/context/AuthProvider.tsx";
 import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
 import {updateEmployerPassword} from "@/api/user.ts";
 import {Textarea} from "@/components/ui/textarea.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const EmployerSettingsPage = () => {
 
@@ -60,7 +61,7 @@ const EmployerSettingsPage = () => {
             toast.success("Your info was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -71,7 +72,7 @@ const EmployerSettingsPage = () => {
             toast.success("Password was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -85,7 +86,7 @@ const EmployerSettingsPage = () => {
             navigate("/login")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

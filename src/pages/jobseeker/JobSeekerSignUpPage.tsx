@@ -16,6 +16,7 @@ import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import Optional from "@/components/shared/Optional.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobSeekerSignUpPage = () => {
 
@@ -39,7 +40,7 @@ const JobSeekerSignUpPage = () => {
             navigate(`/login`)
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

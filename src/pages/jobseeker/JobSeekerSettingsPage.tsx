@@ -20,6 +20,7 @@ import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import {type PasswordUpdate, passwordUpdateSchema} from "@/schemas/user.ts";
 import {updateEmployerPassword} from "@/api/user.ts";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobSeekerSettingsPage = () => {
 
@@ -53,7 +54,7 @@ const JobSeekerSettingsPage = () => {
             toast.success("Your info was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -64,7 +65,7 @@ const JobSeekerSettingsPage = () => {
             toast.success("Password was updated successfully!")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -78,7 +79,7 @@ const JobSeekerSettingsPage = () => {
             navigate("/login")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 

@@ -21,6 +21,7 @@ import type {JobSeekerReadSummary} from "@/schemas/jobSeeker.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Button} from "@base-ui/react";
 import defaultUserPicture from "@/assets/images/default-user-picture.png";
+import {getErrorMessage} from "@/utils/errorMessages.ts";
 
 const JobListingViewPage = () => {
 
@@ -84,7 +85,7 @@ const JobListingViewPage = () => {
             navigate("/employer/dashboard")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -95,7 +96,7 @@ const JobListingViewPage = () => {
             toast.success("Successfully applied to job listing!")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
@@ -106,7 +107,7 @@ const JobListingViewPage = () => {
             toast.success("Successfully withdrew from job listing")
         } catch (error) {
             const err = error as ErrorResponse
-            toast.error(err.message)
+            toast.error(getErrorMessage(err.code))
         }
     }
 
