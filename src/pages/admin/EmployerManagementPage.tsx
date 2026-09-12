@@ -69,14 +69,14 @@ const EmployerManagementPage = () => {
 
     return (
         <>
-            <Table>
+            <Table className="w-full mt-10">
                 <TableHeader>
                     <TableHead>Brand Name</TableHead>
                     <TableHead>VAT</TableHead>
                     <TableHead>Email</TableHead>
                     <TableHead>Job Listings</TableHead>
                     <TableHead>Deleted</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>Actions</TableHead>
                 </TableHeader>
                 <TableBody>
                     {employerInfo?.content.map(employer => (
@@ -85,12 +85,14 @@ const EmployerManagementPage = () => {
                             <TableCell>{employer.vat}</TableCell>
                             <TableCell>{employer.personalInfoDetailsReadOnlyDTO.email}</TableCell>
                             <TableCell>{jobListingsNumber[employer.uuid]}</TableCell>
-                            <TableCell>{employer.deleted ? <CircleCheck/> : <CircleX/>}</TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="flex justify-center">{employer.deleted ? <CircleCheck/> : <CircleX/>}</TableCell>
+                            <TableCell>
                                 <Button onClick={() =>
-                                employer.deleted
-                                    ? handleActivate(employer.uuid)
-                                    : handleDelete(employer.uuid)}
+                                    employer.deleted
+                                        ? handleActivate(employer.uuid)
+                                        : handleDelete(employer.uuid)}
+                                    className={`${employer.deleted ? "border border-green-800 text-green-800" : "border border-red-800 text-red-800"}
+                                            rounded-sm cursor-pointer`}
                                 >
                                     {employer.deleted ? "Activate" : "Deactivate"}
                                 </Button>
