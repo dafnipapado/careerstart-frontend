@@ -18,6 +18,8 @@ import CvCreatePage from "@/pages/cv/CvCreatePage.tsx";
 import CvUpdatePage from "@/pages/cv/CvUpdatePage.tsx";
 import JobSeekerApplicationsPage from "@/pages/jobseeker/JobSeekerApplicationsPage.tsx";
 import EmployerManagementPage from "../pages/admin/EmployerManagementPage.tsx";
+import JobSeekerManagementPage from "@/pages/admin/JobSeekerManagementPage.tsx";
+import JobListingManagementPage from "@/pages/admin/JobListingManagementPage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -60,6 +62,8 @@ const AppRoutes = () => {
                         <Route path="admin/dashboard">
                             <Route index element={<EmployerManagementPage/>} />
                             <Route path="employers" element={<EmployerManagementPage/>} />
+                            <Route path="jobseekers" element={<JobSeekerManagementPage/>} />
+                            <Route path="job-listings" element={<JobListingManagementPage/>} />
                         </Route>
                     </Route>
                 </Route>
