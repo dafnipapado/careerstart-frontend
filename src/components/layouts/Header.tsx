@@ -20,6 +20,8 @@ const Header = () => {
                         <h1 className="lobster-two-regular-italic text-6xl text-primary-dark-purple w-70">CareerStart</h1>
                     </Link>
                     <nav>
+                        {role !== "ADMIN"
+                        ?
                          <div className="flex pt-5 gap-8 text-primary-dark-purple text-xl font-semibold font-sans">
                             <Link to="/job-listings">Browse job listings</Link>
                              {role === "JOB_SEEKER"
@@ -27,6 +29,13 @@ const Header = () => {
                              : <Link to="/employer/create-joblisting">Post a job listing</Link>
                              }
                          </div>
+                        :
+                         <div className="flex pt-5 gap-8 text-primary-dark-purple text-xl font-semibold font-sans">
+                            <Link to="/admin/dashboard/employers">Employers</Link>
+                            <Link to="/admin/dashboard/jobseekers">Job Seekers</Link>
+                            <Link to="/admin/dashboard/job-listings">Job Listings</Link>
+                         </div>
+                        }
                     </nav>
                 </div>
             </header>
