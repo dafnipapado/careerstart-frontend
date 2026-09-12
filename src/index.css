@@ -168,6 +168,11 @@ p {
   margin: 0;
 }
 
+th {
+  text-align: center;
+  font-size: 20px;
+}
+
 code,
 .counter {
   font-family: var(--mono);
