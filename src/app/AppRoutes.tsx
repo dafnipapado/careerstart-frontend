@@ -20,6 +20,7 @@ import JobSeekerApplicationsPage from "@/pages/jobseeker/JobSeekerApplicationsPa
 import EmployerManagementPage from "../pages/admin/EmployerManagementPage.tsx";
 import JobSeekerManagementPage from "@/pages/admin/JobSeekerManagementPage.tsx";
 import JobListingManagementPage from "@/pages/admin/JobListingManagementPage.tsx";
+import NotFoundErrorPage from "@/pages/NotFoundErrorPage.tsx";
 
 const AppRoutes = () => {
     return (
@@ -32,6 +33,7 @@ const AppRoutes = () => {
                         <Route path="register" element={<SignUpPage/>}/>
                         <Route path="register-employer" element={<EmployerSignUpPage/>}/>
                         <Route path="register-jobseeker" element={<JobSeekerSignUpPage/>}/>
+                        <Route path="*" element={<NotFoundErrorPage/>}/>
                     </Route>
                     <Route element={<ProtectedRoute allowedRoles={["EMPLOYER"]}/>}>
                         <Route path="employer">

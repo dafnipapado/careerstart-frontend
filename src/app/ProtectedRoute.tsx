@@ -1,6 +1,6 @@
 import {useAuth} from "@/context/AuthProvider.tsx";
 import {Navigate, Outlet} from "react-router";
-import ErrorPage from "@/pages/ErrorPage.tsx";
+import NotFoundErrorPage from "../pages/NotFoundErrorPage.tsx";
 
 const ProtectedRoute = ({allowedRoles} : { allowedRoles?: string[] }) => {
     const { isAuthenticated, role } = useAuth();
@@ -11,7 +11,7 @@ const ProtectedRoute = ({allowedRoles} : { allowedRoles?: string[] }) => {
 
     //redirect unauthorized users, after role verification
     if (allowedRoles && !allowedRoles.includes(role!) && role !== "ADMIN") {
-        return <ErrorPage/>;
+        return <NotFoundErrorPage/>;
     }
 
     return <Outlet/>
