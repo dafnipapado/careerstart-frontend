@@ -1,5 +1,6 @@
 import type {LoginCredentials, LoginResponse} from "../schemas/auth.ts";
 import {getCookie} from "@/utils/cookies.ts";
+import {toast} from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -15,11 +16,18 @@ export async function login(data: LoginCredentials) : Promise<LoginResponse> {
 
 export async function authFetch(url: string, options: RequestInit = {}) {
     const token = getCookie("token");
-    return fetch(url, {
+    const res = await fetch(url, {
         ...options,
         headers: {
             ...options.headers,
             "Authorization": `Bearer ${token}`
         }
     })
+
+    if (res.status === 401) {
+        window.location.href = "/login"
+        toast.error("Your session has expired. Please log in again.")
+    }
+
+    return res;
 }
