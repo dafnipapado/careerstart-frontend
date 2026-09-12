@@ -19,6 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 type JwtPayload = {
     sub: string;
     role: string;
+    exp: number;
 }
 
 function getRoleFromToken(token: string | null) : string | null {
