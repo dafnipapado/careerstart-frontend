@@ -34,13 +34,13 @@ export async function insertEmployer(data: EmployerInsert) : Promise<EmployerRea
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Employer creation failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getLoggedInEmployerDetails() : Promise<EmployerReadDetails> {
     const res = await authFetch(`${EMPLOYER_URL}/dashboard`)
-    if (!res.ok) throw new Error("Employer info not found")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -68,7 +68,7 @@ export async function updateEmployer(data: EmployerUpdate) : Promise<EmployerRea
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Employer update failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -80,12 +80,12 @@ export async function uploadEmployerProfilePicture(uuid: string, file: File) : P
         method: "POST",
         body: formData
     })
-    if (!res.ok) throw new Error("Employer profile picture upload failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function getEmployerProfilePicture(uuid: string) {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}/avatar`, {})
-    if (!res.ok) throw new Error("Profile picture retrieval failed")
+    if (!res.ok) throw await res.json()
     return await res.blob()
 }
 
@@ -93,7 +93,7 @@ export async function deleteEmployer(uuid: string) : Promise<EmployerRead> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Employer deletion failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -101,24 +101,24 @@ export async function activateEmployer(uuid: string) {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}/activate`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Employer activation failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function getEmployerPage(uuid: string) : Promise<EmployerReadDetails> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}`)
-    if (!res.ok) throw new Error("Active employer retrieval failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getLoggedInEmployerJobListingsCount() : Promise<number> {
     const res = await authFetch(`${EMPLOYER_URL}/count-job-listings`)
-    if (!res.ok) throw new Error("Cannot find number of your active job listings")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getEmployerJobListingsCount(uuid: string) : Promise<number> {
     const res = await authFetch(`${EMPLOYER_URL}/${uuid}/count-job-listings`)
-    if (!res.ok) throw new Error("Cannot find number of employer's active job listings")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -130,6 +130,6 @@ export async function getPaginatedFilteredEmployers(filters: EmployerFilters) : 
         }
     })
     const res = await authFetch(`${EMPLOYER_URL}?${params}`)
-    if (!res.ok) throw new Error("Failed to apply filters")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }

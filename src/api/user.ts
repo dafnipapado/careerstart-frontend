@@ -14,5 +14,5 @@ export async function updateEmployerPassword(data: PasswordUpdate) {
         headers: {"Content-Type" : "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Password update failed")
+    if (!res.ok) throw await res.json()
 }

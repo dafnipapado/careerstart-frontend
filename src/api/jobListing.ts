@@ -24,7 +24,7 @@ export async function insertJobListing(data: JobListingInsert) : Promise<JobList
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Job Listing creation failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -41,7 +41,7 @@ export async function updateJobListing(uuid: string, data: JobListingUpdate) : P
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Job Listing update failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -49,7 +49,7 @@ export async function deleteJobListing(uuid: string) : Promise<JobListingRead> {
     const res = await authFetch(`${JOB_LISTING_URL}/${uuid}`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Job Listing deletion failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -57,12 +57,12 @@ export async function restoreJobListing(uuid: string) {
     const res = await authFetch(`${JOB_LISTING_URL}/${uuid}/restore`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Job listing restoration failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function getSingleJobListing(uuid: string) : Promise<JobListingReadDetails> {
     const res = await authFetch(`${JOB_LISTING_URL}/${uuid}`)
-    if  (!res.ok) throw new Error("Job listing retrieval failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -74,6 +74,6 @@ export async function getPaginatedFilteredJobListings(filters: JobListingFilters
         }
     })
     const res = await authFetch(`${JOB_LISTING_URL}?${params}`)
-    if (!res.ok) throw new Error("Failed to apply filters")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }

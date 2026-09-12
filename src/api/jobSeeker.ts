@@ -32,19 +32,19 @@ export async function insertJobSeeker(data: JobSeekerInsert) : Promise<JobSeeker
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Job Seeker creation failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getLoggedInJobSeekerDetails() : Promise<JobSeekerReadDetails> {
     const res = await authFetch(`${JOBSEEKER_URL}/dashboard`)
-    if (!res.ok) throw new Error("Job Seeker info not found")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getJobSeekerPage(uuid: string) : Promise<JobSeekerReadDetails> {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}`)
-    if (!res.ok) throw new Error("Job Seeker info not found")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -69,7 +69,7 @@ export async function updateJobSeeker(data: JobSeekerUpdate) : Promise<JobSeeker
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(requestBody)
     })
-    if (!res.ok) throw new Error("Job seeker update failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -77,7 +77,7 @@ export async function deleteJobSeeker(uuid: string) : Promise<JobSeekerRead> {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Job Seeker deletion failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -85,26 +85,26 @@ export async function activateJobSeeker(uuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/activate`, {
         method: "PATCH"
     })
-    if (!res.ok) throw new Error("Job seeker activation failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function apply(jobListingUuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/apply`, {
         method: "POST"
     })
-    if  (!res.ok) throw new Error("Failed to apply to job listing")
+    if (!res.ok) throw await res.json()
 }
 
 export async function withdraw(jobListingUuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/withdraw`, {
         method: "DELETE"
     })
-    if  (!res.ok) throw new Error("Failed to withdraw from job listing")
+    if (!res.ok) throw await res.json()
 }
 
 export async function hasJobSeekerApplied(jobListingUuid: string) : Promise<boolean> {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/has-applied`)
-    if  (!res.ok) throw new Error("Failed to verify application to job listing")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -116,12 +116,12 @@ export async function uploadJobSeekerProfilePicture(uuid: string, file: File) : 
         method: "POST",
         body: formData
     })
-    if (!res.ok) throw new Error("Jobseeker profile picture upload failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function getJobSeekerProfilePicture(uuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/avatar`, {})
-    if (!res.ok) throw new Error("Profile picture retrieval failed")
+    if (!res.ok) throw await res.json()
     return await res.blob()
 }
 
@@ -133,12 +133,12 @@ export async function uploadJobSeekerCv(uuid: string, file: File) : Promise<void
         method: "POST",
         body: formData
     })
-    if (!res.ok) throw new Error("Jobseeker CV upload failed")
+    if (!res.ok) throw await res.json()
 }
 
 export async function getJobSeekerCvFile(uuid: string) {
     const res = await authFetch(`${JOBSEEKER_URL}/${uuid}/cv`, {})
-    if (!res.ok) throw new Error("CV retrieval failed")
+    if (!res.ok) throw await res.json()
     const filename = res.headers.get("Content-Disposition")?.slice(17) ?? null
     const blob = await res.blob()
     return {filename, blob}
@@ -146,7 +146,7 @@ export async function getJobSeekerCvFile(uuid: string) {
 
 export async function getJobSeekersByJobListing(jobListingUuid: string) : Promise<JobSeekerReadSummary[]> {
     const res = await authFetch(`${JOBSEEKER_URL}/${jobListingUuid}/job-seekers`)
-    if  (!res.ok) throw new Error("Failed to fetch job seekers for this listing")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -158,6 +158,6 @@ export async function getPaginatedFilteredJobSeekers(filters: JobSeekerFilters) 
         }
     })
     const res = await authFetch(`${JOBSEEKER_URL}?${params}`)
-    if (!res.ok) throw new Error("Failed to apply filters")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }

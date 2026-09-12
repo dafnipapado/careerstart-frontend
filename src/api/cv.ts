@@ -10,7 +10,7 @@ export async function insertCv(data: CvInsert) : Promise<CvRead> {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
     })
-    if (!res.ok) throw new Error("Cv creation failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
@@ -20,12 +20,12 @@ export async function updateCv(data: CvUpdate) : Promise<CvRead> {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)
     })
-    if (!res.ok) throw new Error("Cv update failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
 
 export async function getJobSeekerCv(jobSeekerUuid: string) : Promise<CvRead> {
     const res = await authFetch(`${CV_URL}/${jobSeekerUuid}/view`)
-    if (!res.ok) throw new Error("Cv retrieval failed")
+    if (!res.ok) throw await res.json()
     return await res.json()
 }
