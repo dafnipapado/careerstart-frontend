@@ -196,7 +196,7 @@ const EmployerSignUpPage = () => {
                                 </div>
                             </Field>
                         </div>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-primary-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
+                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg text-white bg-primary-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
                         {isSubmitting ? <span className="cursor-progress">Signing you up...</span> : "Sign Up"}
                     </Button>
                 </form>
