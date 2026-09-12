@@ -4,10 +4,10 @@ import {Outlet} from "react-router";
 const Layout = () => {
     return(
         <>
-            <Header/>
-            <main className="container mx-auto pt-43">
-                <Outlet/>
-            </main>
+        <Header/>
+        <main className="container mx-auto pt-41 pb-10">
+            <Outlet/>
+        </main>
         </>
     )
 }
