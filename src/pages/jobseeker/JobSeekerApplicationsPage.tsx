@@ -31,7 +31,7 @@ const JobSeekerApplicationsPage = () => {
 
     return (
         <>
-            <div>
+            <div className="pt-10">
                 <div className="text-left left-5 flex justify-between items-center">
                     <div className="text-2xl text-primary-dark-purple font-semibold p-3 mb-5">
                         <span>My Job Applications</span>
