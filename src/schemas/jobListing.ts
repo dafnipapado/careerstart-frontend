@@ -68,7 +68,8 @@ export const jobListingReadSummarySchema = jobListingSchema.pick({
     employerBrandName: true,
     professionalFieldName: true,
     regionName: true,
-    dateCreated: true
+    dateCreated: true,
+    deleted: true
 })
 
 export type JobListingReadSummary = z.infer<typeof jobListingReadSummarySchema>;

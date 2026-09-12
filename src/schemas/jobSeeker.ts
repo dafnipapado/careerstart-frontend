@@ -95,5 +95,6 @@ export type JobSeekerReadDetails = {
         address: string | null,
         regionName: string,
         regionId: number
-    }
+    },
+    deleted: boolean
 }
