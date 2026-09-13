@@ -76,7 +76,7 @@ const JobSeekerManagementPage = () => {
                                     jobSeeker.deleted
                                         ? handleActivate(jobSeeker.uuid)
                                         : handleDelete(jobSeeker.uuid)}
-                                        className={`${jobSeeker.deleted ? "border border-green-800 text-green-800" : "border border-red-800 text-red-800"}
+                                        className={`${jobSeeker.deleted ? "border border-green-500 text-green-500" : "border border-red-500 text-red-500"}
                                             rounded-sm cursor-pointer`}
                                 >
                                     {jobSeeker.deleted ? "Activate" : "Deactivate"}

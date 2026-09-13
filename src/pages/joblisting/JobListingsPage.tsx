@@ -87,7 +87,7 @@ const JobListingsPage = () => {
             <div className="w-full">
                 {/*filters*/}
                 <h1 className="text-left text-3xl pl-7 font-semibold">Job Listings</h1>
-                <div className="w-full h-20 flex items-center bg-white border border-gray-200 rounded-md my-10">
+                <div className="w-full h-20 flex items-center bg-surface-elevated border border-gray-200 shadow-xl shadow-secondary-light-purple rounded-md my-10">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                     >
@@ -97,14 +97,14 @@ const JobListingsPage = () => {
                                 <Field>
                                     <div>
                                         <Input id="title" type="text" {...register("title")} placeholder="Job Title..."
-                                               className="rounded-md"></Input>
+                                               className="rounded-md placeholder:text-gray-200"></Input>
                                     </div>
                                 </Field>
                                 <Field>
                                     <div>
                                         <Input id="employerBrandName" type="text" {...register("employerBrandName")}
                                                placeholder="Company..."
-                                               className="rounded-md"></Input>
+                                               className="rounded-md placeholder:text-gray-200"></Input>
                                     </div>
                                 </Field>
                                 <Field>
@@ -113,7 +113,7 @@ const JobListingsPage = () => {
                                             <Select onValueChange={(val) => field.onChange(Number(val))}
                                                     value={field.value ?? null}>
                                                 <SelectTrigger className="w-full rounded-md">
-                                                    <SelectValue placeholder="Industry">
+                                                    <SelectValue placeholder="Industry" className="text-gray-200">
                                                         {professionalFields.find(professionalField => professionalField.id === field.value)?.name ?? "Industry"}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -139,7 +139,7 @@ const JobListingsPage = () => {
                                             <Select onValueChange={(val) => field.onChange(Number(val))}
                                                     value={field.value ?? null}>
                                                 <SelectTrigger className="w-full rounded-md">
-                                                    <SelectValue placeholder="Region">
+                                                    <SelectValue placeholder="Region" className="text-gray-200">
                                                         {regions.find(region => region.id === field.value)?.name ?? "Region"}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -160,7 +160,7 @@ const JobListingsPage = () => {
                                 </Field>
                                 <div className="flex gap-2 mx-auto">
                                     <Button type="submit"
-                                            className=" bg-primary-dark-purple hover:bg-hover-dark-purple text-white rounded-md p-2 cursor-pointer">
+                                            className=" bg-primary-dark-purple hover:bg-hover-dark-purple border-2 border-secondary-light-purple text-font rounded-md p-2 cursor-pointer">
                                         {isSubmitting
                                             ? <span className="cursor-progress"><Funnel/></span>
                                             : <Funnel/>}
@@ -180,7 +180,7 @@ const JobListingsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10">
+                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface border border-font text-font! shadow-xl shadow-surface-elevated">
                                 <CardHeader className="flex items-center justify-between">
                                     <CardTitle className="text-2xl flex items-center gap-5">
                                         <div key={jobListing.title}>
@@ -193,14 +193,14 @@ const JobListingsPage = () => {
                                             </div>
                                         )}
                                     </CardTitle>
-                                    <CardDescription className="text-gray-500">
+                                    <CardDescription className="text-gray-200">
                                         <div key={jobListing.dateCreated.slice(0, 10)}>
                                             {jobListing.dateCreated.slice(0, 10)}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
                                 <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-red-800"
+                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue"
                                          key={jobListing.professionalFieldName}>
                                         {jobListing.professionalFieldName}
                                     </div>
@@ -222,10 +222,11 @@ const JobListingsPage = () => {
                                 </span>
                                     </div>
                                 </div>
-                                <CardFooter className="w-full mt-auto text-primary-dark-purple">
+                                <CardFooter className="w-full mt-auto">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
                                         <Button
-                                            className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View
+                                            className="w-full border border-primary-dark-purple bg-secondary-light-purple
+                                            text-surface hover:bg-secondary-light-purple/80 hover:text-font px-4 py-2 rounded-sm cursor-pointer">View
                                             Listing ⟶</Button>
                                     </Link>
                                 </CardFooter>

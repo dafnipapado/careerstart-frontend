@@ -5,7 +5,7 @@ const Layout = () => {
     return(
         <>
         <Header/>
-        <main className="container mx-auto pt-41 pb-10">
+        <main className="container mx-auto pt-28 pb-10">
             <Outlet/>
         </main>
         </>

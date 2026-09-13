@@ -54,8 +54,8 @@ const JobSeekerSignUpPage = () => {
 
     return (
         <>
-            <div className="w-full mx-auto my-auto bg-white p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-gray-200">
-                <h1 className="font-sans font-semibold text-3xl text-primary-dark-purple">Create your account</h1>
+            <div className="w-full mx-auto my-auto p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
+                <h1 className="font-sans font-semibold text-3xl">Create your account</h1>
                 <div className="text-sm">Required fields are marked with an asterisk (
                     <span><Asterisk size={12} color="#a02200" strokeWidth={2} className="inline -mt-2"/></span>
                     ).
@@ -99,7 +99,7 @@ const JobSeekerSignUpPage = () => {
                                 <Controller name="regionId" control={control} render={({ field }) => (
                                     <Select onValueChange={(val) => field.onChange(Number(val))} value={field.value??null}>
                                         <SelectTrigger className="w-full rounded-md">
-                                            <SelectValue placeholder="Select a region">
+                                            <SelectValue placeholder="Select a region"  className="text-gray-200">
                                                 {regions.find(region => region.id === field.value)?.name ?? "Select a region"}
                                             </SelectValue>
                                         </SelectTrigger>
@@ -148,7 +148,8 @@ const JobSeekerSignUpPage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg text-white bg-primary-dark-purple hover:bg-hover-dark-purple rounded-md py-5 mt-10 cursor-pointer">
+                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-primary-dark-purple
+                        hover:bg-hover-dark-purple border-2 border-secondary-light-purple rounded-md py-5 mt-10 mb-5 cursor-pointer">
                         {isSubmitting ? <span className="cursor-progress">Signing you up...</span> : "Sign Up"}
                     </Button>
                 </form>

@@ -80,7 +80,7 @@ const JobListingManagementPage = () => {
                                     listing.deleted
                                         ? handleRestore(listing.uuid)
                                         : handleDelete(listing.uuid)}
-                                        className={`${listing.deleted ? "border border-green-800 text-green-800" : "border border-red-800 text-red-800"}
+                                        className={`${listing.deleted ? "border border-green-500 text-green-500" : "border border-red-500 text-red-500"}
                                             rounded-sm cursor-pointer`}
                                 >
                                     {listing.deleted ? "Restore" : "Delete"}

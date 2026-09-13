@@ -93,14 +93,14 @@ const EmployerDashboardPage = () => {
     return (
         <>
             {/*banner*/}
-            <div className="relative bg-linear-to-bl from-primary-dark-purple from-50% to-secondary-light-purple w-full h-50 top-0">
+            <div className="relative bg-linear-to-bl from-primary-dark-purple from-50% to-secondary-light-purple w-full h-70 top-0">
                 {role !== "JOB_SEEKER" && (
                     <Link to="/employer/settings" className="flex p-2 m-2">
-                        <Settings strokeWidth={1.25} className="text-white border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
+                        <Settings strokeWidth={1.25} className="border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                     </Link>
                 )}
                 {employerInfo && (<PictureHandler uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} canUpload={role === "EMPLOYER"} />)}
-                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl text-white">
+                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl">
                     <h1 className="">{employerInfo?.brandName}</h1>
                 </div>
                 <div className="absolute left-60 -bottom-17 flex flex-col gap-2 font-medium items-start">
@@ -128,7 +128,7 @@ const EmployerDashboardPage = () => {
             {/*job listings*/}
             <div>
                 <div className="text-left left-5 flex justify-between items-center">
-                    <div className="text-2xl text-primary-dark-purple font-semibold p-3 mb-5">
+                    <div className="text-2xl font-semibold p-3 mb-5">
                         {role !== "JOB_SEEKER"
                             ? <span>My Job Listings ({jobListingsNumber})</span>
                             : <span>{jobListingsNumber} Job Listings</span>}
@@ -144,7 +144,7 @@ const EmployerDashboardPage = () => {
                 ?
                 <div className="container w-full">
                     {jobListingsPage?.content.map((jobListing) => (
-                    <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10">
+                    <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface shadow-xl shadow-surface-elevated border border-font text-font!">
                         <CardHeader className="flex items-center justify-between">
                             <CardTitle className="text-2xl flex items-center gap-5">
                                 <div key={jobListing.title}>
@@ -153,17 +153,17 @@ const EmployerDashboardPage = () => {
                                 {role !== "JOB_SEEKER"
                                 ?
                                 <div className="flex items-center gap-x-0.5">
-                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-primary-dark-purple duration-300 ease-in-out hover:scale-[0.95]">
+                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-secondary-light-purple duration-300 ease-in-out hover:scale-[0.95]">
                                         <SquarePen className="w-5 h-5"/>
                                     </Link>
-                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-red-800 duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
+                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-secondary-light-purple duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
                                         <Trash2 className="w-5! h-5!"/>
                                     </Button>
                                 </div>
                                 :
                                 <div>
                                     {appliedJobListings[jobListing.uuid] && (
-                                        <div className="flex text-xs text-white figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
+                                        <div className="flex text-xs figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
                                             <BadgeCheck size={16}/>
                                             <p>applied</p>
                                         </div>
@@ -171,14 +171,14 @@ const EmployerDashboardPage = () => {
                                 </div>
                                 }
                             </CardTitle>
-                            <CardDescription className="text-gray-500">
+                            <CardDescription className="text-gray-200">
                                 <div key={jobListing.dateCreated.slice(0,10)}>
                                     {jobListing.dateCreated.slice(0,10)}
                                 </div>
                             </CardDescription>
                         </CardHeader>
                         <div className="flex flex-col text-base font-sans">
-                            <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-red-800" key={jobListing.professionalFieldName}>
+                            <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue" key={jobListing.professionalFieldName}>
                                 {jobListing.professionalFieldName}
                             </div>
                             <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
@@ -197,9 +197,12 @@ const EmployerDashboardPage = () => {
                                 </span>
                             </div>
                         </div>
-                        <CardFooter className="w-full mt-auto text-primary-dark-purple">
+                        <CardFooter className="w-full mt-auto ">
                             <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                <Button className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Listing ⟶</Button>
+                                <Button className="w-full px-4 py-2 rounded-sm border border-primary-dark-purple
+                                    bg-secondary-light-purple text-surface hover:bg-secondary-light-purple/80 hover:text-font cursor-pointer">
+                                    View Listing ⟶
+                                </Button>
                             </Link>
                         </CardFooter>
                     </Card>
@@ -209,7 +212,7 @@ const EmployerDashboardPage = () => {
                 <div className="container w-full h-50 border border-gray-400 rounded-md">
                     <div className="h-full content-center">
                         <p>You have no active job listings yet.</p>
-                        <Link to="/employer/create-joblisting" className="text-font-link-blue hover:underline">Post your first job listing</Link>
+                        <Link to="/employer/create-joblisting" className="text-link-blue hover:underline">Post your first job listing</Link>
                     </div>
                 </div>}
 
@@ -219,7 +222,7 @@ const EmployerDashboardPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
                         >
                             <ChevronLeft />
                         </button>
@@ -229,7 +232,7 @@ const EmployerDashboardPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
                         >
                             <ChevronRight />
                         </button>

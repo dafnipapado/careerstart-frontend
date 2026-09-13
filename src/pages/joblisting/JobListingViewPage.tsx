@@ -113,19 +113,19 @@ const JobListingViewPage = () => {
 
     return (
         <>
-        <div className="container w-full bg-white mt-10 border border-gray-200 rounded-sm shadow-xs shadow-gray-200">
+        <div className="container w-full bg-surface mt-10 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
             <div className="mx-auto w-full p-20">
                 <div className="flex flex-col">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-semibold">
                             {jobListing?.title}
                         </div>
-                        <div className="text-gray-500">
+                        <div className="text-gray-200">
                             {jobListing?.dateCreated.slice(0, 10)}
                         </div>
                     </div>
                     <div className="flex flex-col text-base font-sans">
-                        <div className="self-start mt-3 text-sm figtree-custom-italics text-red-800">
+                        <div className="self-start mt-3 text-sm figtree-custom-italics text-link-blue">
                             {jobListing?.professionalFieldName}
                         </div>
                         <div className="flex items-baseline gap-1 -ml-1 mt-5 text-sm font-medium">
@@ -144,14 +144,14 @@ const JobListingViewPage = () => {
                                 <div className="flex items-baseline gap-1">
                                     <Dot/>
                                     <span className="flex gap-1">
-                                            <LinkIcon strokeWidth={1.25} size={20}/>
-                                            <a href={`${jobListing?.employerSummaryReadOnlyDTO.website}`}
-                                               target="_blank"
-                                               rel="noopener noreferrer"
-                                               className="text-font-link-blue hover:text-blue-950">
-                                                 {jobListing?.employerSummaryReadOnlyDTO.website}
-                                            </a>
-                                        </span>
+                                        <LinkIcon strokeWidth={1.25} size={20}/>
+                                        <a href={`${jobListing?.employerSummaryReadOnlyDTO.website}`}
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           className="text-font-link-blue hover:text-blue-950">
+                                             {jobListing?.employerSummaryReadOnlyDTO.website}
+                                        </a>
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -166,7 +166,7 @@ const JobListingViewPage = () => {
                     ?
                         role === "EMPLOYER"
                         ?
-                        <div className="text-lg text-gray-500 font-semibold">
+                        <div className="text-xl text-secondary-light-purple font-semibold">
                             Interested in this listing?
                             Sign in as a job seeker to apply!
                         </div>
@@ -199,13 +199,13 @@ const JobListingViewPage = () => {
                             ?
                             <div className="w-full grid grid-cols-4 gap-2 mt-10">
                                 {applicants.map((applicant) => (
-                                    <Card key={applicant.uuid} className="flex flex-col mb-10">
+                                    <Card key={applicant.uuid} className="flex flex-col mb-10 bg-surface-elevated shadow-lg shadow-font">
                                         <CardHeader className="flex flex-col items-center">
                                             <CardTitle className="text-xl flex flex-col">
                                                 <div>
                                                     <img src={avatarUrls[applicant.uuid] ?? defaultUserPicture} className="w-37.5 h-37.5 rounded-3xl" />
                                                 </div>
-                                                <div className="flex justify-center gap-1 mt-2">
+                                                <div className="flex justify-center gap-1 mt-2 text-gray-200">
                                                     <div key={applicant.firstname}>
                                                         {applicant.firstname}
                                                     </div>
@@ -214,7 +214,7 @@ const JobListingViewPage = () => {
                                                     </div>
                                                 </div>
                                             </CardTitle>
-                                            <CardDescription className="text-gray-500">
+                                            <CardDescription className="text-gray-200">
                                                 <div key={applicant.email}>
                                                     {applicant.email}
                                                 </div>
@@ -224,7 +224,10 @@ const JobListingViewPage = () => {
                                         <CardFooter className="w-full mt-auto text-primary-dark-purple">
                                             <Link to={`/employer/jobseeker/${applicant.uuid}`} className="w-full">
                                                 <Button
-                                                    className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Profile</Button>
+                                                    className="w-full border border-primary-dark-purple bg-secondary-light-purple
+                                                    text-surface hover:bg-secondary-light-purple/80 hover:text-font  px-4 py-2 rounded-sm cursor-pointer">
+                                                    View Profile
+                                                </Button>
                                             </Link>
                                         </CardFooter>
                                     </Card>

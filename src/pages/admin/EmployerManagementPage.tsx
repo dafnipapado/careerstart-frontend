@@ -70,8 +70,8 @@ const EmployerManagementPage = () => {
 
     return (
         <>
-            <Table className="w-full mt-10">
-                <TableHeader>
+            <Table className="w-full mt-10 border border-font">
+                <TableHeader className="text-font!">
                     <TableHead>Brand Name</TableHead>
                     <TableHead>VAT</TableHead>
                     <TableHead>Email</TableHead>
@@ -92,7 +92,7 @@ const EmployerManagementPage = () => {
                                     employer.deleted
                                         ? handleActivate(employer.uuid)
                                         : handleDelete(employer.uuid)}
-                                    className={`${employer.deleted ? "border border-green-800 text-green-800" : "border border-red-800 text-red-800"}
+                                    className={`${employer.deleted ? "border border-green-500 text-green-500" : "border border-red-500 text-red-500"}
                                             rounded-sm cursor-pointer`}
                                 >
                                     {employer.deleted ? "Activate" : "Deactivate"}

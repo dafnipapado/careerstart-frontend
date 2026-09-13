@@ -74,7 +74,7 @@ const PictureHandler = ({
                             </div>
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-106.25 h-50">
+                    <DialogContent className="sm:max-w-106.25 h-50 bg-surface">
                         <form onSubmit={(e) => {
                             e.preventDefault()
                             if (selectedFile) handleUpload(uuid, selectedFile)}
@@ -82,12 +82,12 @@ const PictureHandler = ({
                               className="h-30 p-7 flex flex-col gap-3">
                             <div className="flex justify-between gap-4">
                                 <input type="file" id="avatar" className="hidden" onChange={handleFileChange} />
-                                <label htmlFor="avatar" className="w-1/4 text-primary-dark-purple px-4 py-2 rounded-sm border border-primary-dark-purple hover:bg-gray-300 cursor-pointer">
+                                <label htmlFor="avatar" className="w-1/4 px-4 py-2 rounded-sm border border-primary-dark-purple bg-secondary-light-purple text-surface hover:bg-secondary-light-purple/80 hover:text-font cursor-pointer">
                                     Upload
                                 </label>
-                                <span className="w-5/6 border border-gray-300 rounded-sm text-center content-center">{selectedFilename}</span>
+                                <span className="w-5/6 border border-gray-300 bg-font/80 rounded-sm text-center content-center">{selectedFilename}</span>
                             </div>
-                            <div className="figtree-custom-italics text-xs text-end -mt-2 mb-2">(.jpeg, .jpg, .png)</div>
+                            <div className="figtree-custom-italics text-xs text-end -mt-2 mb-2 text-font">(.jpeg, .jpg, .png)</div>
                             <CustomButton label="Save" type="submit" addClasses={`block mx-auto ${!selectedFilename ? "bg-gray-400! border-gray-400!" : ""}`} disabled={!selectedFilename}></CustomButton>
                         </form>
                     </DialogContent>

@@ -10,8 +10,12 @@
   --color-primary-dark-purple: #4f0341;
   --color-secondary-light-purple: #977190;
   --color-hover-dark-purple: #7d0567;
-  --color-font-link-blue: #2154bd;
+  --color-link-blue: #8fb2ff;
   --color-error-dark-red: #a02200;
+
+  --color-surface: #2a1826;
+  --color-surface-elevated: #3a2434;
+  --color-font: #f0ebee;
 }
 
 .lobster-two-regular-italic {
@@ -145,7 +149,8 @@
 
 body {
   margin: 0;
-  background-color: #f6f8f8;
+  background-color: #1a0e18;
+  color: #f0ebee;
 }
 
 h1 {
@@ -171,6 +176,15 @@ p {
 th {
   text-align: center;
   font-size: 20px;
+  color: var(--color-secondary-light-purple)
+}
+
+table {
+  background-color: var(--color-surface);
+}
+
+tr:hover {
+  background-color: var(--color-surface-elevated);
 }
 
 code,

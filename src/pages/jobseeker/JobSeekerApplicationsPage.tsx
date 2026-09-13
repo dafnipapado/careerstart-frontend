@@ -33,7 +33,7 @@ const JobSeekerApplicationsPage = () => {
         <>
             <div className="pt-10">
                 <div className="text-left left-5 flex justify-between items-center">
-                    <div className="text-2xl text-primary-dark-purple font-semibold p-3 mb-5">
+                    <div className="text-2xl font-semibold p-3 mb-5">
                         <span>My Job Applications</span>
                     </div>
                 </div>
@@ -42,21 +42,21 @@ const JobSeekerApplicationsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10">
+                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface shadow-xl shadow-surface-elevated border border-font text-font">
                                 <CardHeader className="flex items-center justify-between">
                                     <CardTitle className="text-2xl flex items-center gap-5">
                                         <div key={jobListing.title}>
                                             {jobListing.title}
                                         </div>
                                     </CardTitle>
-                                    <CardDescription className="text-gray-500">
+                                    <CardDescription className="text-gray-200">
                                         <div key={jobListing.dateCreated.slice(0,10)}>
                                             {jobListing.dateCreated.slice(0,10)}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
                                 <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-red-800" key={jobListing.professionalFieldName}>
+                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue" key={jobListing.professionalFieldName}>
                                         {jobListing.professionalFieldName}
                                     </div>
                                     <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
@@ -77,7 +77,10 @@ const JobSeekerApplicationsPage = () => {
                                 </div>
                                 <CardFooter className="w-full mt-auto text-primary-dark-purple">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <Button className="w-full border border-primary-dark-purple hover:bg-gray-200 px-4 py-2 rounded-sm cursor-pointer">View Listing ⟶</Button>
+                                        <Button className="w-full border-primary-dark-purple bg-secondary-light-purple
+                                            text-surface hover:bg-secondary-light-purple/80 hover:text-font px-4 py-2 rounded-sm cursor-pointer">
+                                            View Listing ⟶
+                                        </Button>
                                     </Link>
                                 </CardFooter>
                             </Card>
@@ -87,7 +90,7 @@ const JobSeekerApplicationsPage = () => {
                     <div className="container w-full h-50 border border-gray-400 rounded-md">
                         <div className="h-full content-center">
                             <p>You have not applied to any job listings yet.</p>
-                            <Link to="/job-listings" className="text-font-link-blue hover:underline">Browse job listings</Link>
+                            <Link to="/job-listings" className="text-link-blue hover:underline">Browse job listings</Link>
                         </div>
                     </div>}
 
@@ -97,7 +100,7 @@ const JobSeekerApplicationsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
                         >
                             <ChevronLeft />
                         </button>
@@ -107,7 +110,7 @@ const JobSeekerApplicationsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
                         >
                             <ChevronRight />
                         </button>
