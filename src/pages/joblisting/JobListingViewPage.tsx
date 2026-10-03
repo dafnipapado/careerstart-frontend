@@ -22,6 +22,7 @@ import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/compon
 import {Button} from "@base-ui/react";
 import defaultUserPicture from "@/assets/images/default-user-picture.png";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
+import {accept, reject} from "@/api/application.ts";
 
 const JobListingViewPage = () => {
 
@@ -105,6 +106,26 @@ const JobListingViewPage = () => {
             await withdraw(uuid)
             setHasApplied(false)
             toast.success("Successfully withdrew from job listing")
+        } catch (error) {
+            const err = error as ErrorResponse
+            toast.error(getErrorMessage(err.code))
+        }
+    }
+
+    const handleAccept = async (jobListingUuid: string, jobSeekerUuid: string) => {
+        try {
+            await accept(jobListingUuid, jobSeekerUuid)
+            toast.success("Applicant was accepted successfully")
+        } catch (error) {
+            const err = error as ErrorResponse
+            toast.error(getErrorMessage(err.code))
+        }
+    }
+
+    const handleReject = async (jobListingUuid: string, jobSeekerUuid: string) => {
+        try {
+            await reject(jobListingUuid, jobSeekerUuid)
+            toast.success("Applicant was rejected successfully")
         } catch (error) {
             const err = error as ErrorResponse
             toast.error(getErrorMessage(err.code))
@@ -197,7 +218,7 @@ const JobListingViewPage = () => {
                             {applicants.length > 0
 
                             ?
-                            <div className="w-full grid grid-cols-4 gap-2 mt-10">
+                            <div className="w-full grid grid-cols-3 gap-2 mt-10">
                                 {applicants.map((applicant) => (
                                     <Card key={applicant.uuid} className="flex flex-col mb-10 bg-surface-elevated shadow-lg shadow-font">
                                         <CardHeader className="flex flex-col items-center">
@@ -221,7 +242,7 @@ const JobListingViewPage = () => {
                                             </CardDescription>
                                         </CardHeader>
 
-                                        <CardFooter className="w-full mt-auto text-primary-dark-purple">
+                                        <CardFooter className="w-full mt-auto text-primary-dark-purple flex flex-col">
                                             <Link to={`/employer/jobseeker/${applicant.uuid}`} className="w-full">
                                                 <Button
                                                     className="w-full border border-primary-dark-purple bg-secondary-light-purple
@@ -229,6 +250,16 @@ const JobListingViewPage = () => {
                                                     View Profile
                                                 </Button>
                                             </Link>
+                                            <div className="w-full flex justify-between mt-4">
+                                                <Button onClick={() => {handleAccept(jobListing!.uuid , applicant.uuid)}}
+                                                        className="w-3/7 flex bg-green-800 text-font py-2 mx-3 justify-center gap-1 rounded-sm cursor-pointer hover:bg-green-900                                                  ">
+                                                    Accept <CheckCheck />
+                                                </Button>
+                                                <Button onClick={() => {handleReject(jobListing!.uuid , applicant.uuid)}}
+                                                        className="w-3/7 flex bg-red-800 text-font py-2 mx-3 justify-center gap-1 rounded-sm cursor-pointer hover:bg-red-900">
+                                                    Reject <X />
+                                                </Button>
+                                            </div>
                                         </CardFooter>
                                     </Card>
                                 ))}
