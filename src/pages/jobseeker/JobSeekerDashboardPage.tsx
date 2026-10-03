@@ -82,14 +82,16 @@ const JobSeekerDashboardPage = () => {
             )}
             {!cvInfo?.profession
                 ?
-                    <div className="container w-full h-50 border border-gray-300 rounded-md mt-3">
+                    <div>
                         {role !== "EMPLOYER" && (
-                        <div className="h-full content-center">
-                            <p className="pb-3">You haven't posted your CV yet.</p>
-                            <Link to="/job_seeker/create-cv">
-                                <CustomButton label="Create CV"></CustomButton>
-                            </Link>
-                        </div>)}
+                            <div className="container w-full h-50 border border-gray-300 rounded-md mt-3">
+                                <div className="h-full content-center">
+                                    <p className="pb-3">You haven't posted your CV yet.</p>
+                                    <Link to="/job_seeker/create-cv">
+                                        <CustomButton label="Create CV"></CustomButton>
+                                    </Link>
+                                </div>
+                            </div>)}
                     </div>
                 :
                     <div
