@@ -29,6 +29,9 @@ export const jobListingSchema = z
         regionName: z
             .string()
             .optional(),
+        status: z
+            .string()
+            .optional()
     })
     .extend(auditingSchema.shape)
 
@@ -69,7 +72,8 @@ export const jobListingReadSummarySchema = jobListingSchema.pick({
     professionalFieldName: true,
     regionName: true,
     dateCreated: true,
-    deleted: true
+    deleted: true,
+    status: true
 })
 
 export type JobListingReadSummary = z.infer<typeof jobListingReadSummarySchema>;
@@ -83,7 +87,8 @@ export const jobListingReadDetailsSchema = jobListingSchema.pick({
     professionalFieldName: true,
     regionId: true,
     regionName: true,
-    dateCreated: true
+    dateCreated: true,
+    status: true
 })
 
 export type JobListingReadDetails = z.infer<typeof jobListingReadDetailsSchema>;
