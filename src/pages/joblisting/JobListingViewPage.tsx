@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {deleteJobListing, getSingleJobListing} from "@/api/jobListing.ts";
 import type {JobListingReadDetails} from "@/schemas/jobListing.ts";
-import {Dot, Factory, MapPin, Link as LinkIcon} from "lucide-react";
+import {Dot, Factory, MapPin, Link as LinkIcon, X, CheckCheck, CalendarFold} from "lucide-react";
 import {Separator} from "@/components/ui/separator.tsx";
 import CustomButton from "@/components/shared/CustomButton.tsx";
 import {Link} from "react-router";
@@ -141,8 +141,8 @@ const JobListingViewPage = () => {
                         <div className="text-2xl font-semibold">
                             {jobListing?.title}
                         </div>
-                        <div className="text-gray-200">
-                            {jobListing?.dateCreated.slice(0, 10)}
+                        <div>
+                            {jobListing?.status}
                         </div>
                     </div>
                     <div className="flex flex-col text-base font-sans">
@@ -150,16 +150,23 @@ const JobListingViewPage = () => {
                             {jobListing?.professionalFieldName}
                         </div>
                         <div className="flex items-baseline gap-1 -ml-1 mt-5 text-sm font-medium">
-                                <span className="flex gap-1">
-                                    <MapPin strokeWidth={1.25} size={20}/>
-                                    {jobListing?.regionName}
-                                </span>
+                            <span className="flex gap-1">
+                                <MapPin strokeWidth={1.25} size={20}/>
+                                {jobListing?.regionName}
+                            </span>
                             <Dot/>
                             <span className="flex gap-1">
                                 <Factory strokeWidth={1.25} size={20}/>
                                 <Link to={`/job_seeker/employer/${jobListing?.employerSummaryReadOnlyDTO.uuid}`}>
                                     {jobListing?.employerSummaryReadOnlyDTO.brandName}
                                 </Link>
+                            </span>
+                            <Dot/>
+                            <span className="flex gap-1">
+                                <CalendarFold strokeWidth={1.25} size={20} />
+                                <div className="text-gray-200">
+                                    {jobListing?.dateCreated.slice(0, 10)}
+                                </div>
                             </span>
                             {jobListing?.employerSummaryReadOnlyDTO.website && (
                                 <div className="flex items-baseline gap-1">

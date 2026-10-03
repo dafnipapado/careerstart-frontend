@@ -7,7 +7,7 @@ import {
 } from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
-    BadgeCheck,
+    BadgeCheck, CalendarFold,
     ChevronLeft,
     ChevronRight,
     Dot,
@@ -172,8 +172,8 @@ const EmployerDashboardPage = () => {
                                 }
                             </CardTitle>
                             <CardDescription className="text-gray-200">
-                                <div key={jobListing.dateCreated.slice(0,10)}>
-                                    {jobListing.dateCreated.slice(0,10)}
+                                <div key={jobListing.status}>
+                                    {jobListing.status}
                                 </div>
                             </CardDescription>
                         </CardHeader>
@@ -193,6 +193,13 @@ const EmployerDashboardPage = () => {
                                     <Factory strokeWidth={1.25} size={20}  />
                                     <div key={jobListing.employerBrandName}>
                                         {jobListing.employerBrandName}
+                                    </div>
+                                </span>
+                                <Dot />
+                                <span className="flex gap-1">
+                                    <CalendarFold strokeWidth={1.25} size={20} />
+                                    <div key={jobListing.dateCreated.slice(0,10)}>
+                                        {jobListing.dateCreated.slice(0,10)}
                                     </div>
                                 </span>
                             </div>

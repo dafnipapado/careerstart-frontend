@@ -1,6 +1,6 @@
 import {Link} from "react-router";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {BadgeCheck, ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
+import {BadgeCheck, CalendarFold, ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {useEffect, useState} from "react";
 import type {Pagination} from "@/schemas/pagination.ts";
@@ -194,8 +194,8 @@ const JobListingsPage = () => {
                                         )}
                                     </CardTitle>
                                     <CardDescription className="text-gray-200">
-                                        <div key={jobListing.dateCreated.slice(0, 10)}>
-                                            {jobListing.dateCreated.slice(0, 10)}
+                                        <div key={jobListing.status}>
+                                            {jobListing.status}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
@@ -205,21 +205,28 @@ const JobListingsPage = () => {
                                         {jobListing.professionalFieldName}
                                     </div>
                                     <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
-                                <span className="flex gap-1">
-                                    <MapPin strokeWidth={1.25} size={20}/>
-                                    <div key={jobListing.regionName}>
-                                        {jobListing.regionName}
-                                    </div>
-                                </span>
-                                <Dot/>
-                                <span className="flex gap-1">
-                                    <Factory strokeWidth={1.25} size={20}/>
-                                    <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
-                                        <div key={jobListing.employerBrandName}>
-                                            {jobListing.employerBrandName}
-                                        </div>
-                                    </Link>
-                                </span>
+                                        <span className="flex gap-1">
+                                            <MapPin strokeWidth={1.25} size={20}/>
+                                            <div key={jobListing.regionName}>
+                                                {jobListing.regionName}
+                                            </div>
+                                        </span>
+                                        <Dot/>
+                                        <span className="flex gap-1">
+                                            <Factory strokeWidth={1.25} size={20}/>
+                                            <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
+                                                <div key={jobListing.employerBrandName}>
+                                                    {jobListing.employerBrandName}
+                                                </div>
+                                            </Link>
+                                        </span>
+                                        <Dot/>
+                                        <span className="flex gap-1">
+                                            <CalendarFold strokeWidth={1.25} size={20} />
+                                            <div key={jobListing.dateCreated.slice(0, 10)} className="text-sm">
+                                                {jobListing.dateCreated.slice(0, 10)}
+                                            </div>
+                                        </span>
                                     </div>
                                 </div>
                                 <CardFooter className="w-full mt-auto">

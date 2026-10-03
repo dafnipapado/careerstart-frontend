@@ -7,7 +7,7 @@ import {getLoggedInJobSeekerDetails} from "@/api/jobSeeker.ts";
 import type {Pagination} from "@/schemas/pagination.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {ChevronLeft, ChevronRight, Dot, Factory, MapPin} from "lucide-react";
+import {CalendarFold, ChevronLeft, ChevronRight, Dot, Factory, MapPin} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 
 const JobSeekerApplicationsPage = () => {
@@ -50,8 +50,8 @@ const JobSeekerApplicationsPage = () => {
                                         </div>
                                     </CardTitle>
                                     <CardDescription className="text-gray-200">
-                                        <div key={jobListing.dateCreated.slice(0,10)}>
-                                            {jobListing.dateCreated.slice(0,10)}
+                                        <div key={jobListing.status}>
+                                            {jobListing.status}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
@@ -60,19 +60,26 @@ const JobSeekerApplicationsPage = () => {
                                         {jobListing.professionalFieldName}
                                     </div>
                                     <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
-                                <span className="flex gap-1">
-                                    <MapPin strokeWidth={1.25} size={20}  />
-                                    <div key={jobListing.regionName}>
-                                        {jobListing.regionName}
-                                    </div>
-                                </span>
-                                        <Dot  />
                                         <span className="flex gap-1">
-                                    <Factory strokeWidth={1.25} size={20}  />
-                                    <div key={jobListing.employerBrandName}>
-                                        {jobListing.employerBrandName}
-                                    </div>
-                                </span>
+                                            <MapPin strokeWidth={1.25} size={20}  />
+                                            <div key={jobListing.regionName}>
+                                                {jobListing.regionName}
+                                            </div>
+                                        </span>
+                                        <Dot />
+                                        <span className="flex gap-1">
+                                            <Factory strokeWidth={1.25} size={20}  />
+                                            <div key={jobListing.employerBrandName}>
+                                                {jobListing.employerBrandName}
+                                            </div>
+                                        </span>
+                                        <Dot/>
+                                        <span className="flex gap-1">
+                                            <CalendarFold strokeWidth={1.25} size={20} />
+                                            <div key={jobListing.dateCreated.slice(0,10)}>
+                                            {jobListing.dateCreated.slice(0,10)}
+                                            </div>
+                                        </span>
                                     </div>
                                 </div>
                                 <CardFooter className="w-full mt-auto text-primary-dark-purple">
