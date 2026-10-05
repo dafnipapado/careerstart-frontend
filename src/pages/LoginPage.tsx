@@ -43,21 +43,21 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-surface p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
-                <h1 className="font-sans font-semibold text-3xl">Welcome back!</h1>
+            <div className="w-1/2 h-[67vh] mx-auto my-auto bg-surface p-5 mt-12 border border-gray-200 rounded-sm shadow-xl container-shadow">
+                <h1 className="font-semibold text-3xl text-text">Welcome back!</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-5"
                 >
                     <Field>
-                        <FieldLabel htmlFor="username" className="font-sans text-lg">Username</FieldLabel>
+                        <FieldLabel htmlFor="username" className="text-lg">Username</FieldLabel>
                         <div>
                             <Input id="username" type="text" {...register("username")}></Input>
                             <FieldErrorMessage error = {errors.username}/>
                         </div>
                     </Field>
                     <Field>
-                        <FieldLabel htmlFor="password" className="font-sans text-lg">Password</FieldLabel>
+                        <FieldLabel htmlFor="password" className="text-lg">Password</FieldLabel>
                         <div>
                             <Input id="password" type="password" {...register("password")}></Input>
                             <FieldErrorMessage error = {errors.password} />
@@ -66,12 +66,12 @@ const LoginPage = () => {
                     <CustomButton
                         type="submit"
                         label={isSubmitting ? "Logging in..." : "Login"}
-                        addClasses={`w-1/2 mx-auto! ml-0 font-sans font-semibold text-lg mt-3 ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                        addClasses={`w-1/2 mx-auto! ml-0 font-semibold text-lg mt-3 ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
                     </CustomButton>
                 </form>
                 <div className="mt-5">
                     <p className="text-sm">Don't have an account?</p>
-                    <div className="flex justify-center text-sm text-link-blue">
+                    <div className="flex justify-center text-sm text-link hover:text-link-hover">
                         <Link to="/register" className="hover:underline">Sign up here</Link>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ import {getJobSeekerCv} from "@/api/cv.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import CvFileHandler from "../../components/shared/CvFileHandler.tsx";
+import banner from "@/assets/images/banner.jpg";
 
 const JobSeekerDashboardPage = () => {
 
@@ -39,14 +40,15 @@ const JobSeekerDashboardPage = () => {
 
     return (
         <>
-            <div className="relative bg-linear-to-bl from-primary-dark-purple from-50% to-secondary-light-purple w-full h-70 top-0">
+            <div className="relative w-full h-70 top-0">
+                <img src={banner} className="absolute w-full object-cover rounded-lg h-70 top-0" />
                 {role !== "EMPLOYER" && (
                 <Link to="/job_seeker/settings" className="flex p-2 m-2">
                     <Settings strokeWidth={1.25}
                               className="border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                 </Link>)}
                 {jobSeekerInfo && (<PictureHandler uuid={jobSeekerInfo.uuid} onUpload={uploadJobSeekerProfilePicture} onGetPicture={getJobSeekerProfilePicture} canUpload={role === "JOB_SEEKER"} />)}
-                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl">
+                <div className="absolute w-fit left-60 -bottom-5 font-semibold text-3xl">
                     <h1>{jobSeekerInfo?.firstname} {jobSeekerInfo?.lastname}</h1>
                 </div>
                 <div className={`absolute left-60 ${cvInfo?.profession ? "-bottom-18" : "-bottom-10"} font-medium`}>
@@ -54,7 +56,7 @@ const JobSeekerDashboardPage = () => {
                         <div className="text-start font-semibold text-2xl mb-2">{cvInfo?.profession}</div>)}
                     <div className="flex gap-1">
                         <a href={`mailto:${jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}`}
-                           className="flex items-center gap-1 hover:text-secondary-light-purple"><Mail
+                           className="flex items-center gap-1 hover:text-primary-light"><Mail
                             strokeWidth={1.25}/>{jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.email}
                         </a>
                         {jobSeekerInfo?.personalInfoDetailsReadOnlyDTO.telephoneNumber && (
@@ -71,7 +73,7 @@ const JobSeekerDashboardPage = () => {
             </div>
 
             {jobSeekerInfo && (
-                <div className="mt-50 flex items-center justify-between">
+                <div className=" flex flex-col items-end gap-30 mt-5">
                     <CvFileHandler uuid={jobSeekerInfo!.uuid} onUpload={uploadJobSeekerCv} onGetCv={getJobSeekerCvFile} canUpload={role === "JOB_SEEKER"} />
                     {role !== "EMPLOYER" && cvInfo?.profession && (
                         <Link to={`/job_seeker/${jobSeekerInfo?.uuid}/cv/edit`}>
@@ -84,7 +86,7 @@ const JobSeekerDashboardPage = () => {
                 ?
                     <div>
                         {role !== "EMPLOYER" && (
-                            <div className="container w-full h-50 border border-gray-300 rounded-md mt-3">
+                            <div className="container w-full h-50 border border-gray-300 rounded-md mt-30">
                                 <div className="h-full content-center">
                                     <p className="pb-3">You haven't posted your CV yet.</p>
                                     <Link to="/job_seeker/create-cv">
@@ -95,9 +97,9 @@ const JobSeekerDashboardPage = () => {
                     </div>
                 :
                     <div
-                        className="w-full grid grid-cols-[1fr_20fr] mx-auto bg-surface border border-gray-200
-                            rounded-sm text-start shadow-xl shadow-surface-elevated mt-3">
-                        <div className="bg-secondary-light-purple"></div>
+                        className={`w-full grid grid-cols-[1fr_20fr] bg-surface
+                            shadow-xl container-shadow rounded-sm text-start mx-auto ${role !== 'JOB_SEEKER' ? 'mt-30' : 'mt-3'}`}>
+                        <div className="bg-primary-light"></div>
                         <div className="p-15">
                             {cvInfo?.bio && (<div>
                                 <div className="font-bold text-xl">PROFILE</div>

@@ -23,6 +23,8 @@ import {Button} from "@base-ui/react";
 import defaultUserPicture from "@/assets/images/default-user-picture.png";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
 import {accept, reject} from "@/api/application.ts";
+import {statusStyle} from "@/components/shared/statusStyle.ts";
+import {statusIcon} from "@/components/shared/statusIcon.tsx";
 
 const JobListingViewPage = () => {
 
@@ -134,19 +136,19 @@ const JobListingViewPage = () => {
 
     return (
         <>
-        <div className="container w-full bg-surface mt-10 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
+        <div className="container w-full bg-surface rounded-sm shadow-xl container-shadow mt-10">
             <div className="mx-auto w-full p-20">
                 <div className="flex flex-col">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-semibold">
                             {jobListing?.title}
                         </div>
-                        <div>
-                            {jobListing?.status}
+                        <div className={`${statusStyle(jobListing?.status)} flex items-center gap-1 text-text-light text-md font-semibold rounded-sm h-8 p-1 px-1`}>
+                            <span>{statusIcon(jobListing?.status)}</span> {jobListing?.status}
                         </div>
                     </div>
                     <div className="flex flex-col text-base font-sans">
-                        <div className="self-start mt-3 text-sm figtree-custom-italics text-link-blue">
+                        <div className="self-start mt-3 text-sm figtree-custom-italics text-industry">
                             {jobListing?.professionalFieldName}
                         </div>
                         <div className="flex items-baseline gap-1 -ml-1 mt-5 text-sm font-medium">
@@ -169,7 +171,7 @@ const JobListingViewPage = () => {
                             <Dot/>
                             <span className="flex gap-1">
                                 <CalendarFold strokeWidth={1.25} size={20} />
-                                <div className="text-gray-200">
+                                <div>
                                     {jobListing?.dateCreated.slice(0, 10)}
                                 </div>
                             </span>
@@ -181,7 +183,7 @@ const JobListingViewPage = () => {
                                         <a href={`${jobListing?.employerSummaryReadOnlyDTO.website}`}
                                            target="_blank"
                                            rel="noopener noreferrer"
-                                           className="text-font-link-blue hover:text-blue-950">
+                                           className="text-link hover:text-link-hover">
                                              {jobListing?.employerSummaryReadOnlyDTO.website}
                                         </a>
                                     </span>
@@ -199,7 +201,7 @@ const JobListingViewPage = () => {
                     ?
                         role === "EMPLOYER"
                         ?
-                        <div className="text-xl text-secondary-light-purple font-semibold">
+                        <div className="text-xl text-primary-light font-semibold">
                             Interested in this listing?
                             Sign in as a job seeker to apply!
                         </div>
@@ -208,7 +210,7 @@ const JobListingViewPage = () => {
                             <CustomButton
                                 onClick={() => hasApplied ? handleWithdraw(jobListing!.uuid) : handleApply(jobListing!.uuid)}
                                 label={`${hasApplied ? "Withdraw" : "Apply"}`}
-                                addClasses={`w-1/2 ${hasApplied ? "bg-red-900 hover:bg-red-800" : ""}`}>
+                                addClasses={`w-1/2 ${hasApplied ? "bg-danger! border-danger-hover! hover:bg-danger-hover!" : "bg-success! border-success-hover! hover:bg-success-hover!"}`}>
                             </CustomButton>
                         </div>
                     :
@@ -217,7 +219,7 @@ const JobListingViewPage = () => {
                             <CustomButton label="Edit" addClasses="w-40"></CustomButton>
                         </Link>
                         <CustomButton label="Delete" onClick={() => handleDelete(jobListing!.uuid)}
-                                      addClasses="w-40">
+                                      addClasses="w-40 bg-danger! border-danger-hover! hover:bg-danger-hover!">
                         </CustomButton>
                     </div>
                 }
@@ -226,19 +228,19 @@ const JobListingViewPage = () => {
                     {isOwnEmployer && (
                         <div>
                             <Separator className="bg-gray-400 my-10"/>
-                            <div className="text-2xl font-semibold">APPLICANTS</div>
+                            <div className="text-2xl font-semibold text-primary">APPLICANTS</div>
                             {applicants.length > 0
 
                             ?
                             <div className="w-full grid grid-cols-3 gap-2 mt-10">
                                 {applicants.map((applicant) => (
-                                    <Card key={applicant.uuid} className="flex flex-col mb-10 bg-surface-elevated shadow-lg shadow-font">
+                                    <Card key={applicant.uuid} className="flex flex-col mb-10 bg-background container-shadow">
                                         <CardHeader className="flex flex-col items-center">
                                             <CardTitle className="text-xl flex flex-col">
                                                 <div>
-                                                    <img src={avatarUrls[applicant.uuid] ?? defaultUserPicture} className="w-37.5 h-37.5 rounded-3xl" />
+                                                    <img src={avatarUrls[applicant.uuid] ?? defaultUserPicture} className="w-37.5 h-37.5 rounded-3xl border border-primary-light-border" />
                                                 </div>
-                                                <div className="flex justify-center gap-1 mt-2 text-gray-200">
+                                                <div className="flex justify-center gap-1 mt-2 text-primary">
                                                     <div key={applicant.firstname}>
                                                         {applicant.firstname}
                                                     </div>
@@ -247,28 +249,24 @@ const JobListingViewPage = () => {
                                                     </div>
                                                 </div>
                                             </CardTitle>
-                                            <CardDescription className="text-gray-200">
+                                            <CardDescription className="text-primary">
                                                 <div key={applicant.email}>
                                                     {applicant.email}
                                                 </div>
                                             </CardDescription>
                                         </CardHeader>
 
-                                        <CardFooter className="w-full mt-auto text-primary-dark-purple flex flex-col">
+                                        <CardFooter className="w-full mt-auto flex flex-col">
                                             <Link to={`/employer/jobseeker/${applicant.uuid}`} className="w-full">
-                                                <Button
-                                                    className="w-full border border-primary-dark-purple bg-secondary-light-purple
-                                                    text-surface hover:bg-secondary-light-purple/80 hover:text-font  px-4 py-2 rounded-sm cursor-pointer">
-                                                    View Profile
-                                                </Button>
+                                                <CustomButton label="View Profile" addClasses="w-full"></CustomButton>
                                             </Link>
                                             <div className="w-full flex justify-between mt-4">
                                                 <Button onClick={() => {handleAccept(jobListing!.uuid , applicant.uuid)}}
-                                                        className="w-3/7 flex bg-green-800 text-font py-2 mx-3 justify-center gap-1 rounded-sm cursor-pointer hover:bg-green-900                                                  ">
+                                                        className="w-1/2 text-success-hover border-2 border-success-hover hover:bg-success/20 flex justify-center gap-1 rounded-sm font-semibold py-2 mx-3 cursor-pointer">
                                                     Accept <CheckCheck />
                                                 </Button>
                                                 <Button onClick={() => {handleReject(jobListing!.uuid , applicant.uuid)}}
-                                                        className="w-3/7 flex bg-red-800 text-font py-2 mx-3 justify-center gap-1 rounded-sm cursor-pointer hover:bg-red-900">
+                                                        className="w-1/2 text-danger-hover border-2 border-danger-hover hover:bg-danger/20 flex justify-center gap-1 rounded-sm font-semibold py-2 mx-3 cursor-pointer">
                                                     Reject <X />
                                                 </Button>
                                             </div>

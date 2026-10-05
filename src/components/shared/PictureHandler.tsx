@@ -82,13 +82,13 @@ const PictureHandler = ({
                               className="h-30 p-7 flex flex-col gap-3">
                             <div className="flex justify-between gap-4">
                                 <input type="file" id="avatar" className="hidden" onChange={handleFileChange} />
-                                <label htmlFor="avatar" className="w-1/4 px-4 py-2 rounded-sm border border-primary-dark-purple bg-secondary-light-purple text-surface hover:bg-secondary-light-purple/80 hover:text-font cursor-pointer">
+                                <label htmlFor="avatar" className="w-1/4 bg-primary-light hover:bg-primary-light-hover border border-primary-light-border text-text-light rounded-sm px-4 py-2 cursor-pointer">
                                     Upload
                                 </label>
                                 <span className="w-5/6 border border-gray-300 bg-font/80 rounded-sm text-center content-center">{selectedFilename}</span>
                             </div>
-                            <div className="figtree-custom-italics text-xs text-end -mt-2 mb-2 text-font">(.jpeg, .jpg, .png)</div>
-                            <CustomButton label="Save" type="submit" addClasses={`block mx-auto ${!selectedFilename ? "bg-gray-400! border-gray-400!" : ""}`} disabled={!selectedFilename}></CustomButton>
+                            <div className="figtree-custom-italics text-xs text-text-muted text-end -mt-2 mb-2">(.jpeg, .jpg, .png)</div>
+                            <CustomButton label="Save" type="submit" addClasses={`block mx-auto ${!selectedFilename ? "bg-gray-400! border-gray-400! cursor-default!" : ""}`} disabled={!selectedFilename}></CustomButton>
                         </form>
                     </DialogContent>
                 </Dialog>

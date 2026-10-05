@@ -6,7 +6,7 @@ const CustomButton = ({label, addClasses="", disabled=false, onClick, type}: But
     return (
         <>
             <Button
-                className={`bg-primary hover:bg-primary-hover border border-primary-border text-text-light rounded-sm px-4 py-2 cursor-pointer ` + addClasses}
+                className={`bg-primary-light hover:bg-primary-light-hover border border-primary-light-border text-text-light rounded-sm px-4 py-2 cursor-pointer ` + addClasses}
                 disabled={disabled}
                 onClick={onClick}
                 type={type}

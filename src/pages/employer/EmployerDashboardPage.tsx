@@ -33,6 +33,9 @@ import {Button} from "@/components/ui/button.tsx";
 import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
+import banner from "@/assets/images/banner.jpg";
+import {statusStyle} from "@/components/shared/statusStyle.ts";
+import {statusIcon} from "@/components/shared/statusIcon.tsx";
 
 const EmployerDashboardPage = () => {
 
@@ -93,14 +96,15 @@ const EmployerDashboardPage = () => {
     return (
         <>
             {/*banner*/}
-            <div className="relative bg-linear-to-bl from-primary-dark-purple from-50% to-secondary-light-purple w-full h-70 top-0">
+            <div className="relative w-full rounded-lg h-70 top-0">
+                <img src={banner} className="absolute w-full object-cover rounded-lg h-70 top-0" />
                 {role !== "JOB_SEEKER" && (
                     <Link to="/employer/settings" className="flex p-2 m-2">
                         <Settings strokeWidth={1.25} className="border rounded-sm ml-auto w-9 h-9 p-1 cursor-pointer duration-300 ease-in-out opacity-90 hover:opacity-60  hover:scale-[0.98]"/>
                     </Link>
                 )}
                 {employerInfo && (<PictureHandler uuid={employerInfo.uuid} onUpload={uploadEmployerProfilePicture} onGetPicture={getEmployerProfilePicture} canUpload={role === "EMPLOYER"} />)}
-                <div className="absolute w-fit left-60 -bottom-5 font-sans font-semibold text-3xl">
+                <div className="absolute w-fit left-60 -bottom-5 font-semibold text-3xl">
                     <h1 className="">{employerInfo?.brandName}</h1>
                 </div>
                 <div className="absolute left-60 -bottom-17 flex flex-col gap-2 font-medium items-start">
@@ -128,7 +132,7 @@ const EmployerDashboardPage = () => {
             {/*job listings*/}
             <div>
                 <div className="text-left left-5 flex justify-between items-center">
-                    <div className="text-2xl font-semibold p-3 mb-5">
+                    <div className="text-2xl font-semibold text-text p-3 mb-5">
                         {role !== "JOB_SEEKER"
                             ? <span>My Job Listings ({jobListingsNumber})</span>
                             : <span>{jobListingsNumber} Job Listings</span>}
@@ -144,7 +148,7 @@ const EmployerDashboardPage = () => {
                 ?
                 <div className="container w-full">
                     {jobListingsPage?.content.map((jobListing) => (
-                    <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface shadow-xl shadow-surface-elevated border border-font text-font!">
+                    <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface container-shadow">
                         <CardHeader className="flex items-center justify-between">
                             <CardTitle className="text-2xl flex items-center gap-5">
                                 <div key={jobListing.title}>
@@ -153,17 +157,17 @@ const EmployerDashboardPage = () => {
                                 {role !== "JOB_SEEKER"
                                 ?
                                 <div className="flex items-center gap-x-0.5">
-                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-secondary-light-purple duration-300 ease-in-out hover:scale-[0.95]">
+                                    <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-primary-light duration-300 ease-in-out hover:scale-[0.95]">
                                         <SquarePen className="w-5 h-5"/>
                                     </Link>
-                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-secondary-light-purple duration-300 ease-in-out hover:scale-[0.95] cursor-pointer">
+                                    <Button onClick={() => handleDelete(jobListing.uuid)} className="text-danger duration-300 ease-in-out hover:scale-[0.95] bg-white hover:bg-white cursor-pointer">
                                         <Trash2 className="w-5! h-5!"/>
                                     </Button>
                                 </div>
                                 :
                                 <div>
                                     {appliedJobListings[jobListing.uuid] && (
-                                        <div className="flex text-xs figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
+                                        <div className="flex figtree-custom-italics bg-success text-text-light text-xs rounded-sm p-1 h-5 items-center gap-1">
                                             <BadgeCheck size={16}/>
                                             <p>applied</p>
                                         </div>
@@ -171,14 +175,14 @@ const EmployerDashboardPage = () => {
                                 </div>
                                 }
                             </CardTitle>
-                            <CardDescription className="text-gray-200">
-                                <div key={jobListing.status}>
-                                    {jobListing.status}
+                            <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
+                                <div key={jobListing.status} className="flex gap-1 px-1">
+                                    <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
                                 </div>
                             </CardDescription>
                         </CardHeader>
                         <div className="flex flex-col text-base font-sans">
-                            <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue" key={jobListing.professionalFieldName}>
+                            <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-industry" key={jobListing.professionalFieldName}>
                                 {jobListing.professionalFieldName}
                             </div>
                             <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
@@ -206,10 +210,7 @@ const EmployerDashboardPage = () => {
                         </div>
                         <CardFooter className="w-full mt-auto ">
                             <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                <Button className="w-full px-4 py-2 rounded-sm border border-primary-dark-purple
-                                    bg-secondary-light-purple text-surface hover:bg-secondary-light-purple/80 hover:text-font cursor-pointer">
-                                    View Listing ⟶
-                                </Button>
+                                <CustomButton label="View Listing ⟶" addClasses="w-full"></CustomButton>
                             </Link>
                         </CardFooter>
                     </Card>
@@ -219,7 +220,7 @@ const EmployerDashboardPage = () => {
                 <div className="container w-full h-50 border border-gray-400 rounded-md">
                     <div className="h-full content-center">
                         <p>You have no active job listings yet.</p>
-                        <Link to="/employer/create-joblisting" className="text-link-blue hover:underline">Post your first job listing</Link>
+                        <Link to="/employer/create-joblisting" className="text-link hover:text-link-hover hover:underline">Post your first job listing</Link>
                     </div>
                 </div>}
 
@@ -229,17 +230,17 @@ const EmployerDashboardPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
                         >
                             <ChevronLeft />
                         </button>
-                        <span className="font-semibold">
+                        <span className="font-semibold text-primary">
                             {currentPage + 1}/{jobListingsPage?.totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
                         >
                             <ChevronRight />
                         </button>

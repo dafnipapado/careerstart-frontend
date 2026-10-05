@@ -70,8 +70,8 @@ const EmployerManagementPage = () => {
 
     return (
         <>
-            <Table className="w-full mt-10 border border-font">
-                <TableHeader className="text-font!">
+            <Table className="w-full mt-10">
+                <TableHeader>
                     <TableHead>Brand Name</TableHead>
                     <TableHead>VAT</TableHead>
                     <TableHead>Email</TableHead>
@@ -86,14 +86,17 @@ const EmployerManagementPage = () => {
                             <TableCell>{employer.vat}</TableCell>
                             <TableCell>{employer.personalInfoDetailsReadOnlyDTO.email}</TableCell>
                             <TableCell>{jobListingsNumber[employer.uuid]}</TableCell>
-                            <TableCell className="flex justify-center">{employer.deleted ? <CircleCheck/> : <CircleX/>}</TableCell>
+                            <TableCell>
+                                <div className="flex justify-center items-center h-full">
+                                {employer.deleted ? <CircleCheck/> : <CircleX/>}
+                            </div></TableCell>
                             <TableCell>
                                 <Button onClick={() =>
                                     employer.deleted
                                         ? handleActivate(employer.uuid)
                                         : handleDelete(employer.uuid)}
-                                    className={`${employer.deleted ? "border border-green-500 text-green-500" : "border border-red-500 text-red-500"}
-                                            rounded-sm cursor-pointer`}
+                                    className={`${employer.deleted ? "border border-success text-success hover:bg-gray-300" : "border border-danger text-danger hover:bg-gray-300"}
+                                            bg-surface rounded-sm cursor-pointer`}
                                 >
                                     {employer.deleted ? "Activate" : "Deactivate"}
                                 </Button>

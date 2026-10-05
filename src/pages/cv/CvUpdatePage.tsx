@@ -9,10 +9,10 @@ import {Field, FieldLabel} from "@/components/ui/field.tsx";
 import CustomAsterisk from "@/components/shared/CustomAsterisk.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {useEffect} from "react";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
+import CustomButton from "@/components/shared/CustomButton.tsx";
 
 const CvUpdatePage = () => {
 
@@ -59,8 +59,8 @@ const CvUpdatePage = () => {
 
     return (
         <>
-            <div className="w-full mx-auto my-auto p-5 mt-12 bg-surface border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
-                <h1 className="font-sans font-semibold text-3xl">Edit your CV</h1>
+            <div className="w-full mx-auto my-auto p-5 mt-12 bg-surface rounded-sm shadow-xl container-shadow">
+                <h1 className="font-semibold text-3xl text-primary">Edit your CV</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col gap-8 w-2/3 mx-auto pt-15"
@@ -116,10 +116,11 @@ const CvUpdatePage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-primary-dark-purple
-                        hover:bg-hover-dark-purple border-2 border-secondary-light-purple rounded-md py-5 mt-10 mb-5 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">Saving...</span> : "Save"}
-                    </Button>
+                    <CustomButton
+                        type="submit"
+                        label={isSubmitting ? "Saving..." : "Save"}
+                        addClasses={`w-1/2 font-sans font-semibold text-lg rounded-md mx-auto mt-10 ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                    </CustomButton>
                 </form>
             </div>
 

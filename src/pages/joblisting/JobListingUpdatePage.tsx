@@ -17,11 +17,11 @@ import {Input} from "@/components/ui/input.tsx";
 import FieldErrorMessage from "@/components/shared/FieldErrorMessage.tsx";
 import {Textarea} from "@/components/ui/textarea.tsx";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {getSingleJobListing, updateJobListing} from "@/api/jobListing.ts";
 import {toast} from "sonner";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
+import CustomButton from "@/components/shared/CustomButton.tsx";
 
 const JobListingUpdatePage = () => {
 
@@ -76,10 +76,10 @@ const JobListingUpdatePage = () => {
 
     return (
         <>
-            <div className="w-full mx-auto my-auto bg-surface p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
-                <h1 className="font-sans font-semibold text-3xl">Update job listing</h1>
+            <div className="w-full bg-surface rounded-sm shadow-xl container-shadow mx-auto my-auto mt-12 p-5">
+                <h1 className="font-semibold text-3xl text-primary">Update job listing</h1>
                 <div className="text-sm">Required fields are marked with an asterisk (
-                    <span><Asterisk size={12} color="#a02200" strokeWidth={2} className="inline -mt-2"/></span>
+                    <span><Asterisk size={12} strokeWidth={2} className="text-danger inline -mt-2"/></span>
                     ).
                 </div>
                 <form
@@ -154,10 +154,11 @@ const JobListingUpdatePage = () => {
                             </div>
                         </Field>
                     </div>
-                    <Button type="submit" className="w-1/2 mx-auto font-sans font-semibold text-lg bg-primary-dark-purple
-                        hover:bg-hover-dark-purple border-2 border-secondary-light-purple rounded-md py-5 mt-10 mb-5 cursor-pointer">
-                        {isSubmitting ? <span className="cursor-progress">Updating...</span> : "Update"}
-                    </Button>
+                    <CustomButton
+                        type="submit"
+                        label={isSubmitting ? "Updating..." : "Update"}
+                        addClasses={`w-1/2 font-sans font-semibold text-lg rounded-md mx-auto mt-10 ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                    </CustomButton>
                 </form>
             </div>
         </>

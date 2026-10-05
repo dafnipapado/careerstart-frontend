@@ -22,6 +22,9 @@ import type {ProfessionalField} from "@/schemas/professionalField.ts";
 import type {Region} from "@/schemas/region.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
+import CustomButton from "@/components/shared/CustomButton.tsx";
+import {statusStyle} from "@/components/shared/statusStyle.ts";
+import {statusIcon} from "@/components/shared/statusIcon.tsx";
 import {useAuth} from "@/context/AuthProvider.tsx";
 
 const JobListingsPage = () => {
@@ -88,8 +91,8 @@ const JobListingsPage = () => {
         <>
             <div className="w-full">
                 {/*filters*/}
-                <h1 className="text-left text-3xl pl-7 font-semibold">Job Listings</h1>
-                <div className="w-full h-20 flex items-center bg-surface-elevated border border-gray-200 shadow-xl shadow-secondary-light-purple rounded-md my-10">
+                <h1 className="text-left text-3xl pl-7 font-semibold text-primary">Job Listings</h1>
+                <div className="w-full h-20 flex items-center bg-surface shadow-xl container-shadow rounded-md my-10">
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                     >
@@ -99,14 +102,16 @@ const JobListingsPage = () => {
                                 <Field>
                                     <div>
                                         <Input id="title" type="text" {...register("title")} placeholder="Job Title..."
-                                               className="rounded-md placeholder:text-gray-200"></Input>
+                                               className="rounded-md placeholder:text-text-muted">
+                                        </Input>
                                     </div>
                                 </Field>
                                 <Field>
                                     <div>
                                         <Input id="employerBrandName" type="text" {...register("employerBrandName")}
                                                placeholder="Company..."
-                                               className="rounded-md placeholder:text-gray-200"></Input>
+                                               className="rounded-md placeholder:text-text-muted">
+                                        </Input>
                                     </div>
                                 </Field>
                                 <Field>
@@ -115,7 +120,7 @@ const JobListingsPage = () => {
                                             <Select onValueChange={(val) => field.onChange(Number(val))}
                                                     value={field.value ?? null}>
                                                 <SelectTrigger className="w-full rounded-md">
-                                                    <SelectValue placeholder="Industry" className="text-gray-200">
+                                                    <SelectValue placeholder="Industry" className="text-text-muted">
                                                         {professionalFields.find(professionalField => professionalField.id === field.value)?.name ?? "Industry"}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -141,7 +146,7 @@ const JobListingsPage = () => {
                                             <Select onValueChange={(val) => field.onChange(Number(val))}
                                                     value={field.value ?? null}>
                                                 <SelectTrigger className="w-full rounded-md">
-                                                    <SelectValue placeholder="Region" className="text-gray-200">
+                                                    <SelectValue placeholder="Region" className="text-text-muted">
                                                         {regions.find(region => region.id === field.value)?.name ?? "Region"}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -162,13 +167,14 @@ const JobListingsPage = () => {
                                 </Field>
                                 <div className="flex gap-2 mx-auto">
                                     <Button type="submit"
-                                            className=" bg-primary-dark-purple hover:bg-hover-dark-purple border-2 border-secondary-light-purple text-font rounded-md p-2 cursor-pointer">
+                                            className=" bg-primary-light hover:bg-primary-light-hover border border-primary-light-border
+                                             text-text-light rounded-md p-2 cursor-pointer">
                                         {isSubmitting
                                             ? <span className="cursor-progress"><Funnel/></span>
                                             : <Funnel/>}
                                     </Button>
                                     <Button onClick={onClear}
-                                            className="bg-gray-200 border border-gray-300 text-red-800 rounded-md  p-2 cursor-pointer"><X/></Button>
+                                            className="bg-background hover:bg-gray-200 border border-gray-300 text-danger rounded-md p-2 cursor-pointer"><X/></Button>
                                 </div>
                             </div>
                         </div>
@@ -182,27 +188,27 @@ const JobListingsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface border border-font text-font! shadow-xl shadow-surface-elevated">
+                            <Card key={jobListing.uuid} className="w-full h-50 flex flex-col bg-surface border shadow-xl container-shadow mx-auto mb-10 p-5">
                                 <CardHeader className="flex items-center justify-between">
                                     <CardTitle className="text-2xl flex items-center gap-5">
                                         <div key={jobListing.title}>
                                             {jobListing.title}
                                         </div>
                                         {appliedJobListings[jobListing.uuid] && (
-                                            <div className="flex text-xs text-white figtree-custom-italics bg-green-600 rounded-sm p-1 h-5 items-center gap-1">
+                                            <div className="flex bg-success text-text-light text-xs figtree-custom-italics rounded-sm p-1 h-5 items-center gap-1">
                                                 <BadgeCheck size={16}/>
                                                 <p>applied</p>
                                             </div>
                                         )}
                                     </CardTitle>
-                                    <CardDescription className="text-gray-200">
-                                        <div key={jobListing.status}>
-                                            {jobListing.status}
+                                    <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
+                                        <div key={jobListing.status} className="flex gap-1 px-1">
+                                            <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
                                 <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue"
+                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-industry"
                                          key={jobListing.professionalFieldName}>
                                         {jobListing.professionalFieldName}
                                     </div>
@@ -241,10 +247,10 @@ const JobListingsPage = () => {
                                 </div>
                                 <CardFooter className="w-full mt-auto">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <Button
-                                            className="w-full border border-primary-dark-purple bg-secondary-light-purple
-                                            text-surface hover:bg-secondary-light-purple/80 hover:text-font px-4 py-2 rounded-sm cursor-pointer">View
-                                            Listing ⟶</Button>
+                                        <CustomButton
+                                            label="View Listing ⟶"
+                                            addClasses={`w-full ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
+                                        </CustomButton>
                                     </Link>
                                 </CardFooter>
                             </Card>
@@ -262,17 +268,17 @@ const JobListingsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
                         >
                             <ChevronLeft/>
                         </button>
-                        <span className="font-semibold">
+                        <span className="font-semibold text-primary">
                             {currentPage + 1}/{jobListingsPage?.totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple/20 disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
                         >
                             <ChevronRight/>
                         </button>

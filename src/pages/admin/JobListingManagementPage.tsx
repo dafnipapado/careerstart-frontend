@@ -74,14 +74,17 @@ const JobListingManagementPage = () => {
                             <TableCell>{listing.professionalFieldName}</TableCell>
                             <TableCell>{listing.regionName}</TableCell>
                             <TableCell>{listing.dateCreated.slice(0, 10)}</TableCell>
-                            <TableCell className="flex justify-center">{listing.deleted ? <CircleCheck/> : <CircleX/>}</TableCell>
+                            <TableCell>
+                                <div className="flex justify-center items-center h-full">
+                                    {listing.deleted ? <CircleCheck/> : <CircleX/>}
+                                </div></TableCell>
                             <TableCell>
                                 <Button onClick={() =>
                                     listing.deleted
                                         ? handleRestore(listing.uuid)
                                         : handleDelete(listing.uuid)}
-                                        className={`${listing.deleted ? "border border-green-500 text-green-500" : "border border-red-500 text-red-500"}
-                                            rounded-sm cursor-pointer`}
+                                        className={`${listing.deleted ? "border border-success text-success hover:bg-gray-300" : "border border-danger text-danger hover:bg-gray-300"}
+                                            bg-surface rounded-sm cursor-pointer`}
                                 >
                                     {listing.deleted ? "Restore" : "Delete"}
                                 </Button>

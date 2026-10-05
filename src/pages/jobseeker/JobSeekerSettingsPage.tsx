@@ -108,13 +108,13 @@ const JobSeekerSettingsPage = () => {
 
     return (
         <>
-            <div className="w-full mx-auto my-auto bg-surface p-5 mt-12 border border-gray-200 rounded-sm shadow-xl shadow-surface-elevated">
+            <div className="w-full bg-surface rounded-sm shadow-xl container-shadow mx-auto my-auto mt-12 p-5">
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
-                        <span className="flex items-center gap-2 ">
+                        <span className="flex items-center gap-2 text-primary">
                             <SquarePen size={30}/><h1 className="font-semibold text-3xl">Update your info</h1>
                         </span>
                     <div className="text-sm">Required fields are marked with an asterisk (
-                        <span><Asterisk size={12} color="#a02200" strokeWidth={2} className="inline -mt-2"/></span>
+                        <span><Asterisk size={12} strokeWidth={2} className="text-danger inline -mt-2"/></span>
                         ).
                     </div>
                 </div>
@@ -160,7 +160,7 @@ const JobSeekerSettingsPage = () => {
                                 <Controller name="regionId" control={control} render={({ field }) => (
                                     <Select onValueChange={(val) => field.onChange(Number(val))} value={field.value??null}>
                                         <SelectTrigger className="w-full rounded-md">
-                                            <SelectValue placeholder="Select a region"  className="text-gray-200">
+                                            <SelectValue placeholder="Select a region"  className="text-text">
                                                 {regions.find(region => region.id === field.value)?.name ?? "Select a region"}
                                             </SelectValue>
                                         </SelectTrigger>
@@ -205,8 +205,8 @@ const JobSeekerSettingsPage = () => {
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
 
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5">
-                    <span className="flex items-center gap-2">
-                        <Lock size={24}/><h1 className="font-sans font-semibold text-2xl">Change your password</h1>
+                    <span className="flex items-center gap-2 text-primary">
+                        <Lock size={24}/><h1 className="font-semibold text-2xl">Change your password</h1>
                     </span>
                 </div>
                 <form
@@ -232,7 +232,7 @@ const JobSeekerSettingsPage = () => {
                             <FieldLabel htmlFor="confirmPassword" className="font-sans text-lg">Confirm New Password<CustomAsterisk/></FieldLabel>
                             <div>
                                 <Input id="confirmPassword" type="password" {...registerPassword("confirmPassword")} className="rounded-md"></Input>
-                                <div className="h-1 text-sm mt-1 text-start text-error-dark-red">
+                                <div className="h-1 text-sm mt-1 text-start text-danger">
                                     <span>{passwordErrors.confirmPassword?.message}</span>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@ const JobSeekerSettingsPage = () => {
                 <Separator className="w-4/5! mx-auto mt-15 bg-gray-400 "/>
 
                 <div className="flex flex-col w-2/3 mx-auto text-left pt-5 pb-5">
-                    <div className="flex items-center text-red-700/80 gap-2">
+                    <div className="flex items-center text-danger gap-2">
                         <Trash2 /><h1 className="font-sans font-semibold text-2xl">Delete your Account</h1>
                     </div>
                     <span className="text-sm font-sans -mt-2 mb-8">This action will deactivate your account permanently.</span>

@@ -8,7 +8,9 @@ import type {Pagination} from "@/schemas/pagination.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {CalendarFold, ChevronLeft, ChevronRight, Dot, Factory, MapPin} from "lucide-react";
-import {Button} from "@/components/ui/button.tsx";
+import CustomButton from "@/components/shared/CustomButton.tsx";
+import {statusStyle} from "@/components/shared/statusStyle.ts";
+import {statusIcon} from "@/components/shared/statusIcon.tsx";
 
 const JobSeekerApplicationsPage = () => {
 
@@ -33,7 +35,7 @@ const JobSeekerApplicationsPage = () => {
         <>
             <div className="pt-10">
                 <div className="text-left left-5 flex justify-between items-center">
-                    <div className="text-2xl font-semibold p-3 mb-5">
+                    <div className="text-2xl text-primary font-semibold p-3 mb-5">
                         <span>My Job Applications</span>
                     </div>
                 </div>
@@ -42,21 +44,21 @@ const JobSeekerApplicationsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface shadow-xl shadow-surface-elevated border border-font text-font">
+                            <Card key={jobListing.uuid} className="flex flex-col w-full h-50 bg-surface shadow-xl container-shadow mx-auto mb-10 p-5 ">
                                 <CardHeader className="flex items-center justify-between">
                                     <CardTitle className="text-2xl flex items-center gap-5">
                                         <div key={jobListing.title}>
                                             {jobListing.title}
                                         </div>
                                     </CardTitle>
-                                    <CardDescription className="text-gray-200">
-                                        <div key={jobListing.status}>
-                                            {jobListing.status}
+                                    <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
+                                        <div key={jobListing.status} className="flex gap-1 px-1">
+                                            <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
                                         </div>
                                     </CardDescription>
                                 </CardHeader>
                                 <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-link-blue" key={jobListing.professionalFieldName}>
+                                    <div className="self-start figtree-custom-italics text-industry text-sm ml-7 -mt-5" key={jobListing.professionalFieldName}>
                                         {jobListing.professionalFieldName}
                                     </div>
                                     <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
@@ -84,10 +86,7 @@ const JobSeekerApplicationsPage = () => {
                                 </div>
                                 <CardFooter className="w-full mt-auto text-primary-dark-purple">
                                     <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <Button className="w-full border-primary-dark-purple bg-secondary-light-purple
-                                            text-surface hover:bg-secondary-light-purple/80 hover:text-font px-4 py-2 rounded-sm cursor-pointer">
-                                            View Listing ⟶
-                                        </Button>
+                                        <CustomButton label="View Listing ⟶" addClasses="w-full"></CustomButton>
                                     </Link>
                                 </CardFooter>
                             </Card>
@@ -97,7 +96,7 @@ const JobSeekerApplicationsPage = () => {
                     <div className="container w-full h-50 border border-gray-400 rounded-md">
                         <div className="h-full content-center">
                             <p>You have not applied to any job listings yet.</p>
-                            <Link to="/job-listings" className="text-link-blue hover:underline">Browse job listings</Link>
+                            <Link to="/job-listings" className="text-link hover:text-link-hover hover:underline">Browse job listings</Link>
                         </div>
                     </div>}
 
@@ -107,17 +106,17 @@ const JobSeekerApplicationsPage = () => {
                         <button
                             onClick={() => setCurrentPage(prev => prev - 1)}
                             disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary disabled:text-gray-400"
                         >
                             <ChevronLeft />
                         </button>
-                        <span className="font-semibold">
+                        <span className="font-semibold text-primary">
                             {currentPage + 1}/{jobListingsPage?.totalPages}
                         </span>
                         <button
                             onClick={() => setCurrentPage(prev => prev + 1)}
                             disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-dark-purple disabled:text-gray-400"
+                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary disabled:text-gray-400"
                         >
                             <ChevronRight />
                         </button>
