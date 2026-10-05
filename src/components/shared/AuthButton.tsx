@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router";
 import {toast} from "sonner";
 import {useAuth} from "@/context/AuthProvider.tsx";
-import CustomButton from "@/components/shared/CustomButton.tsx";
+import CustomButtonLight from "@/components/shared/CustomButtonLight.tsx";
 
 export function AuthButton() {
     
@@ -20,6 +20,6 @@ export function AuthButton() {
     }
     
     return isAuthenticated 
-    ? <CustomButton label="Logout" onClick={handleLogout}></CustomButton>
-    : <CustomButton label="Login" onClick={handleLogin}></CustomButton>
+    ? <CustomButtonLight label="Logout" onClick={handleLogout}></CustomButtonLight>
+    : <CustomButtonLight label="Login" onClick={handleLogin}></CustomButtonLight>
 }
