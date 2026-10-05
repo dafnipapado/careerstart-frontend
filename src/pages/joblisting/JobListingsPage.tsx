@@ -45,7 +45,7 @@ const JobListingsPage = () => {
     useEffect(() => {
         const fetchJobListings = async () => {
             const jobListings = await getPaginatedFilteredJobListings({
-                ...filters, page: currentPage
+                ...filters, deleted:false, page: currentPage
             })
             setJobListingsPage(jobListings)
 

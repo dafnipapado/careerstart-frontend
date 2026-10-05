@@ -21,7 +21,7 @@ const JobSeekerApplicationsPage = () => {
             const jobSeekerData = await getLoggedInJobSeekerDetails()
 
             const jobListings = await getPaginatedFilteredJobListings({
-                ...defaultJobListingFilters, jobSeekerUuid: jobSeekerData.uuid, page: currentPage
+                ...defaultJobListingFilters, jobSeekerUuid: jobSeekerData.uuid, deleted: false, page: currentPage
             })
             setJobListingsPage(jobListings)
         }

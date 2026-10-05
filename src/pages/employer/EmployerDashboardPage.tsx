@@ -53,7 +53,7 @@ const EmployerDashboardPage = () => {
             setEmployerInfo(employerData)
 
             const jobListings = await getPaginatedFilteredJobListings({
-                ...defaultJobListingFilters, employerUuid: employerData.uuid, page: currentPage
+                ...defaultJobListingFilters, employerUuid: employerData.uuid, deleted:false, page: currentPage
             })
             setJobListingsPage(jobListings)
 
