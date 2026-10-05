@@ -157,9 +157,14 @@ const JobListingViewPage = () => {
                             <Dot/>
                             <span className="flex gap-1">
                                 <Factory strokeWidth={1.25} size={20}/>
-                                <Link to={`/job_seeker/employer/${jobListing?.employerSummaryReadOnlyDTO.uuid}`}>
-                                    {jobListing?.employerSummaryReadOnlyDTO.brandName}
-                                </Link>
+                                {role === "JOB_SEEKER"
+                                ?
+                                    <Link to={`/job_seeker/employer/${jobListing?.employerSummaryReadOnlyDTO.uuid}`}>
+                                        {jobListing?.employerSummaryReadOnlyDTO.brandName}
+                                    </Link>
+                                :
+                                    <div>{jobListing?.employerSummaryReadOnlyDTO.brandName}</div>
+                                }
                             </span>
                             <Dot/>
                             <span className="flex gap-1">

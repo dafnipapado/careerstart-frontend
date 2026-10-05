@@ -22,9 +22,11 @@ import type {ProfessionalField} from "@/schemas/professionalField.ts";
 import type {Region} from "@/schemas/region.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
+import {useAuth} from "@/context/AuthProvider.tsx";
 
 const JobListingsPage = () => {
 
+    const {role} = useAuth()
     const [jobListingsPage, setJobListingsPage] = useState<Pagination<JobListingReadSummary> | null>(null)
     const [currentPage, setCurrentPage] = useState(0)
     const [filters, setFilters] = useState<JobListingFilters>(defaultJobListingFilters)
@@ -214,11 +216,19 @@ const JobListingsPage = () => {
                                         <Dot/>
                                         <span className="flex gap-1">
                                             <Factory strokeWidth={1.25} size={20}/>
-                                            <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
+                                            {role === "JOB_SEEKER"
+                                            ?
+                                                <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
+                                                    <div key={jobListing.employerBrandName}>
+                                                        {jobListing.employerBrandName}
+                                                    </div>
+                                                </Link>
+                                            :
                                                 <div key={jobListing.employerBrandName}>
                                                     {jobListing.employerBrandName}
                                                 </div>
-                                            </Link>
+                                            }
+
                                         </span>
                                         <Dot/>
                                         <span className="flex gap-1">
