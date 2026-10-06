@@ -1,6 +1,4 @@
-import {Link} from "react-router";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {BadgeCheck, CalendarFold, ChevronLeft, ChevronRight, Dot, Factory, Funnel, MapPin, X} from "lucide-react";
+import {ChevronLeft, ChevronRight, Funnel, X} from "lucide-react";
 import {Button} from "@base-ui/react";
 import {useEffect, useState} from "react";
 import type {Pagination} from "@/schemas/pagination.ts";
@@ -22,10 +20,8 @@ import type {ProfessionalField} from "@/schemas/professionalField.ts";
 import type {Region} from "@/schemas/region.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
-import CustomButton from "@/components/shared/CustomButton.tsx";
-import {statusStyle} from "@/components/shared/statusStyle.ts";
-import {statusIcon} from "@/components/shared/statusIcon.tsx";
 import {useAuth} from "@/context/AuthProvider.tsx";
+import JobListingCard from "@/components/shared/JobListingCard.tsx";
 
 const JobListingsPage = () => {
 
@@ -188,72 +184,7 @@ const JobListingsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="w-full h-50 flex flex-col bg-surface border shadow-xl container-shadow mx-auto mb-10 p-5">
-                                <CardHeader className="flex items-center justify-between">
-                                    <CardTitle className="text-2xl flex items-center gap-5">
-                                        <div key={jobListing.title}>
-                                            {jobListing.title}
-                                        </div>
-                                        {appliedJobListings[jobListing.uuid] && (
-                                            <div className="flex bg-success text-text-light text-xs figtree-custom-italics rounded-sm p-1 h-5 items-center gap-1">
-                                                <BadgeCheck size={16}/>
-                                                <p>applied</p>
-                                            </div>
-                                        )}
-                                    </CardTitle>
-                                    <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
-                                        <div key={jobListing.status} className="flex gap-1 px-1">
-                                            <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
-                                        </div>
-                                    </CardDescription>
-                                </CardHeader>
-                                <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-industry"
-                                         key={jobListing.professionalFieldName}>
-                                        {jobListing.professionalFieldName}
-                                    </div>
-                                    <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
-                                        <span className="flex gap-1">
-                                            <MapPin strokeWidth={1.25} size={20}/>
-                                            <div key={jobListing.regionName}>
-                                                {jobListing.regionName}
-                                            </div>
-                                        </span>
-                                        <Dot/>
-                                        <span className="flex gap-1">
-                                            <Factory strokeWidth={1.25} size={20}/>
-                                            {role === "JOB_SEEKER"
-                                            ?
-                                                <Link to={`/job_seeker/employer/${jobListing.employerUuid}`}>
-                                                    <div key={jobListing.employerBrandName}>
-                                                        {jobListing.employerBrandName}
-                                                    </div>
-                                                </Link>
-                                            :
-                                                <div key={jobListing.employerBrandName}>
-                                                    {jobListing.employerBrandName}
-                                                </div>
-                                            }
-
-                                        </span>
-                                        <Dot/>
-                                        <span className="flex gap-1">
-                                            <CalendarFold strokeWidth={1.25} size={20} />
-                                            <div key={jobListing.dateCreated.slice(0, 10)} className="text-sm">
-                                                {jobListing.dateCreated.slice(0, 10)}
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <CardFooter className="w-full mt-auto">
-                                    <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <CustomButton
-                                            label="View Listing ⟶"
-                                            addClasses={`w-full ${isSubmitting ? "cursor-progress" : "cursor-pointer"}`}>
-                                        </CustomButton>
-                                    </Link>
-                                </CardFooter>
-                            </Card>
+                            <JobListingCard role={role} jobListing={jobListing} hasApplied={appliedJobListings[jobListing.uuid]} />
                         ))}
                     </div>
                     :

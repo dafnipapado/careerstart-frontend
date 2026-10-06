@@ -6,11 +6,8 @@ import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
 import {getLoggedInJobSeekerDetails} from "@/api/jobSeeker.ts";
 import type {Pagination} from "@/schemas/pagination.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {CalendarFold, ChevronLeft, ChevronRight, Dot, Factory, MapPin} from "lucide-react";
-import CustomButton from "@/components/shared/CustomButton.tsx";
-import {statusStyle} from "@/components/shared/statusStyle.ts";
-import {statusIcon} from "@/components/shared/statusIcon.tsx";
+import {ChevronLeft, ChevronRight} from "lucide-react";
+import JobListingCard from "@/components/shared/JobListingCard.tsx";
 
 const JobSeekerApplicationsPage = () => {
 
@@ -44,52 +41,7 @@ const JobSeekerApplicationsPage = () => {
                     ?
                     <div className="container w-full">
                         {jobListingsPage?.content.map((jobListing) => (
-                            <Card key={jobListing.uuid} className="flex flex-col w-full h-50 bg-surface shadow-xl container-shadow mx-auto mb-10 p-5 ">
-                                <CardHeader className="flex items-center justify-between">
-                                    <CardTitle className="text-2xl flex items-center gap-5">
-                                        <div key={jobListing.title}>
-                                            {jobListing.title}
-                                        </div>
-                                    </CardTitle>
-                                    <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
-                                        <div key={jobListing.status} className="flex gap-1 px-1">
-                                            <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
-                                        </div>
-                                    </CardDescription>
-                                </CardHeader>
-                                <div className="flex flex-col text-base font-sans">
-                                    <div className="self-start figtree-custom-italics text-industry text-sm ml-7 -mt-5" key={jobListing.professionalFieldName}>
-                                        {jobListing.professionalFieldName}
-                                    </div>
-                                    <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
-                                        <span className="flex gap-1">
-                                            <MapPin strokeWidth={1.25} size={20}  />
-                                            <div key={jobListing.regionName}>
-                                                {jobListing.regionName}
-                                            </div>
-                                        </span>
-                                        <Dot />
-                                        <span className="flex gap-1">
-                                            <Factory strokeWidth={1.25} size={20}  />
-                                            <div key={jobListing.employerBrandName}>
-                                                {jobListing.employerBrandName}
-                                            </div>
-                                        </span>
-                                        <Dot/>
-                                        <span className="flex gap-1">
-                                            <CalendarFold strokeWidth={1.25} size={20} />
-                                            <div key={jobListing.dateCreated.slice(0,10)}>
-                                            {jobListing.dateCreated.slice(0,10)}
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
-                                <CardFooter className="w-full mt-auto text-primary-dark-purple">
-                                    <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                        <CustomButton label="View Listing ⟶" addClasses="w-full"></CustomButton>
-                                    </Link>
-                                </CardFooter>
-                            </Card>
+                            <JobListingCard role="JOB_SEEKER" jobListing={jobListing} hasApplied={true} />
                         ))}
                     </div>
                     :

@@ -7,10 +7,8 @@ import {
 } from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
-    BadgeCheck, CalendarFold,
     ChevronLeft,
     ChevronRight,
-    Dot,
     Factory,
     MapPin,
     Settings,
@@ -25,7 +23,6 @@ import {deleteJobListing, getPaginatedFilteredJobListings} from "@/api/jobListin
 import {defaultJobListingFilters} from "@/schemas/jobListingFilters.ts";
 import type {JobListingReadSummary} from "@/schemas/jobListing.ts";
 import {useAuth} from "@/context/AuthProvider.tsx";
-import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import type {ErrorResponse} from "@/schemas/error.ts";
 import {toast} from "sonner";
 import type {Pagination} from "@/schemas/pagination.ts";
@@ -34,8 +31,7 @@ import PictureHandler from "../../components/shared/PictureHandler.tsx";
 import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
 import banner from "@/assets/images/banner.jpg";
-import {statusStyle} from "@/components/shared/statusStyle.ts";
-import {statusIcon} from "@/components/shared/statusIcon.tsx";
+import JobListingCard from "@/components/shared/JobListingCard.tsx";
 
 const EmployerDashboardPage = () => {
 
@@ -148,14 +144,8 @@ const EmployerDashboardPage = () => {
                 ?
                 <div className="container w-full">
                     {jobListingsPage?.content.map((jobListing) => (
-                    <Card key={jobListing.uuid} className="flex flex-col mx-auto w-full h-50 p-5 mb-10 bg-surface container-shadow">
-                        <CardHeader className="flex items-center justify-between">
-                            <CardTitle className="text-2xl flex items-center gap-5">
-                                <div key={jobListing.title}>
-                                    {jobListing.title}
-                                </div>
-                                {role !== "JOB_SEEKER"
-                                ?
+                        <JobListingCard role={role} jobListing={jobListing} hasApplied={appliedJobListings[jobListing.uuid]}>
+                            {role !== "JOB_SEEKER" &&
                                 <div className="flex items-center gap-x-0.5">
                                     <Link to={`/employer/job-listings/${jobListing.uuid}/edit`} className="text-primary-light duration-300 ease-in-out hover:scale-[0.95]">
                                         <SquarePen className="w-5 h-5"/>
@@ -164,56 +154,8 @@ const EmployerDashboardPage = () => {
                                         <Trash2 className="w-5! h-5!"/>
                                     </Button>
                                 </div>
-                                :
-                                <div>
-                                    {appliedJobListings[jobListing.uuid] && (
-                                        <div className="flex figtree-custom-italics bg-success text-text-light text-xs rounded-sm p-1 h-5 items-center gap-1">
-                                            <BadgeCheck size={16}/>
-                                            <p>applied</p>
-                                        </div>
-                                    )}
-                                </div>
-                                }
-                            </CardTitle>
-                            <CardDescription className={`${statusStyle(jobListing.status)} text-text-light text-md font-semibold rounded-sm p-1 h-8`}>
-                                <div key={jobListing.status} className="flex gap-1 px-1">
-                                    <span>{statusIcon(jobListing.status)}</span> {jobListing.status}
-                                </div>
-                            </CardDescription>
-                        </CardHeader>
-                        <div className="flex flex-col text-base font-sans">
-                            <div className="self-start ml-7 -mt-5 text-sm figtree-custom-italics text-industry" key={jobListing.professionalFieldName}>
-                                {jobListing.professionalFieldName}
-                            </div>
-                            <div className="flex items-baseline gap-1 ml-5 mt-3 text-sm font-medium">
-                                <span className="flex gap-1">
-                                    <MapPin strokeWidth={1.25} size={20}  />
-                                    <div key={jobListing.regionName}>
-                                        {jobListing.regionName}
-                                    </div>
-                                </span>
-                                <Dot  />
-                                <span className="flex gap-1">
-                                    <Factory strokeWidth={1.25} size={20}  />
-                                    <div key={jobListing.employerBrandName}>
-                                        {jobListing.employerBrandName}
-                                    </div>
-                                </span>
-                                <Dot />
-                                <span className="flex gap-1">
-                                    <CalendarFold strokeWidth={1.25} size={20} />
-                                    <div key={jobListing.dateCreated.slice(0,10)}>
-                                        {jobListing.dateCreated.slice(0,10)}
-                                    </div>
-                                </span>
-                            </div>
-                        </div>
-                        <CardFooter className="w-full mt-auto ">
-                            <Link to={`/job-listings/${jobListing.uuid}`} className="w-full">
-                                <CustomButton label="View Listing ⟶" addClasses="w-full"></CustomButton>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+                            }
+                        </JobListingCard>
                     ))}
                 </div>
                 :
