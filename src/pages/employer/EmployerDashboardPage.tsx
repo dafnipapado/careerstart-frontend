@@ -7,8 +7,6 @@ import {
 } from "@/api/employer.ts";
 import type {EmployerReadDetails} from "@/schemas/employer.ts";
 import {
-    ChevronLeft,
-    ChevronRight,
     Factory,
     MapPin,
     Settings,
@@ -32,6 +30,7 @@ import {hasJobSeekerApplied} from "@/api/jobSeeker.ts";
 import {getErrorMessage} from "@/utils/errorMessages.ts";
 import banner from "@/assets/images/banner.jpg";
 import JobListingCard from "@/components/shared/JobListingCard.tsx";
+import PaginationControls from "@/components/shared/PaginationControls.tsx";
 
 const EmployerDashboardPage = () => {
 
@@ -168,25 +167,7 @@ const EmployerDashboardPage = () => {
 
                 {/*pagination control*/}
                 {(jobListingsPage?.totalPages ?? 0) > 0 &&
-                    <div className="flex justify-center gap-5">
-                        <button
-                            onClick={() => setCurrentPage(prev => prev - 1)}
-                            disabled={jobListingsPage?.first}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
-                        >
-                            <ChevronLeft />
-                        </button>
-                        <span className="font-semibold text-primary">
-                            {currentPage + 1}/{jobListingsPage?.totalPages}
-                        </span>
-                        <button
-                            onClick={() => setCurrentPage(prev => prev + 1)}
-                            disabled={jobListingsPage?.last}
-                            className="rounded-4xl cursor-pointer ease-in-out duration-300 hover:bg-primary-hover disabled:text-gray-400"
-                        >
-                            <ChevronRight />
-                        </button>
-                    </div>
+                    <PaginationControls jobListingsPage={jobListingsPage} currentPage={currentPage} setCurrentPage={setCurrentPage} />
                 }
             </div>
         </>
